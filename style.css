@@ -1,0 +1,158 @@
+:root {
+  --green-dark: #0f3d1e;
+  --green-main: #1fa463;
+  --green-light: #7ed957;
+  --bg: #f2f5f3;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(90deg, var(--green-main), var(--green-light));
+  color: white;
+  padding: 1.2rem 2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+/* MENU LATERAL */
+aside {
+  width: 220px;
+  background: var(--green-dark);
+  color: white;
+  padding: 1rem;
+}
+
+aside h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+aside button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  padding: 0.7rem;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+aside button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* CONTEÚDO */
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* TELAS */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* DASHBOARD */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--green-dark);
+}
+
+.value {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.positive {
+  color: #1fa463;
+}
+
+.negative {
+  color: #c62828;
+}
+
+/* FORMULÁRIOS */
+input,
+select,
+button.primary {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button.primary {
+  background: var(--green-main);
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.primary:hover {
+  opacity: 0.9;
+}
+
+/* TABELAS */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 0.7rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+/* PERFIL */
+button {
+  width: 50%;
+  padding: 0.7rem;
+  margin-top: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

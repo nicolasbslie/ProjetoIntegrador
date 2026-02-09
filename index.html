@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoSpending - Web</title>
+</head>
+<body>
+
+<header>EcoSpending</header>
+
+<div class="layout">
+
+  <aside>
+    <h3>Menu</h3>
+    <button onclick="show('dashboard')">🏠 Dashboard</button>
+    <button onclick="show('add')">➕ Adicionar gasto</button>
+    <button onclick="show('ebook')">📖Ebook</button>
+    <button onclick="show('profile')">👤 Perfil</button>
+    <button onclick="show('login')">🚪 Sair</button>
+  </aside>
+
+  <main>
+
+    <!-- Login -->
+    <div class="screen active" id="login">
+      <div class="card" style="max-width:400px; margin:auto;">
+        <h3>Login</h3>
+        <input placeholder="Email ou número" />
+        <input type="password" placeholder="Senha" />
+        <button class="primary" onclick="show('dashboard')">Entrar</button>
+        <button class="primary" onclick="show('cadastrar')">Cadastrar</button>
+      </div>
+    </div>
+
+    <!-- Cadastrar -->
+     <div class="screen" id="cadastrar">
+        <div class="card" style="max-width:400px; margin:auto;">
+            <h3>Cadastrar</h3>
+            <input type="name" placeholder="Nome completo">
+            <input type="number" placeholder="Idade">
+            <input placeholder="Email ou número" />
+            <input type="password" placeholder="Senha" />
+            <input type="password" placeholder="Confirmar senha" />
+            <button class="primary" onclick="show('dashboard')">Cadastrar</button>
+        </div>
+     </div>
+
+    <!-- Dashboard -->
+    <div class="screen" id="dashboard">
+      <h2>Olá, Fulano</h2>
+
+      <div class="grid">
+        <div class="card">
+          <h3>📥 Receita</h3>
+          <div class="value positive">R$ 0,00</div>
+        </div>
+        <div class="card">
+          <h3>📤 Gastos</h3>
+          <div class="value negative">R$ 0,00</div>
+        </div>
+        <div class="card">
+          <h3>💰 Saldo</h3>
+          <div class="value">R$ 0,00</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Seus consumos</h3>
+        <table>
+          <tr><th>Categoria</th><th>Valor</th></tr>
+          <tr><td>Alimentação</td><td>R$ 0,00</td></tr>
+          <tr><td>Transporte</td><td>R$ 0,00</td></tr>
+          <tr><td>Lazer</td><td>R$ 0,00</td></tr>
+          <tr><td>Moradia</td><td>R$ 0,00</td></tr>
+          <tr><td>Streaming</td><td>R$ 0,00</td></tr>
+          <tr><td>Contas(Luz, água)</td><td>R$ 0,00</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Adicionar gasto -->
+    <div class="screen" id="add">
+      <div class="card" style="max-width:500px;">
+        <h3>Adicionar gasto</h3>
+        <input type="number" placeholder="Valor" />
+        <select>
+          <option>Alimentação</option>
+          <option>Transporte</option>
+          <option>Lazer</option>
+          <option>Moradia</option>
+          <option>Streaming</option>
+          <option>Contas(Luz, água)</option>
+        </select>
+        <button class="primary">Salvar</button>
+      </div>
+    </div>
+
+    <!-- Ebook -->
+    <div class="screen" id="add"></div>
+
+    <!-- Perfil -->
+    <div class="screen" id="profile">
+      <div class="card" style="max-width:600px;">
+        <h3>Configurações</h3>
+        <table>
+          <button onclick="show('privacidade')">Privacidade</button>
+          <button onclick="show('seguranca')">Segurança</button>
+          <button onclick="show('acessibilidade')">Acessibilidade</button>
+          <button onclick="show('permissoes')">Permissões</button>
+          <button onclick="show('suporte')">Suporte e ajuda</button>
+          <button onclick="show('alterar')">Alterar informações</button>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+    <!-- Páginas do perfil -->
+    <div class="screen" id="privacidade">
+
+    </div>
+    <div class="screen" id="seguranca">
+
+    </div>
+    <div class="screen" id="acessibilidade">
+
+    </div>
+    <div class="screen" id="permissoes">
+
+    </div>
+    <div class="screen" id="suporte">
+
+    </div>
+    <div class="screen" id="alterar"></div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
