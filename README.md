@@ -49,8 +49,8 @@ Além disso, o projeto busca incentivar a **educação financeira**, oferecendo 
 
 ## 🖥️ Tecnologias Utilizadas
 
-- HTML5
-- CSS3
+- HTML
+- CSS
 - JavaScript
 
 *(Novas tecnologias poderão ser adicionadas futuramente)*
