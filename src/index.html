@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style/style.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EcoSpending - Web</title>
@@ -13,7 +12,7 @@
 
 <div class="layout">
 
-  <aside>
+  <aside style="display: none;">
     <h3>Menu</h3>
     <button onclick="show('dashboard')">🏠 Dashboard</button>
     <button onclick="show('add')">➕ Adicionar gasto</button>
@@ -152,21 +151,6 @@
     <div class="screen" id="alterar">
 
     </div>
-
-<script>
-  function show(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-
-    const aside = document.querySelector('aside');
-
-    if (id === 'dashboard') {
-      aside.style.display = 'block';
-    } else if (id === 'login' || id === 'cadastrar') {
-      aside.style.display = 'none';
-    }
-  }
-</script>
-
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
