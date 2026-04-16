@@ -31,35 +31,63 @@ header {
   min-height: calc(100vh - 64px);
 }
 
-/* Menu lateral */
 aside {
-  width: 220px;
-  background: var(--green-dark);
+  width: 240px;
+  background: linear-gradient(180deg, var(--green-dark), #0f2f25);
   color: white;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
+  height: 100vh;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Título */
 aside h3 {
   margin-top: 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }
 
+/* Botões */
 aside button {
   width: 100%;
   background: none;
   border: none;
   color: white;
   text-align: left;
-  padding: 0.7rem;
-  margin-bottom: 0.4rem;
+  padding: 0.8rem 0.9rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  transition: all 0.25s ease;
 }
 
+/* Hover */
 aside button:hover {
   background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
 }
 
+/* Botão ativo */
+aside button.active {
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: bold;
+}
+
+/* Linha separadora (opcional) */
+aside hr {
+  border: none;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  margin: 1rem 0;
+}
 /* Conteúdo */
 main {
   flex: 1;
