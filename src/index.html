@@ -104,7 +104,11 @@
     </div>
 
     <!-- Ebook -->
-    <div class="screen" id="add"></div>
+    <div class="screen" id="add">
+      <div class="card" style="max-width: 500px;">
+        <h3>Ebook1</h3>
+      </div>
+    </div>
 
     <!-- Perfil -->
     <div class="screen" id="profile">
@@ -153,6 +157,14 @@
   function show(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+
+    const aside = document.querySelector('aside');
+
+    if (id === 'dashboard') {
+      aside.style.display = 'block';
+    } else if (id === 'login' || id === 'cadastrar') {
+      aside.style.display = 'none';
+    }
   }
 </script>
 
