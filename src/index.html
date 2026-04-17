@@ -14,7 +14,7 @@
 
   <aside style="display: none;">
     <h3>Menu</h3>
-    <button onclick="show('dashboard')">Dashboard 🏠</button>
+    <button onclick="show('dashboard')">Painel 🏠</button>
     <button onclick="show('add')">Adicionar gasto ➕</button>
     <button onclick="show('ebook')">Ebook 📖</button>
     <button onclick="show('profile')">Perfil 👤</button>
@@ -65,13 +65,9 @@
           <h3>💰 Saldo</h3>
           <div class="value">R$ 0,00</div>
         </div>
-        <div class="card">
-  <h3>📊 Evolução Financeira</h3>
-  <canvas id="financeChart"></canvas>
-</div>
       </div>
 
-      <div class="card">
+      <div class="cardconsumos">
         <h3>Seus consumos</h3>
         <table>
           <tr><th>Categoria</th><th>Valor</th></tr>
@@ -80,9 +76,15 @@
           <tr><td>Lazer</td><td>R$ 0,00</td></tr>
           <tr><td>Moradia</td><td>R$ 0,00</td></tr>
           <tr><td>Streaming</td><td>R$ 0,00</td></tr>
-          <tr><td>Contas(Luz, água)</td><td>R$ 0,00</td></tr>
+          <tr><td>Contas(Luz, água)</td><td>R$ 0,00</td></tr>          
         </table>
       </div>
+      <div>
+      </div>
+               <div class="cardfinancas">
+  <h3>📊 Evolução Financeira</h3>
+  <canvas id="financeChart"></canvas>
+</div>
     </div>
 
     <!-- Adicionar gasto -->

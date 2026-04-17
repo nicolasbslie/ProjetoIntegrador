@@ -36,7 +36,7 @@ aside {
   background: linear-gradient(180deg, var(--green-dark), #0f2f25);
   color: white;
   padding: 1.5rem 1rem;
-  height: 100vh;
+  height: 110vh;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -99,9 +99,9 @@ main {
 /* Dashboard */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 3fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .card {
@@ -186,4 +186,29 @@ button:hover {
 #financeChart {
   width: 100% !important;
   height: 300px !important;
+  padding: 15px 0;
+  }
+
+.cardfinancas{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 3fr));
+    background: white;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.cardconsumos{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 3fr));
+    background: white;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 2px 6px rgba(0,0,0,0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+}
+  h3{
+    margin-top: 30px ;
+  }
+
