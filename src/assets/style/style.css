@@ -182,3 +182,8 @@ button {
 button:hover {
   background: rgba(255, 255, 255, 0.15);
 }
+
+#financeChart {
+  width: 100% !important;
+  height: 300px !important;
+}
