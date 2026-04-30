@@ -65,3 +65,44 @@ show = function(id) {
     setTimeout(criarGrafico, 100);
   }
 };
+
+async function login() {
+  const email = document.querySelector("input[placeholder='Email ou número']").value;
+  const senha = document.querySelector("input[type='password']").value;
+
+  const res = await fetch("http://localhost:3000/users/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, senha })
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    alert("Login OK");
+    show("dashboard");
+  } else {
+    alert(data.error);
+  }
+}
+
+async function adicionarGasto() {
+  const valor = document.querySelector("input[type='number']").value;
+  const descricao = document.querySelector("input[type='text']").value;
+  const categoria_id = document.querySelector("select").selectedIndex + 1;
+
+  await fetch("http://localhost:3000/gastos", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      usuario_id: 1,
+      valor,
+      categoria_id,
+      descricao
+    })
+  });
+
+  alert("Gasto salvo!");
+}
