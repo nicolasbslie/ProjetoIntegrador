@@ -1,7 +1,0 @@
-export interface User {
-  id?: number;
-  nome: string;
-  idade: number;
-  email: string;
-  senha: string;
-}
