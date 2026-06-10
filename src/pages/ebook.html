@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ecoSpending — Guia Completo de Investimentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="../assets/style/ebook.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div>
+<button onclick="window.location.href='index.html'" class="btn-voltar">
+    ← Voltar
+</button>
+</div>
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <div class="cover-badge">📚 Guia Definitivo</div>
+  <div class="cover-logo">ecoSpending</div>
+  <h1>Invista com <span>Consciência</span> e Inteligência</h1>
+  <p class="cover-sub">Do primeiro investimento à estratégia avançada — tudo que você precisa para crescer seu patrimônio de forma sustentável.</p>
+  <div class="cover-levels">
+    <span class="level-pill iniciante">📗 Nível 1 — Iniciante</span>
+    <span class="level-pill intermediario">📈 Nível 2 — Intermediário</span>
+    <span class="level-pill avancado">🚀 Nível 3 — Avançado</span>
+  </div>
+  <div class="overview-grid" style="max-width:600px; width:100%;">
+    <div class="overview-card iniciante">
+      <span class="overview-emoji">📗</span>
+      <h3>Iniciante</h3>
+      <p>Base sólida para começar</p>
+      <div class="overview-count">5</div>
+      <div class="overview-count-label">capítulos</div>
+    </div>
+    <div class="overview-card intermediario">
+      <span class="overview-emoji">📈</span>
+      <h3>Intermediário</h3>
+      <p>Bolsa, ações e fundos</p>
+      <div class="overview-count">6</div>
+      <div class="overview-count-label">capítulos</div>
+    </div>
+    <div class="overview-card avancado">
+      <span class="overview-emoji">🚀</span>
+      <h3>Avançado</h3>
+      <p>Estratégias e psicologia</p>
+      <div class="overview-count">6</div>
+      <div class="overview-count-label">capítulos</div>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ começar leitura</div>
+</section>
+
+<!-- NAV -->
+<nav id="main-nav" style="display:none;">
+  <div class="nav-logo">ecoSpending</div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#" onclick="filterLevel('all')" class="active" id="nav-all">Todos</a></li>
+    <li><a href="#" onclick="filterLevel('iniciante')" id="nav-iniciante">📗 Iniciante</a></li>
+    <li><a href="#" onclick="filterLevel('intermediario')" id="nav-intermediario">📈 Intermediário</a></li>
+    <li><a href="#" onclick="filterLevel('avancado')" id="nav-avancado">🚀 Avançado</a></li>
+  </ul>
+  <span id="progress-nav" style="font-size:12px;color:var(--text-muted);">0 / 17 capítulos</span>
+</nav>
+
+<!-- MAIN -->
+<div class="layout" id="main-layout" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Conteúdo</div>
+
+    <div class="progress-bar"><div class="progress-fill" id="sidebar-progress"></div></div>
+    <p class="progress-label" id="progress-label" style="font-size:11px;color:var(--text-muted);margin-top:-8px;margin-bottom:1rem;">0% concluído</p>
+
+    <div class="sidebar-level">
+      <span class="dot dot-green"></span>
+      Nível 1 — Iniciante
+    </div>
+    <a class="sidebar-link active" href="#" onclick="showOnly('iniciante')">
+      <span class="sidebar-num">5</span>Capítulos básicos
+    </a>
+    <div class="sidebar-level" style="margin-top:1rem;">
+      <span class="dot dot-amber"></span>
+      Nível 2 — Intermediário
+    </div>
+    <a class="sidebar-link" href="#" onclick="showOnly('intermediario')">
+      <span class="sidebar-num">6</span>Capítulos médios
+    </a>
+    <div class="sidebar-level" style="margin-top:1rem;">
+      <span class="dot dot-dark"></span>
+      Nível 3 — Avançado
+    </div>
+    <a class="sidebar-link" href="#" onclick="showOnly('avancado')">
+      <span class="sidebar-num">6</span>Capítulos avançados
+    </a>
+    <div style="margin-top:1.5rem;padding:14px;background:var(--eco-green-pale);border-radius:12px;border:1px solid var(--border);">
+      <p style="font-size:12px;color:var(--eco-dark);font-weight:600;margin-bottom:4px;">💡 Dica ecoSpending</p>
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.5;">Investir de forma consciente é também cuidar do seu futuro com responsabilidade.</p>
+    </div>
+    <div style="margin-top:1rem;">
+      <button class="btn btn-outline" style="width:100%;justify-content:center;font-size:13px;" onclick="filterLevel('all')">Ver todos os capítulos</button>
+    </div>
+  </aside>
+
+  <!-- CHAPTERS -->
+  <main id="chapters-container"></main>
+</div>
+
+<footer>
+  Feito com 💚 pelo projeto <strong>ecoSpending</strong> — Finanças conscientes para um futuro melhor.
+</footer>
+<script src="../assets/js/ebook.js"></script>
+</body>
+</html>

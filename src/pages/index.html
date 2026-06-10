@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="stylesheet" href="assets/style/style.css">
+    <link rel="stylesheet" href="../assets/style/style.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EcoSpending - Web</title>
@@ -16,7 +16,9 @@
     <h3>Menu</h3>
     <button onclick="show('dashboard')">Painel 🏠</button>
     <button onclick="show('add')">Adicionar gasto ➕</button>
-    <button onclick="show('ebook')">Ebook 📖</button>
+    <a href="ebook.html">
+    <button>Ebook 📖</button>
+</a>
     <button onclick="show('profile')">Perfil 👤</button>
     <button onclick="show('login')">Sair 🚪</button>
   </aside>
@@ -105,7 +107,9 @@
     <!-- Ebook -->
     <div class="screen" id="ebook">
       <div class="card" style="max-width: 500px;">
+     
         <h3>Ebook1</h3>
+      
       </div>
     </div>
 
@@ -151,7 +155,7 @@
     <div class="screen" id="alterar">
 
     </div>
-    <script src="assets/js/script.js"></script>
+    <script src="../assets/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
