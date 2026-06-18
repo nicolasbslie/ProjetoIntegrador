@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ecoSpending — App</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style/gasto.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <div class="leaf"></div>
+      ecoSpending
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbar-date"></span>
+      <div class="avatar" title="Meu perfil">EC</div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section-label">Menu</div>
+
+    <div class="nav-item active" onclick="showPage('painel')">
+      <div class="nav-icon">📊</div>
+      Painel
+    </div>
+    <div class="nav-item" onclick="showPage('adicionar')">
+      <div class="nav-icon">➕</div>
+      Adicionar gasto
+      <span class="nav-badge" id="badge-add" style="display:none">1</span>
+    </div>
+    <div class="nav-item" onclick="showPage('historico')">
+      <div class="nav-icon">📋</div>
+      Histórico
+    </div>
+
+    <div class="sidebar-section-label" style="margin-top:8px">Educação</div>
+    <div class="nav-item" onclick="window.open('ebook.html')">
+      <div class="nav-icon">📚</div>
+      eBook
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="eco-score-block">
+        <div class="eco-score-label">Eco Score</div>
+        <div class="eco-score-value" id="sidebar-eco-score">—</div>
+        <div class="eco-score-sub">consciência financeira</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══════ PAINEL ══════ -->
+    <div class="page active" id="page-painel">
+
+      <div class="page-header">
+        <div>
+          <h1>Painel 🌿</h1>
+          <p>Visão geral das suas finanças conscientes</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="month-tabs" id="month-tabs"></div>
+          <button class="btn btn-primary" onclick="showPage('adicionar')">+ Adicionar</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi kpi-total">
+          <div class="kpi-label">💸 Gastos totais</div>
+          <div class="kpi-value red" id="kpi-total">R$ 0</div>
+          <div class="kpi-sub" id="kpi-total-sub">este mês</div>
+        </div>
+        <div class="kpi kpi-income">
+          <div class="kpi-label">💰 Receitas</div>
+          <div class="kpi-value blue" id="kpi-income">R$ 0</div>
+          <div class="kpi-sub">entradas no mês</div>
+        </div>
+        <div class="kpi kpi-balance">
+          <div class="kpi-label">⚖️ Saldo</div>
+          <div class="kpi-value amber" id="kpi-balance">R$ 0</div>
+          <div class="kpi-sub">receitas − gastos</div>
+        </div>
+        <div class="kpi kpi-eco">
+          <div class="kpi-label">🍃 Eco Score médio</div>
+          <div class="kpi-value" id="kpi-eco" style="color:var(--purple)">—</div>
+          <div class="kpi-sub">consciência dos gastos</div>
+        </div>
+      </div>
+
+      <!-- METAS -->
+      <div class="goals-row" id="goals-row">
+        <div class="goal-card">
+          <div class="goal-label">🏠 Moradia <span class="goal-pct" id="gp-moradia">0%</span></div>
+          <div class="goal-bar-bg"><div class="goal-bar-fill" id="gb-moradia" style="background:var(--blue);width:0%"></div></div>
+          <div class="goal-amounts"><span id="ga-moradia">R$ 0</span><span style="color:var(--text2)">meta R$ 1.500</span></div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-label">🍽️ Alimentação <span class="goal-pct" id="gp-alim">0%</span></div>
+          <div class="goal-bar-bg"><div class="goal-bar-fill" id="gb-alim" style="background:var(--amber);width:0%"></div></div>
+          <div class="goal-amounts"><span id="ga-alim">R$ 0</span><span style="color:var(--text2)">meta R$ 800</span></div>
+        </div>
+        <div class="goal-card">
+          <div class="goal-label">🎯 Lazer <span class="goal-pct" id="gp-lazer">0%</span></div>
+          <div class="goal-bar-bg"><div class="goal-bar-fill" id="gb-lazer" style="background:var(--purple);width:0%"></div></div>
+          <div class="goal-amounts"><span id="ga-lazer">R$ 0</span><span style="color:var(--text2)">meta R$ 400</span></div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Gastos por dia <span id="chart-month-label"></span></div>
+          <div class="bar-chart" id="bar-chart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Por categoria</div>
+          <div class="donut-wrap">
+            <svg class="donut-svg" width="160" height="160" viewBox="0 0 160 160" id="donut-svg">
+              <text x="80" y="76" text-anchor="middle" font-family="Playfair Display,serif" font-size="22" fill="#2D6A4F" font-weight="700" id="donut-center-val">0</text>
+              <text x="80" y="93" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#7A9E8A" id="donut-center-sub">gastos</text>
+            </svg>
+            <div class="donut-legend" id="donut-legend">
+              <div class="empty-state" style="padding:0.5rem"><p style="font-size:12px">Sem dados ainda</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT -->
+      <div class="recent-card">
+        <div class="table-header">
+          <h3>Lançamentos recentes</h3>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('historico')">Ver todos →</button>
+        </div>
+        <div id="recent-body">
+          <div class="empty-state">
+            <span class="empty-icon">🌱</span>
+            <p>Nenhum lançamento ainda.<br>Comece adicionando um gasto!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ ADICIONAR GASTO ══════ -->
+    <div class="page" id="page-adicionar">
+
+      <div class="page-header">
+        <div>
+          <h1>Adicionar lançamento ➕</h1>
+          <p>Registre um gasto ou receita com consciência ecológica</p>
+        </div>
+      </div>
+
+      <div class="add-grid">
+
+        <!-- FORM -->
+        <div class="form-card">
+
+          <!-- TIPO -->
+          <p class="form-section-title">Tipo de lançamento</p>
+          <div class="type-toggle">
+            <button class="type-btn selected-expense" id="type-expense" onclick="setType('expense')">💸 Gasto</button>
+            <button class="type-btn" id="type-income" onclick="setType('income')">💰 Receita</button>
+          </div>
+
+          <!-- VALOR -->
+          <p class="form-section-title">Valor</p>
+          <div class="form-group">
+            <label>Valor (R$)</label>
+            <input type="number" class="big" id="f-value" placeholder="0,00" min="0" step="0.01" oninput="updatePreview()">
+          </div>
+
+          <!-- CATEGORIA -->
+          <p class="form-section-title">Categoria</p>
+          <div class="cat-grid" id="cat-grid"></div>
+
+          <!-- DETALHES -->
+          <p class="form-section-title">Detalhes</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Descrição</label>
+              <input type="text" id="f-desc" placeholder="Ex: Supermercado Zona Sul" maxlength="60" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+              <label>Data</label>
+              <input type="date" id="f-date" oninput="updatePreview()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Observação <span style="color:var(--text3);font-weight:400">(opcional)</span></label>
+            <textarea id="f-obs" placeholder="Ex: compra mensal, comparei preços..."></textarea>
+          </div>
+
+          <!-- ECO SCORE -->
+          <p class="form-section-title" id="eco-section" style="">Impacto ecológico</p>
+          <div class="eco-slider-wrap" id="eco-wrap">
+            <div class="eco-slider-header">
+              <span class="eco-slider-label">Quão consciente foi este gasto?</span>
+              <span class="eco-score-badge" id="eco-badge" style="background:var(--g100);color:var(--g700)">8 / 10</span>
+            </div>
+            <input type="range" class="eco-range" id="f-eco" min="1" max="10" value="8" oninput="updateEcoBadge(); updatePreview()">
+            <div class="eco-descriptions">
+              <span>🔴 Impulsivo</span>
+              <span>🟡 Neutro</span>
+              <span>🟢 Consciente</span>
+            </div>
+          </div>
+
+          <!-- SUBMIT -->
+          <div style="display:flex;gap:10px;margin-top:1.5rem;">
+            <button class="btn btn-primary" style="flex:1;justify-content:center;padding:13px;" onclick="submitExpense()">
+              ✅ Salvar lançamento
+            </button>
+            <button class="btn btn-ghost" onclick="resetForm()">Limpar</button>
+          </div>
+
+        </div>
+
+        <!-- PREVIEW -->
+        <div>
+          <div class="preview-card">
+            <p class="preview-title">Prévia do lançamento</p>
+
+            <div class="preview-receipt" id="preview-receipt">
+              <div class="receipt-header">
+                <div class="receipt-logo">ecoSpending</div>
+                <div class="receipt-date" id="prev-date">—</div>
+              </div>
+              <div class="receipt-row"><span>Tipo</span><span id="prev-type" style="font-weight:600">Gasto</span></div>
+              <div class="receipt-row"><span>Categoria</span><span id="prev-cat">—</span></div>
+              <div class="receipt-row"><span>Descrição</span><span id="prev-desc" style="max-width:160px;text-align:right;font-size:11px">—</span></div>
+              <div class="receipt-row total">
+                <span>Total</span>
+                <span class="val" id="prev-total">R$ 0,00</span>
+              </div>
+            </div>
+
+            <div class="eco-meter" id="eco-meter-preview">
+              <div class="eco-meter-label">Eco Score</div>
+              <div class="eco-meter-bar"><div class="eco-meter-fill" id="eco-meter-fill" style="width:80%;background:var(--g500)"></div></div>
+              <div class="eco-meter-desc" id="eco-meter-desc">🌿 Gasto consciente — ótimo!</div>
+            </div>
+
+            <div class="tip-box" id="eco-tip">
+              <strong>💡 Dica ecoSpending</strong>
+              Comparar preços antes de comprar pode economizar até 30% no supermercado.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ HISTÓRICO ══════ -->
+    <div class="page" id="page-historico">
+      <div class="page-header">
+        <div>
+          <h1>Histórico 📋</h1>
+          <p>Todos os lançamentos registrados</p>
+        </div>
+        <button class="btn btn-primary" onclick="showPage('adicionar')">+ Adicionar</button>
+      </div>
+
+      <div class="filter-bar">
+        <select id="hist-month" onchange="renderHistorico()">
+          <option value="">Todos os meses</option>
+        </select>
+        <select id="hist-cat" onchange="renderHistorico()">
+          <option value="">Todas as categorias</option>
+        </select>
+        <select id="hist-type" onchange="renderHistorico()">
+          <option value="">Tipo: todos</option>
+          <option value="expense">Gastos</option>
+          <option value="income">Receitas</option>
+        </select>
+        <input type="text" id="hist-search" placeholder="🔍 Buscar..." oninput="renderHistorico()" style="min-width:160px;">
+      </div>
+
+      <div class="recent-card">
+        <div id="historico-body">
+          <div class="empty-state">
+            <span class="empty-icon">📭</span>
+            <p>Nenhum lançamento encontrado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Lançamento salvo!</div>
+<script src="../assets/js/gasto.js"></script>
+</body>
+</html>
