@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoSpending - Cadastro</title>
+<link rel="stylesheet" href="../assets/style/cadastro.css">
+</head>
+<body>
+
+  <header>
+    <h1>EcoSpending</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Cadastro</h2>
+
+      <div class="input-group">
+        <input type="text" placeholder="Nome completo" id="nome" />
+        <span class="erro" id="erro-nome">Informe seu nome.</span>
+      </div>
+
+      <div class="input-group">
+        <input type="text" placeholder="Email ou número" id="email" />
+        <span class="erro" id="erro-email">Informe seu email ou número.</span>
+      </div>
+
+      <div class="input-group">
+        <input type="password" placeholder="Senha" id="senha" />
+        <span class="erro" id="erro-senha">A senha deve ter pelo menos 6 caracteres.</span>
+      </div>
+
+      <div class="input-group">
+        <input type="password" placeholder="Confirmar senha" id="confirmar-senha" />
+        <span class="erro" id="erro-confirmar">As senhas não coincidem.</span>
+      </div>
+
+      <button class="btn btn-primary" onclick="cadastrar()">Cadastrar</button>
+      <button class="btn btn-outline" onclick="window.location.href='login.html'">Já tenho conta</button>
+    </div>
+  </main>
+<script src="../assets/js/cadastro.js"></script>
+</body>
+</html>

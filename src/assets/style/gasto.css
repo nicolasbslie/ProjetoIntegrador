@@ -1,10 +1,15 @@
 
 /* ─── RESET & TOKENS ─────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
+  :root {
+  --green-dark: #0f3d1e;
+  --green-main: #1fa463;
+  --green-light: #7ed957;
+  --bg: #f2f5f3;
+  }
 :root {
   --g900: #0D2418;
-  --g800: #1B3A2D;
+  --g800: #7ed957;
   --g700: #2D6A4F;
   --g600: #40916C;
   --g500: #52B788;
@@ -51,7 +56,7 @@ body {
 
 .topbar {
   grid-column: 1 / -1;
-  background: var(--g800);
+  background: linear-gradient(90deg, var(--green-main), var(--green-light));
   height: 56px;
   display: flex;
   align-items: center;
@@ -111,7 +116,7 @@ body {
 
 .topbar-date {
   font-size: 12px;
-  color: var(--g300);
+  color: var(white);
   font-weight: 400;
 }
 
