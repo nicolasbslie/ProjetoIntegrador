@@ -5,7 +5,7 @@
   --green-dark: #0f3d1e;
   --green-main: #1fa463;
   --green-light: #7ed957;
-  --bg: #f2f5f3;
+  --bg1: #f2f5f3;
   }
 :root {
   --g900: #0D2418;
@@ -33,7 +33,7 @@
   --text3: #7A9E8A;
   --border:#E0EDE5;
   --surf:  #FFFFFF;
-  --bg:    #F4FAF6;
+  --bg:    #FFFFFF;
   --shadow: 0 1px 3px rgba(13,36,24,.06), 0 4px 16px rgba(13,36,24,.05);
 }
 
@@ -56,7 +56,7 @@ body {
 
 .topbar {
   grid-column: 1 / -1;
-  background: linear-gradient(90deg, var(--green-main), var(--green-light));
+ background: linear-gradient(90deg, var(--green-main), var(--green-light));
   height: 56px;
   display: flex;
   align-items: center;
@@ -70,7 +70,7 @@ body {
 .topbar-logo {
   font-family: 'Playfair Display', serif;
   font-size: 17px;
-  color: var(--g200);
+  color: var(--bg);
   letter-spacing: 1px;
   display: flex;
   align-items: center;
@@ -116,7 +116,7 @@ body {
 
 .topbar-date {
   font-size: 12px;
-  color: var(white);
+  color: var(--bg);
   font-weight: 400;
 }
 
@@ -231,6 +231,8 @@ body {
 .main {
   padding: 2rem;
   overflow-y: auto;
+     background: var(--surf);
+;
 }
 
 /* ─── PAGE HEADER ────────────────────────────────────── */
@@ -246,13 +248,13 @@ body {
 .page-header h1 {
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
-  color: var(--text);
+  color: var(--green-dark);
   line-height: 1.2;
 }
 
 .page-header p {
   font-size: 13px;
-  color: var(--text3);
+  color: var(--green-dark);
   margin-top: 4px;
 }
 
@@ -1078,4 +1080,37 @@ input[type="range"].eco-range::-webkit-slider-thumb {
 
 .filter-bar select:focus, .filter-bar input:focus {
   border-color: var(--g500);
+}
+
+.dark-mode {
+  background: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .topbar,
+.dark-mode .sidebar {
+  background: #1e1e1e;
+}
+
+.dark-mode .card,
+.dark-mode .form-card,
+.dark-mode .preview-card,
+.dark-mode .chart-card,
+.dark-mode .recent-card,
+.dark-mode .goal-card,
+.dark-mode .kpi {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.dark-mode .nav-item:hover {
+  background: #333;
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ecoSpending — App</title>
+<title>EcoSpending — App</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style/gasto.css">
 </head>
@@ -14,8 +14,7 @@
   <!-- TOPBAR -->
   <header class="topbar">
     <div class="topbar-logo">
-      <div class="leaf"></div>
-      ecoSpending
+      EcoSpending
     </div>
     <div class="topbar-right">
       <span class="topbar-date" id="topbar-date"></span>
@@ -41,12 +40,24 @@
       Histórico
     </div>
 
-    <div class="sidebar-section-label" style="margin-top:8px">Educação</div>
+   <div class="sidebar-section-label" style="margin-top:8px">Educação</div>
     <div class="nav-item" onclick="window.open('ebook.html')">
       <div class="nav-icon">📚</div>
       eBook
     </div>
 
+    <div class="sidebar-section-label" style="margin-top:8px">Opções</div>
+    <div class="nav-item" onclick="window.open('login.html')"> 
+    <div class="nav-icon">🚪</div>
+    Sair 
+   <div>
+</div>
+</div>
+<div class="nav-item" onclick="toggleDarkMode()">
+  <div class="nav-icon">🌙</div>
+  Modo Escuro
+</div>
+   
     <div class="sidebar-footer">
       <div class="eco-score-block">
         <div class="eco-score-label">Eco Score</div>
