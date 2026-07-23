@@ -1,3 +1,4 @@
+//INICIANTE
 
 const chapters = [
   {
@@ -70,6 +71,8 @@ const chapters = [
     ],
     quiz: { q: "Qual o principal objetivo da diversificação de carteira?", opts: ["Maximizar o rendimento a qualquer custo", "Reduzir o risco sem sacrificar todo o retorno", "Concentrar em apenas um tipo de ativo", "Evitar pagar IR"], answer: 1, feedback: "Correto! Diversificar reduz o risco — se um ativo cai, outros podem compensar." }
   },
+
+  //INTERMEDIÁRIO
   {
     id: 6, level: "intermediario", emoji: "📊",
     title: "Introdução à Bolsa de Valores",
@@ -150,6 +153,8 @@ const chapters = [
     ],
     quiz: { q: "O que o ETF BOVA11 replica?", opts: ["O índice S&P 500 americano", "O Ibovespa (principais ações da B3)", "Somente empresas de dividendos", "Títulos do Tesouro Nacional"], answer: 1, feedback: "Correto! BOVA11 replica o Ibovespa, que reúne as ações mais negociadas da B3." }
   },
+
+  //AVANÇADO
   {
     id: 12, level: "avancado", emoji: "⚡",
     title: "Swing Trade vs Day Trade",
