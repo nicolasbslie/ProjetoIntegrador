@@ -502,23 +502,3 @@ function seedDemo() {
   renderPainel();
 }
 
-window.onload = init;
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-
-    const btn = document.querySelector(
-        ".nav-item[onclick='toggleDarkMode()']"
-    );
-
-    if (document.body.classList.contains("dark-mode")) {
-        btn.innerHTML = `
-            <div class="nav-icon">☀️</div>
-            Modo Claro
-        `;
-    } else {
-        btn.innerHTML = `
-            <div class="nav-icon">🌙</div>
-            Modo Escuro
-        `;
-    }
-}

@@ -18,7 +18,7 @@
   --g200: #B7E4C7;
   --g100: #D8F3DC;
   --g50:  #F0FBF4;
-
+  --g49: #2a2a2a;
   --amber: #E9C46A;
   --amber-d: #C77D11;
   --red:   #E63946;
@@ -159,7 +159,7 @@ body {
 }
 
 .nav-item.active {
-  background: var(--g50);
+  background: var(--text3);
   color: var(--g700);
   border-left-color: var(--g600);
   font-weight: 600;
@@ -231,7 +231,7 @@ body {
 .main {
   padding: 2rem;
   overflow-y: auto;
-     background: var(--surf);
+ background: var(--g400)
 ;
 }
 
@@ -248,13 +248,13 @@ body {
 .page-header h1 {
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
-  color: var(--green-dark);
+  color: var(--bg);
   line-height: 1.2;
 }
 
 .page-header p {
   font-size: 13px;
-  color: var(--green-dark);
+  color: var(--bg);
   margin-top: 4px;
 }
 
@@ -376,7 +376,7 @@ body {
 .chart-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text3);
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
@@ -488,7 +488,7 @@ body {
 .table-header h3 {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text3);
 }
 
 table.expenses-table {
@@ -497,7 +497,7 @@ table.expenses-table {
 }
 
 .expenses-table th {
-  background: var(--bg);
+  background: var(--text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .8px;
@@ -517,7 +517,7 @@ table.expenses-table {
 }
 
 .expenses-table tr:last-child td { border-bottom: none; }
-.expenses-table tr:hover td { background: var(--g50); }
+.expenses-table tr:hover td { background: var(--text); }
 
 .expense-name-cell {
   display: flex;
@@ -535,8 +535,8 @@ table.expenses-table {
   flex-shrink: 0;
 }
 
-.expense-title { font-weight: 500; color: var(--text); font-size: 13px; }
-.expense-note { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.expense-title { font-weight: 500; color: var(--text3); font-size: 13px; }
+.expense-note { font-size: 11px; color: var(--text1); margin-top: 2px; }
 
 .cat-badge {
   display: inline-block;
@@ -604,7 +604,7 @@ table.expenses-table {
 .goal-label {
   font-size: 12px;
   font-weight: 500;
-  color: var(--text2);
+  color: var(--text3);
   margin-bottom: 8px;
   display: flex;
   align-items: center;
@@ -703,7 +703,7 @@ table.expenses-table {
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--g500);
-  background: white;
+  background: var(--text);
   box-shadow: 0 0 0 3px rgba(82,183,136,.15);
 }
 
@@ -714,7 +714,7 @@ table.expenses-table {
   text-align: center;
   padding: 16px 20px;
   border-radius: 14px;
-  background: var(--g50);
+  background: var(--text3);
   border-color: var(--g200);
 }
 
@@ -1080,37 +1080,4 @@ input[type="range"].eco-range::-webkit-slider-thumb {
 
 .filter-bar select:focus, .filter-bar input:focus {
   border-color: var(--g500);
-}
-
-.dark-mode {
-  background: #121212;
-  color: #ffffff;
-}
-
-.dark-mode .topbar,
-.dark-mode .sidebar {
-  background: #1e1e1e;
-}
-
-.dark-mode .card,
-.dark-mode .form-card,
-.dark-mode .preview-card,
-.dark-mode .chart-card,
-.dark-mode .recent-card,
-.dark-mode .goal-card,
-.dark-mode .kpi {
-  background: #2a2a2a;
-  color: #ffffff;
-}
-
-.dark-mode input,
-.dark-mode textarea,
-.dark-mode select {
-  background: #333;
-  color: #fff;
-  border: 1px solid #555;
-}
-
-.dark-mode .nav-item:hover {
-  background: #333;
 }
