@@ -1,11 +1,31 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
-@Entity('users')
+import { Receita } from "./Receita";
+import { Gasto } from "./Gasto";
+
+@Entity("usuarios")
 export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column({ length: 100 })
+  nome: string;
 
-    @Column({length: 255, nullable: true})
-    name: string
+  @Column({ length: 100, unique: true })
+  email: string;
+
+  @Column({ length: 255 })
+  senha: string;
+
+  @Column({ length: 255 })
+  confirmarSenha: string;
+
+  @CreateDateColumn({ name: "criado_em" })
+  criado_em: Date;
+
+  @OneToMany(() => Receita, (receita) => receita.usuario)
+  receitas: Receita[];
+
+  @OneToMany(() => Gasto, (gasto) => gasto.usuario)
+  gastos: Gasto[];
 }

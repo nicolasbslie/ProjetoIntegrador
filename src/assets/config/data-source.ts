@@ -1,23 +1,33 @@
-import {DataSource} from 'typeorm'
-import * as dotenv from 'dotenv'
-import { User } from '../models/User'
-import { Categories } from '../models/Categories'
-import { Revenues } from '../models/Revenues'
-import { Expenses } from '../models/Expenses'
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import "dotenv/config";
 
-dotenv.config() // carrega as informações do arquivo .env para o proccess.env
-
-// DESESTRUTURAÇÃO
-const {DB_HOST, DB_PORT, DB_USER, DB_PWD, DB_NAME} = process.env
+import { User } from "../models/User";
+import { Categoria } from "../models/Categoria";
+import { Receita } from "../models/Receita";
+import { Gasto } from "../models/Gasto";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
-    host: DB_HOST, 
-    port: Number(DB_PORT),
-    username: DB_USER,
-    password: DB_PWD,
-    database: DB_NAME,
-    synchronize:true, // cria as tabelas no banco se estiver marcado como true
-    logging:true, // mostra o código SQL gerado ao criar as tabelas
-    entities:[User, Categories, Revenues, Expenses] // indica quais entidades o TypeORM deve ler para criar as tabelas
-})
+
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+
+    database: process.env.DB_DATABASE,
+
+    synchronize: true,
+    logging: false,
+
+    entities: [
+        User,
+        Categoria,
+        Receita,
+        Gasto
+    ],
+
+    migrations: [],
+    subscribers: []
+});
