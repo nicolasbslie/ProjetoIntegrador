@@ -20,6 +20,9 @@ export class User {
   @Column({ length: 255 })
   confirmarSenha: string;
 
+    @Column({ type: 'enum', nullable: false, enum: ['admin', 'user'], default: 'user' })
+    role: 'admin' | 'user'
+
   @CreateDateColumn({ name: "criado_em" })
   criado_em: Date;
 
