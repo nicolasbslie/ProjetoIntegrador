@@ -1,8 +1,8 @@
 # 🌱 EcoSpending
 
-EcoSpending é um **site e aplicativo** desenvolvido para ajudar usuários a **administrar seus gastos e organizar sua vida financeira** de forma simples e intuitiva.
+O **EcoSpending** é uma plataforma de **controle financeiro pessoal**, desenvolvida para ajudar usuários a organizar suas finanças de maneira simples, prática e intuitiva.
 
-O usuário poderá informar seu salário, adicionar seus gastos e visualizar automaticamente quanto dinheiro ainda possui disponível, além de acessar conteúdos educativos sobre investimentos.
+Com ele, é possível cadastrar receitas e despesas, acompanhar o saldo disponível em tempo real e acessar conteúdos educativos sobre educação financeira e investimentos, incentivando hábitos financeiros mais saudáveis.
 
 ---
 
@@ -10,40 +10,45 @@ O usuário poderá informar seu salário, adicionar seus gastos e visualizar aut
 
 - [📖 Sobre o Projeto](#-sobre-o-projeto)
 - [🎯 Objetivo](#-objetivo)
-- [⚙️ Funcionalidades](#️-funcionalidades)
+- [✨ Funcionalidades](#-funcionalidades)
 - [🖥️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
 - [📱 Plataformas](#-plataformas)
 - [📚 Conteúdo Educacional](#-conteúdo-educacional)
+- [🚀 Futuras Implementações](#-futuras-implementações)
 - [📌 Status do Projeto](#-status-do-projeto)
 
 ---
 
 ## 📖 Sobre o Projeto
 
-O EcoSpending foi criado com o objetivo de facilitar o **controle financeiro pessoal**, permitindo que qualquer pessoa tenha uma visão clara de seus gastos mensais e do dinheiro disponível após as despesas.
+O **EcoSpending** nasceu com o propósito de tornar o gerenciamento financeiro mais acessível para qualquer pessoa.
 
-Além disso, o projeto busca incentivar a **educação financeira**, oferecendo materiais educativos para quem deseja aprender mais sobre investimentos.
+A plataforma permite registrar receitas e despesas, visualizar o saldo disponível e acompanhar a situação financeira por meio de uma interface moderna e intuitiva.
+
+Além do controle financeiro, o projeto também busca promover a **educação financeira**, oferecendo materiais educativos para auxiliar os usuários a desenvolverem uma relação mais consciente com o dinheiro.
 
 ---
 
 ## 🎯 Objetivo
 
-- Ajudar usuários a organizarem seus gastos
-- Mostrar de forma clara quanto dinheiro sobra após as despesas
-- Incentivar o aprendizado sobre investimentos
-- Oferecer uma interface simples e acessível
+- 💰 Auxiliar no controle das finanças pessoais;
+- 📊 Apresentar de forma clara receitas, despesas e saldo disponível;
+- 📚 Incentivar a educação financeira através de conteúdos educativos;
+- 📱 Disponibilizar uma plataforma simples, intuitiva e acessível.
 
 ---
 
-## ⚙️ Funcionalidades
+## ✨ Funcionalidades
 
-- 💰 Cadastro do salário mensal
-- 🧾 Adição de gastos
-- 📊 Cálculo automático do valor restante
-- 📈 Visualização dos gastos
-- 📚 Acesso a eBooks sobre educação financeira e investimentos
-- 🌐 Interface web responsiva
-- 📱 Aplicativo mobile (planejado)
+- 👤 Cadastro e autenticação de usuários;
+- 💵 Cadastro de receitas;
+- 🧾 Cadastro de despesas;
+- 📊 Dashboard com resumo financeiro;
+- 📈 Cálculo automático do saldo disponível;
+- 🏷️ Organização dos gastos por categorias;
+- 📚 Área com eBooks sobre educação financeira e investimentos;
+- 🌐 Interface Web responsiva;
+- 📱 Aplicativo Mobile (em desenvolvimento).
 
 ---
 
@@ -58,32 +63,44 @@ Além disso, o projeto busca incentivar a **educação financeira**, oferecendo 
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![TypeORM](https://img.shields.io/badge/TypeORM-FE0902?style=for-the-badge&logo=typeorm&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
-![bcrypt](https://img.shields.io/badge/bcrypt-338A3E?style=for-the-badge&logo=letsencrypt&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-
-*(Novas tecnologias poderão ser adicionadas futuramente)*
 
 ---
 
 ## 📱 Plataformas
 
-- 🌐 Web
-- 📲 Aplicativo Mobile (em desenvolvimento)
+Atualmente o projeto contempla:
+
+- 🌐 Aplicação Web
+- 📲 Aplicativo Mobile *(em desenvolvimento)*
 
 ---
 
 ## 📚 Conteúdo Educacional
 
-O EcoSpending disponibilizará **eBooks** para ajudar o usuário a:
+Além das funcionalidades de gerenciamento financeiro, o EcoSpending disponibiliza materiais educativos para auxiliar os usuários a:
 
-- Aprender o básico sobre investimentos
-- Desenvolver hábitos financeiros saudáveis
-- Entender melhor como organizar seu dinheiro
-- Planejar o futuro financeiro
+- 📖 Aprender os fundamentos da educação financeira;
+- 💸 Desenvolver hábitos financeiros saudáveis;
+- 📈 Conhecer conceitos básicos sobre investimentos;
+- 🎯 Planejar objetivos financeiros de curto e longo prazo.
+
+---
+
+## 🚀 Futuras Implementações
+
+- 🔔 Notificações de vencimento de contas;
+- 📊 Gráficos avançados de desempenho financeiro;
+- 💳 Controle de cartões de crédito;
+- 🎯 Metas de economia;
+- 📥 Exportação de relatórios em PDF;
+- ☁️ Sincronização entre Web e Mobile.
 
 ---
 
 ## 📌 Status do Projeto
 
 🚧 **Em desenvolvimento**
+
+Novas funcionalidades estão sendo implementadas continuamente para tornar o **EcoSpending** uma plataforma cada vez mais completa para gestão financeira.
