@@ -80,7 +80,7 @@ app.use("/categorias", categoriaRoutes);
 app.get("/", (req, res) => {
 
     res.json({
-        message: "API EcoSpending funcionando 🚀"
+        message: "API EcoSpending funcionando"
     });
 
 });
@@ -103,12 +103,12 @@ AppDataSource.initialize()
 
 .then(() => {
 
-    console.log("✅ Banco conectado!");
+    console.log("Banco conectado!");
 
     app.listen(PORT, () => {
 
         console.log(
-            `🚀 Servidor rodando em http://localhost:${PORT}`
+            `Servidor rodando em http://localhost:${PORT}`
         );
 
     });
@@ -119,7 +119,7 @@ AppDataSource.initialize()
 .catch((error) => {
 
     console.error(
-        "❌ Erro ao conectar no banco:",
+        "Erro ao conectar no banco:",
         error
     );
 
