@@ -77,41 +77,10 @@ body {
   gap: 8px;
 }
 
-.topbar-logo .leaf {
-  width: 28px;
-  height: 28px;
-  background: var(--g600);
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.topbar-logo .leaf::after {
-  content: '💚';
-  transform: rotate(45deg);
-  font-size: 14px;
-}
-
 .topbar-right {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: var(--g600);
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
 }
 
 .topbar-date {
@@ -789,7 +758,6 @@ input[type="range"].eco-range {
   outline: none;
   cursor: pointer;
   background: linear-gradient(to right, var(--red) 0%, var(--amber) 50%, var(--g500) 100%);
-  -webkit-appearance: none;
   border: none;
   padding: 0;
   background-color: transparent;
