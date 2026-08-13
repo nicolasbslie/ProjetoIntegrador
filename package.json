@@ -26,5 +26,16 @@
     "reflect-metadata": "^0.2.2",
     "typeorm": "^1.1.0",
     "zod": "^4.4.3"
-  }
+  },
+  "name": "projetointegrador",
+  "version": "1.0.0",
+  "description": "O **EcoSpending** é uma plataforma de **controle financeiro pessoal**, desenvolvida para ajudar usuários a organizar suas finanças de maneira simples, prática e intuitiva.",
+  "main": "jest.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx ts-node-dev src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

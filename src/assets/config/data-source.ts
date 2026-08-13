@@ -1,11 +1,13 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import "dotenv/config";
+import * as dotenv from 'dotenv';
 
 import { User } from "../models/User";
 import { Categoria } from "../models/Categoria";
 import { Receita } from "../models/Receita";
 import { Gasto } from "../models/Gasto";
+
+dotenv.config();
 
 export const AppDataSource = new DataSource({
     type: "mysql",
