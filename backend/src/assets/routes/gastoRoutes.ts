@@ -4,14 +4,14 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/gastos", authMiddleware, GastoController.create);
+router.post("/", authMiddleware, GastoController.create);
 
-router.get("/gastos", authMiddleware, GastoController.findAll);
+router.get("/", authMiddleware, GastoController.findAll);
 
-router.get("/gastos/:id", authMiddleware, GastoController.findById);
+router.get("/:id", authMiddleware, GastoController.findById);
 
-router.patch("/gastos/:id", authMiddleware, GastoController.update);
+router.patch("/:id", authMiddleware, GastoController.update);
 
-router.delete("/gastos/:id", authMiddleware, GastoController.delete);
+router.delete("/:id", authMiddleware, GastoController.delete);
 
 export default router;
