@@ -28,22 +28,22 @@
     <div class="sidebar-section-label">Menu</div>
 
     <div class="nav-item active" onclick="showPage('painel')">
-      <div class="nav-icon">📊</div>
+      <div class="nav-icon"></div> <!--Icone de grafico-->
       Painel
     </div>
     <div class="nav-item" onclick="showPage('adicionar')">
-      <div class="nav-icon">➕</div>
+      <div class="nav-icon"></div> <!--Icone de +-->
       Adicionar gasto
       <span class="nav-badge" id="badge-add" style="display:none">1</span>
     </div>
     <div class="nav-item" onclick="showPage('historico')">
-      <div class="nav-icon">📋</div>
+      <div class="nav-icon"></div> <!--Icone de prancheta-->
       Histórico
     </div>
 
     <div class="sidebar-section-label" style="margin-top:8px">Educação</div>
     <div class="nav-item" onclick="window.open('ebook.html')">
-      <div class="nav-icon">📚</div>
+      <div class="nav-icon"></div> <!--Icone de livros-->
       eBook
     </div>
 
@@ -64,7 +64,7 @@
 
       <div class="page-header">
         <div>
-          <h1>Painel 🌿</h1>
+          <h1>Painel </h1> <!--Icone de planta-->
           <p>Visão geral das suas finanças conscientes</p>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -76,22 +76,22 @@
       <!-- KPIs -->
       <div class="kpi-row">
         <div class="kpi kpi-total">
-          <div class="kpi-label">💸 Gastos totais</div>
+          <div class="kpi-label">Gastos totais</div>
           <div class="kpi-value red" id="kpi-total">R$ 0</div>
           <div class="kpi-sub" id="kpi-total-sub">este mês</div>
         </div>
         <div class="kpi kpi-income">
-          <div class="kpi-label">💰 Receitas</div>
+          <div class="kpi-label">Receitas</div>
           <div class="kpi-value blue" id="kpi-income">R$ 0</div>
           <div class="kpi-sub">entradas no mês</div>
         </div>
         <div class="kpi kpi-balance">
-          <div class="kpi-label">⚖️ Saldo</div>
+          <div class="kpi-label">Saldo</div>
           <div class="kpi-value amber" id="kpi-balance">R$ 0</div>
           <div class="kpi-sub">receitas − gastos</div>
         </div>
         <div class="kpi kpi-eco">
-          <div class="kpi-label">🍃 Eco Score médio</div>
+          <div class="kpi-label">Eco Score médio</div>
           <div class="kpi-value" id="kpi-eco" style="color:var(--purple)">—</div>
           <div class="kpi-sub">consciência dos gastos</div>
         </div>
@@ -100,17 +100,18 @@
       <!-- METAS -->
       <div class="goals-row" id="goals-row">
         <div class="goal-card">
-          <div class="goal-label">🏠 Moradia <span class="goal-pct" id="gp-moradia">0%</span></div>
+          <div class="goal-label">Moradia <span class="goal-pct" id="gp-moradia">0%</span></div>
           <div class="goal-bar-bg"><div class="goal-bar-fill" id="gb-moradia" style="background:var(--blue);width:0%"></div></div>
           <div class="goal-amounts"><span id="ga-moradia">R$ 0</span><span style="color:var(--text2)">meta R$ 1.500</span></div>
         </div>
         <div class="goal-card">
-          <div class="goal-label">🍽️ Alimentação <span class="goal-pct" id="gp-alim">0%</span></div>
+          <div class="goal-label">Alimentação <span class="goal-pct" id="gp-alim">0%</span></div>
           <div class="goal-bar-bg"><div class="goal-bar-fill" id="gb-alim" style="background:var(--amber);width:0%"></div></div>
           <div class="goal-amounts"><span id="ga-alim">R$ 0</span><span style="color:var(--text2)">meta R$ 800</span></div>
         </div>
         <div class="goal-card">
-          <div class="goal-label">🎯 Lazer <span class="goal-pct" id="gp-lazer">0%</span></div>
+          
+          <div class="goal-label">Lazer <span class="goal-pct" id="gp-lazer">0%</span></div>
           <div class="goal-bar-bg"><div class="goal-bar-fill" id="gb-lazer" style="background:var(--purple);width:0%"></div></div>
           <div class="goal-amounts"><span id="ga-lazer">R$ 0</span><span style="color:var(--text2)">meta R$ 400</span></div>
         </div>
@@ -144,7 +145,6 @@
         </div>
         <div id="recent-body">
           <div class="empty-state">
-            <span class="empty-icon">🌱</span>
             <p>Nenhum lançamento ainda.<br>Comece adicionando um gasto!</p>
           </div>
         </div>
@@ -156,7 +156,7 @@
 
       <div class="page-header">
         <div>
-          <h1>Adicionar lançamento ➕</h1>
+          <h1>Adicionar lançamento</h1>
           <p>Registre um gasto ou receita com consciência ecológica</p>
         </div>
       </div>
@@ -169,8 +169,8 @@
           <!-- TIPO -->
           <p class="form-section-title">Tipo de lançamento</p>
           <div class="type-toggle">
-            <button class="type-btn selected-expense" id="type-expense" onclick="setType('expense')">💸 Gasto</button>
-            <button class="type-btn" id="type-income" onclick="setType('income')">💰 Receita</button>
+            <button class="type-btn selected-expense" id="type-expense" onclick="setType('expense')">Gasto</button>
+            <button class="type-btn" id="type-income" onclick="setType('income')">Receita</button>
           </div>
 
           <!-- VALOR -->
@@ -210,16 +210,16 @@
             </div>
             <input type="range" class="eco-range" id="f-eco" min="1" max="10" value="8" oninput="updateEcoBadge(); updatePreview()">
             <div class="eco-descriptions">
-              <span>🔴 Impulsivo</span>
-              <span>🟡 Neutro</span>
-              <span>🟢 Consciente</span>
+              <span>Impulsivo</span>
+              <span>Neutro</span>
+              <span>Consciente</span>
             </div>
           </div>
 
           <!-- SUBMIT -->
           <div style="display:flex;gap:10px;margin-top:1.5rem;">
             <button class="btn btn-primary" style="flex:1;justify-content:center;padding:13px;" onclick="submitExpense()">
-              ✅ Salvar lançamento
+              Salvar lançamento
             </button>
             <button class="btn btn-ghost" onclick="resetForm()">Limpar</button>
           </div>
@@ -248,11 +248,11 @@
             <div class="eco-meter" id="eco-meter-preview">
               <div class="eco-meter-label">Eco Score</div>
               <div class="eco-meter-bar"><div class="eco-meter-fill" id="eco-meter-fill" style="width:80%;background:var(--g500)"></div></div>
-              <div class="eco-meter-desc" id="eco-meter-desc">🌿 Gasto consciente — ótimo!</div>
+              <div class="eco-meter-desc" id="eco-meter-desc">Gasto consciente — ótimo!</div>
             </div>
 
             <div class="tip-box" id="eco-tip">
-              <strong>💡 Dica ecoSpending</strong>
+              <strong>Dica ecoSpending</strong>
               Comparar preços antes de comprar pode economizar até 30% no supermercado.
             </div>
           </div>
@@ -264,7 +264,7 @@
     <div class="page" id="page-historico">
       <div class="page-header">
         <div>
-          <h1>Histórico 📋</h1>
+          <h1>Histórico</h1>
           <p>Todos os lançamentos registrados</p>
         </div>
         <button class="btn btn-primary" onclick="showPage('adicionar')">+ Adicionar</button>
@@ -282,13 +282,12 @@
           <option value="expense">Gastos</option>
           <option value="income">Receitas</option>
         </select>
-        <input type="text" id="hist-search" placeholder="🔍 Buscar..." oninput="renderHistorico()" style="min-width:160px;">
+        <input type="text" id="hist-search" placeholder="Buscar..." oninput="renderHistorico()" style="min-width:160px;">
       </div>
 
       <div class="recent-card">
         <div id="historico-body">
           <div class="empty-state">
-            <span class="empty-icon">📭</span>
             <p>Nenhum lançamento encontrado.</p>
           </div>
         </div>
@@ -299,7 +298,7 @@
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toast">✅ Lançamento salvo!</div>
+<div class="toast" id="toast">Lançamento salvo!</div>
 <script src="../assets/js/gasto.js"></script>
 </body>
 </html>
