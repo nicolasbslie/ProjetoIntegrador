@@ -1,5 +1,4 @@
 backend
-
 - rota para pegar gastos do usuário apenas
 
 frontend
@@ -8,4 +7,4 @@ frontend
 - página do usuário (para editar as infos, deletar usuario, etc)
 - editar gastos
 - responsividade
-- routes tem que ter categoria e receita dentro de gasto
+- categorias tem que ter todos os tipos (alimentação, salário, etc.)
