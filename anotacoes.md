@@ -8,4 +8,4 @@ frontend
 - página do usuário (para editar as infos, deletar usuario, etc)
 - editar gastos
 - responsividade
-
+- routes tem que ter categoria e receita dentro de gasto
