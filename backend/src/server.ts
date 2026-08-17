@@ -27,7 +27,7 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(
     cors({
-        origin: "http://localhost:5500", // coloque a URL do seu frontend
+        origin: "http://127.0.0.1:5500", // coloque a URL do seu frontend
         credentials: true,
         methods: [
             "GET",

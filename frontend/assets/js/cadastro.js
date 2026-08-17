@@ -1,5 +1,4 @@
 async function cadastrar() {
-  limparErros();
 
   const nome = document.getElementById('nome').value.trim();
   const email = document.getElementById('email').value.trim();

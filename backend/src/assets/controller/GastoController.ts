@@ -86,6 +86,8 @@ export class GastoController {
         }
     }
 
+    // Lista apenas os gatos do usuário (pega por Payload/JWT)
+
     // Buscar gasto por ID
     static async findById(req: Request, res: Response) {
 
