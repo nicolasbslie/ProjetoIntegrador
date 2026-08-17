@@ -8,8 +8,6 @@ router.post("/", authMiddleware, GastoController.create);
 
 router.get("/", authMiddleware, GastoController.findAll);
 
-router.get("/me")
-
 router.get("/:id", authMiddleware, GastoController.findById);
 
 router.patch("/:id", authMiddleware, GastoController.update);
