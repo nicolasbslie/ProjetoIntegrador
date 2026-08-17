@@ -3,7 +3,7 @@ async function entrar() {
       const senha = document.getElementById('senha').value.trim();
 
       try {
-        const resposta = await fetch('http://localhost:3000/login', {
+        const resposta = await fetch('http://localhost:3000/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

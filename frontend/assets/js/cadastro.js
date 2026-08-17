@@ -31,7 +31,7 @@ async function cadastrar() {
   if (!valido) return;
 
   try {
-    const resposta = await fetch('http://localhost:3000/register', {
+    const resposta = await fetch('http://localhost:3000/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
