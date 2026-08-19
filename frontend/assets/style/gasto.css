@@ -1,4 +1,3 @@
-
 /* ─── RESET & TOKENS ─────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
   :root {
@@ -307,7 +306,8 @@ body {
 }
 
 .kpi-value {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
   font-size: 1.7rem;
   color: var(--text);
   line-height: 1;
