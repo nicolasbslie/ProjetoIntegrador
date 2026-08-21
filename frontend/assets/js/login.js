@@ -5,6 +5,7 @@ async function entrar() {
       try {
         const resposta = await fetch('http://localhost:3000/auth/login', {
           method: 'POST',
+          credentials: 'include', // necessário para o cookie httpOnly ser salvo
           headers: {
             'Content-Type': 'application/json'
           },
@@ -20,6 +21,11 @@ async function entrar() {
           alert(dados.message || 'Erro ao realizar login do usuário')
           return
         }
+
+        // guarda o token também no localStorage (usado como Authorization
+        // Bearer nas próximas requisições, além do cookie httpOnly)
+        localStorage.setItem('token', dados.token);
+        localStorage.setItem('usuario', JSON.stringify(dados.usuario));
 
         alert("Login realizado com sucesso! Bem vindo(a).")
 
