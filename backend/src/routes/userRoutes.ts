@@ -6,6 +6,8 @@ const router = Router();
 
 router.get("/", authMiddleware, UserController.findAll);
 
+router.get("/me", authMiddleware, UserController.findMe);
+
 router.get("/:id", authMiddleware, UserController.findById);
 
 router.patch("/:id", authMiddleware, UserController.update);
