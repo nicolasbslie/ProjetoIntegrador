@@ -13,7 +13,10 @@ export class ReceitaController {
 
         try {
 
-            const { usuario_id, valor, descricao } = req.body;
+            const { valor, descricao } = req.body;
+
+            // usuario logado (vem do token, via authMiddleware)
+            const usuario_id = (req as any).user.id;
 
             const usuario = await userRepository.findOne({
                 where: { id: usuario_id }
@@ -62,6 +65,32 @@ export class ReceitaController {
         } catch (error) {
             return res.status(500).json({
                 message: "Erro ao listar receitas.",
+                error
+            });
+        }
+    }
+
+    // Listar apenas as receitas do usuário logado (pega o id pelo token/JWT)
+    static async findMine(req: Request, res: Response) {
+
+        try {
+
+            const usuario_id = (req as any).user.id;
+
+            const receitas = await receitaRepository.find({
+                where: {
+                    usuario: { id: usuario_id }
+                },
+                order: {
+                    data_receita: "DESC"
+                }
+            });
+
+            return res.status(200).json(receitas);
+
+        } catch (error) {
+            return res.status(500).json({
+                message: "Erro ao listar suas receitas.",
                 error
             });
         }
