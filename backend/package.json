@@ -22,7 +22,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.23.3",
+    "mysql2": "^3.23.4",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^1.1.0",
     "zod": "^4.4.3"
@@ -33,7 +33,10 @@
   "main": "jest.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx ts-node-dev src/server.ts"
+    "dev": "npx ts-node-dev src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed": "npx ts-node src/seed.ts"
   },
   "keywords": [],
   "author": "",
