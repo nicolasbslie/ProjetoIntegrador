@@ -36,6 +36,18 @@ export class Gasto {
   })
   descricao: string;
 
+  @Column({
+    length: 255,
+    nullable: true,
+  })
+  observacao: string;
+
+  @Column({
+    type: "int",
+    nullable: true,
+  })
+  eco_score: number;
+
   @CreateDateColumn({
     name: "data_gasto",
   })
