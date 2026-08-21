@@ -8,6 +8,8 @@ router.post("/", authMiddleware, ReceitaController.create);
 
 router.get("/", authMiddleware, ReceitaController.findAll);
 
+router.get("/me", authMiddleware, ReceitaController.findMine);
+
 router.get("/:id", authMiddleware, ReceitaController.findById);
 
 router.patch("/:id", authMiddleware, ReceitaController.update);
