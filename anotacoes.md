@@ -7,4 +7,4 @@ frontend
 - página do usuário (para editar as infos, deletar usuario, etc)
 - editar gastos
 - responsividade
-- categorias tem que ter todos os tipos (alimentação, salário, etc.)
+- categorias tem que ter todos os tipos (alimentação, salário, etc.
