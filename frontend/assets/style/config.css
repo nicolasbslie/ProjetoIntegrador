@@ -1,0 +1,195 @@
+:root {
+  --green-dark: #0f3d1e;
+  --green-main: #1fa463;
+  --green-light: #7ed957;
+  --red: #d32f2f;
+  --bg: #f2f5f3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(90deg, var(--green-main), var(--green-light));
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.btn-voltar {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-voltar:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.config-wrap {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 32px;
+}
+
+.card h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1b3a1b;
+  margin-bottom: 20px;
+}
+
+.card-danger {
+  border: 1px solid #f3c1c1;
+}
+
+.card-danger h2 {
+  color: var(--red);
+}
+
+.section-sub {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 16px;
+}
+
+/* ===== INPUTS ===== */
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 13px;
+  color: #444;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  border-color: var(--green-dark);
+}
+
+/* ===== FEEDBACK ===== */
+.feedback {
+  display: none;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.feedback.erro {
+  display: block;
+  background: #fdecea;
+  color: var(--red);
+}
+
+.feedback.sucesso {
+  display: block;
+  background: #e6f6ea;
+  color: #1e7e34;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: #43a047;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #388e3c;
+}
+
+.btn-danger {
+  background-color: var(--red);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #b71c1c;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #43a047;
+  border: 2px solid #43a047;
+}
+
+.btn-outline:hover {
+  background-color: #f1f8f1;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 24px 16px;
+  }
+}
