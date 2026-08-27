@@ -31,6 +31,40 @@ export class UserController {
     }
 
 
+    // Retorna os dados do usuário logado (pega o id pelo token/JWT)
+    static async findMe(req: Request, res: Response) {
+
+        try {
+
+            const id = (req as any).user.id;
+
+            const user = await userRepository.findOne({
+                where: { id },
+                select: {
+                    id: true,
+                    nome: true,
+                    email: true,
+                    criado_em: true
+                }
+            });
+
+            if (!user) {
+                return res.status(404).json({
+                    message: "Usuário não encontrado."
+                });
+            }
+
+            return res.status(200).json(user);
+
+        } catch (error) {
+            return res.status(500).json({
+                message: "Erro ao buscar usuário.",
+                error
+            });
+        }
+    }
+
+
     // Buscar usuário pelo ID
     static async findById(req: Request, res: Response) {
 
@@ -79,6 +113,15 @@ export class UserController {
         try {
 
             const id = Number(req.params.id);
+
+            const usuarioLogadoId = (req as any).user.id;
+            const usuarioLogadoRole = (req as any).user.role;
+
+            if (id !== usuarioLogadoId && usuarioLogadoRole !== "admin") {
+                return res.status(403).json({
+                    message: "Você só pode editar os seus próprios dados."
+                });
+            }
 
 
             const user = await userRepository.findOne({
@@ -165,6 +208,15 @@ export class UserController {
 
 
             const id = Number(req.params.id);
+
+            const usuarioLogadoId = (req as any).user.id;
+            const usuarioLogadoRole = (req as any).user.role;
+
+            if (id !== usuarioLogadoId && usuarioLogadoRole !== "admin") {
+                return res.status(403).json({
+                    message: "Você só pode excluir a sua própria conta."
+                });
+            }
 
 
 

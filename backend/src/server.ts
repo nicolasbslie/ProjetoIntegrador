@@ -5,15 +5,15 @@ import express, { Application } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-import { AppDataSource } from "./assets/config/data-source";
+import { AppDataSource } from "./config/data-source";
 
-import authRoutes from "./assets/routes/authRoutes";
-import userRoutes from "./assets/routes/userRoutes";
-import receitaRoutes from "./assets/routes/receitaRoutes";
-import gastoRoutes from "./assets/routes/gastoRoutes";
-import categoriaRoutes from "./assets/routes/categoriaRoutes";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
+import receitaRoutes from "./routes/receitaRoutes";
+import gastoRoutes from "./routes/gastoRoutes";
+import categoriaRoutes from "./routes/categoriaRoutes";
 
-import { errorHandler } from "./assets/middlewares/errorHandler";
+import { errorHandler } from "./middlewares/errorHandler";
 
 
 const app: Application = express();

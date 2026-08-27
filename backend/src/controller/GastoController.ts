@@ -16,11 +16,15 @@ export class GastoController {
         try {
 
             const {
-                usuario_id,
                 categoria_id,
                 valor,
-                descricao
+                descricao,
+                observacao,
+                eco_score
             } = req.body;
+
+            // usuario logado (vem do token, via authMiddleware)
+            const usuario_id = (req as any).user.id;
 
             const usuario = await userRepository.findOne({
                 where: { id: usuario_id }
@@ -46,7 +50,9 @@ export class GastoController {
                 usuario,
                 categoria,
                 valor,
-                descricao
+                descricao,
+                observacao,
+                eco_score
             });
 
             await gastoRepository.save(gasto);
@@ -86,7 +92,34 @@ export class GastoController {
         }
     }
 
-    // Lista apenas os gatos do usuário (pega por Payload/JWT)
+    // Lista apenas os gastos do usuário logado (pega o id pelo token/JWT)
+    static async findMine(req: Request, res: Response) {
+
+        try {
+
+            const usuario_id = (req as any).user.id;
+
+            const gastos = await gastoRepository.find({
+                where: {
+                    usuario: { id: usuario_id }
+                },
+                relations: {
+                    categoria: true
+                },
+                order: {
+                    data_gasto: "DESC"
+                }
+            });
+
+            return res.status(200).json(gastos);
+
+        } catch (error) {
+            return res.status(500).json({
+                message: "Erro ao listar seus gastos.",
+                error
+            });
+        }
+    }
 
     // Buscar gasto por ID
     static async findById(req: Request, res: Response) {
@@ -142,7 +175,9 @@ export class GastoController {
             const {
                 valor,
                 descricao,
-                categoria_id
+                categoria_id,
+                observacao,
+                eco_score
             } = req.body;
 
             if (valor !== undefined) {
@@ -151,6 +186,14 @@ export class GastoController {
 
             if (descricao !== undefined) {
                 gasto.descricao = descricao;
+            }
+
+            if (observacao !== undefined) {
+                gasto.observacao = observacao;
+            }
+
+            if (eco_score !== undefined) {
+                gasto.eco_score = eco_score;
             }
 
             if (categoria_id) {

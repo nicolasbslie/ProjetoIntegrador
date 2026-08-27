@@ -1,6 +1,40 @@
 
+/* ─── API / AUTENTICAÇÃO ─────────────────────────────── */
+const API_URL = 'http://localhost:3000';
+
+function getToken() {
+  return localStorage.getItem('token');
+}
+
+function checkAuth() {
+  if (!getToken()) {
+    window.location.href = 'login.html';
+  }
+}
+
+// Wrapper de fetch: já manda o token (cookie + Bearer) e trata 401
+async function apiFetch(path, options = {}) {
+  const resposta = await fetch(API_URL + path, {
+    credentials: 'include',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getToken(),
+      ...(options.headers || {})
+    }
+  });
+
+  if (resposta.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    window.location.href = 'login.html';
+    return null;
+  }
+
+  return resposta;
+}
+
 /* ─── DATA ───────────────────────────────────────────── */
-const STORAGE_KEY = 'ecospending_entries';
 
 const CATEGORIES = [
   { id:'moradia',     icon:'🏠', name:'Moradia',     color:'#2196A3', bg:'#E0F4F6' },
@@ -31,15 +65,68 @@ let currentType = 'expense';
 let selectedCat = 'alimentacao';
 let currentMonth = '';
 
-function loadEntries() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    entries = raw ? JSON.parse(raw) : [];
-  } catch(e) { entries = []; }
+// Categorias que existem de verdade no banco (id numérico do backend).
+// Ligamos cada categoria local (moradia, alimentacao...) à categoria
+// do banco comparando o nome — por isso é importante rodar
+// "npm run seed" no backend, que cria as categorias com esses mesmos nomes.
+async function loadCategories() {
+  const resposta = await apiFetch('/categorias');
+  if (!resposta) return;
+
+  const categoriasBackend = await resposta.json();
+
+  CATEGORIES.forEach(c => {
+    const encontrada = categoriasBackend.find(
+      bc => bc.nome.toLowerCase() === c.name.toLowerCase()
+    );
+    c.backendId = encontrada ? encontrada.id : null;
+  });
 }
 
-function saveEntries() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+function categoriaLocalPorBackendId(id) {
+  return CATEGORIES.find(c => c.backendId === id);
+}
+
+// Busca os gastos e receitas do usuário logado na API e monta
+// o array "entries" no mesmo formato que o resto do app já espera.
+async function loadEntries() {
+  const [respGastos, respReceitas] = await Promise.all([
+    apiFetch('/gastos/me'),
+    apiFetch('/receitas/me')
+  ]);
+
+  if (!respGastos || !respReceitas) return;
+
+  const gastos = await respGastos.json();
+  const receitas = await respReceitas.json();
+
+  const gastosMapeados = gastos.map(g => {
+    const cat = categoriaLocalPorBackendId(g.categoria?.id);
+    return {
+      id: 'gasto:' + g.id,
+      type: 'expense',
+      value: parseFloat(g.valor),
+      desc: g.descricao || '',
+      date: (g.data_gasto || '').slice(0, 10),
+      cat: cat ? cat.id : 'outros',
+      obs: g.observacao || '',
+      eco: g.eco_score ?? null
+    };
+  });
+
+  const receitasMapeadas = receitas.map(r => ({
+    id: 'receita:' + r.id,
+    type: 'income',
+    value: parseFloat(r.valor),
+    desc: r.descricao || '',
+    date: (r.data_receita || '').slice(0, 10),
+    cat: 'salario',
+    obs: '',
+    eco: null
+  }));
+
+  entries = [...gastosMapeados, ...receitasMapeadas]
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 /* ─── NAVIGATION ─────────────────────────────────────── */
@@ -143,7 +230,7 @@ function updateEcoTip() {
   document.getElementById('eco-tip').innerHTML = `<strong>💡 Dica ecoSpending</strong>${tips[selectedCat] || ECO_TIPS[0]}`;
 }
 
-function submitExpense() {
+async function submitExpense() {
   const val = parseFloat(document.getElementById('f-value').value);
   if(!val || val <= 0) { showToast('⚠️ Informe um valor válido', true); return; }
   const desc = document.getElementById('f-desc').value.trim();
@@ -151,21 +238,48 @@ function submitExpense() {
   const dateVal = document.getElementById('f-date').value;
   if(!dateVal) { showToast('⚠️ Informe a data', true); return; }
 
-  const entry = {
-    id: Date.now(),
-    type: currentType,
-    value: val,
-    desc,
-    date: dateVal,
-    cat: selectedCat,
-    obs: document.getElementById('f-obs').value.trim(),
-    eco: currentType === 'expense' ? parseInt(document.getElementById('f-eco').value) : null,
-  };
+  const obs = document.getElementById('f-obs').value.trim();
+  const eco = parseInt(document.getElementById('f-eco').value);
 
-  entries.unshift(entry);
-  saveEntries();
+  let resposta;
+
+  if (currentType === 'expense') {
+    const cat = CATEGORIES.find(c => c.id === selectedCat);
+    if (!cat || !cat.backendId) {
+      showToast('⚠️ Categoria não cadastrada no backend (rode "npm run seed")', true);
+      return;
+    }
+    resposta = await apiFetch('/gastos', {
+      method: 'POST',
+      body: JSON.stringify({
+        categoria_id: cat.backendId,
+        valor: val,
+        descricao: desc,
+        observacao: obs,
+        eco_score: eco
+      })
+    });
+  } else {
+    resposta = await apiFetch('/receitas', {
+      method: 'POST',
+      body: JSON.stringify({
+        valor: val,
+        descricao: desc
+      })
+    });
+  }
+
+  if (!resposta) return;
+
+  if (!resposta.ok) {
+    const dados = await resposta.json().catch(() => ({}));
+    showToast('⚠️ ' + (dados.message || 'Erro ao salvar lançamento'), true);
+    return;
+  }
+
   showToast('✅ Lançamento salvo!');
   resetForm();
+  await loadEntries();
   buildMonthTabs();
   renderPainel();
 }
@@ -180,9 +294,17 @@ function resetForm() {
   updatePreview();
 }
 
-function deleteEntry(id) {
-  entries = entries.filter(e => e.id !== id);
-  saveEntries();
+async function deleteEntry(id) {
+  const [tipo, backendId] = String(id).split(':');
+  const rota = tipo === 'gasto' ? '/gastos/' : '/receitas/';
+
+  const resposta = await apiFetch(rota + backendId, { method: 'DELETE' });
+  if (!resposta || !resposta.ok) {
+    showToast('⚠️ Erro ao remover lançamento', true);
+    return;
+  }
+
+  await loadEntries();
   renderPainel();
   renderHistorico();
   buildMonthTabs();
@@ -367,7 +489,7 @@ function entryRow(e) {
       <td style="text-align:right;white-space:nowrap" class="${e.type==='income'?'amount-green':'amount-red'}">
         ${e.type==='income'?'+':'−'} R$ ${e.value.toFixed(2).replace('.',',')}
       </td>
-      <td><button class="del-btn" onclick="deleteEntry(${e.id})" title="Remover">✕</button></td>
+      <td><button class="del-btn" onclick="deleteEntry('${e.id}')" title="Remover">✕</button></td>
     </tr>
   `;
 }
@@ -461,9 +583,19 @@ function showToast(msg, warn=false) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
+/* ─── LOGOUT ─────────────────────────────────────────── */
+async function logout() {
+  await apiFetch('/auth/logout', { method: 'POST' });
+  localStorage.removeItem('token');
+  localStorage.removeItem('usuario');
+  window.location.href = 'login.html';
+}
+
 /* ─── INIT ───────────────────────────────────────────── */
-function init() {
-  loadEntries();
+async function init() {
+  checkAuth();
+
+  await loadCategories();
   buildCatGrid();
   document.getElementById('f-date').value = todayStr();
   updateEcoBadge();
@@ -474,30 +606,7 @@ function init() {
   document.getElementById('topbar-date').textContent =
     new Date().toLocaleDateString('pt-BR', {weekday:'short', day:'2-digit', month:'short'});
 
-  buildMonthTabs();
-  renderPainel();
-
-  // seed demo data if empty
-  if(entries.length === 0) seedDemo();
-}
-
-function seedDemo() {
-  const today = todayStr();
-  const ym = today.slice(0,7);
-  const demos = [
-    { type:'income', value:4500, desc:'Salário maio', date:ym+'-01', cat:'salario', obs:'', eco:null },
-    { type:'expense', value:1200, desc:'Aluguel', date:ym+'-02', cat:'moradia', obs:'', eco:9 },
-    { type:'expense', value:380, desc:'Supermercado', date:ym+'-05', cat:'alimentacao', obs:'compra mensal planejada', eco:8 },
-    { type:'expense', value:120, desc:'Uber', date:ym+'-07', cat:'transporte', obs:'', eco:4 },
-    { type:'expense', value:200, desc:'Academia', date:ym+'-10', cat:'saude', obs:'', eco:9 },
-    { type:'expense', value:89, desc:'Netflix + Spotify', date:ym+'-12', cat:'lazer', obs:'assinaturas', eco:6 },
-    { type:'expense', value:300, desc:'Curso de investimentos', date:ym+'-15', cat:'educacao', obs:'ecoSpending', eco:10 },
-    { type:'income', value:500, desc:'Freela design', date:ym+'-18', cat:'salario', obs:'', eco:null },
-    { type:'expense', value:65, desc:'Farmácia', date:ym+'-20', cat:'saude', obs:'', eco:8 },
-    { type:'expense', value:150, desc:'Jantar aniversário', date:ym+'-22', cat:'lazer', obs:'', eco:5 },
-  ].map((e,i) => ({...e, id: Date.now() + i}));
-  entries = demos;
-  saveEntries();
+  await loadEntries();
   buildMonthTabs();
   renderPainel();
 }
