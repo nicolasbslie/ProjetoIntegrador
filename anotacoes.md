@@ -1,0 +1,3 @@
+frontend
+- ícones
+- responsividade
