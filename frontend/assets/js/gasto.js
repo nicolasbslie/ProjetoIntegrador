@@ -1,4 +1,3 @@
-
 /* ─── API / AUTENTICAÇÃO ─────────────────────────────── */
 const API_URL = 'http://localhost:3000';
 
@@ -65,10 +64,6 @@ let currentType = 'expense';
 let selectedCat = 'alimentacao';
 let currentMonth = '';
 
-// Categorias que existem de verdade no banco (id numérico do backend).
-// Ligamos cada categoria local (moradia, alimentacao...) à categoria
-// do banco comparando o nome — por isso é importante rodar
-// "npm run seed" no backend, que cria as categorias com esses mesmos nomes.
 async function loadCategories() {
   const resposta = await apiFetch('/categorias');
   if (!resposta) return;
@@ -87,8 +82,6 @@ function categoriaLocalPorBackendId(id) {
   return CATEGORIES.find(c => c.backendId === id);
 }
 
-// Busca os gastos e receitas do usuário logado na API e monta
-// o array "entries" no mesmo formato que o resto do app já espera.
 async function loadEntries() {
   const [respGastos, respReceitas] = await Promise.all([
     apiFetch('/gastos/me'),
@@ -102,6 +95,7 @@ async function loadEntries() {
 
   const gastosMapeados = gastos.map(g => {
     const cat = categoriaLocalPorBackendId(g.categoria?.id);
+
     return {
       id: 'gasto:' + g.id,
       type: 'expense',
@@ -130,24 +124,40 @@ async function loadEntries() {
 }
 
 /* ─── NAVIGATION ─────────────────────────────────────── */
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
   document.getElementById('page-' + id).classList.add('active');
+
   const navItems = document.querySelectorAll('.nav-item');
+
   navItems.forEach(n => {
-    if(n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) n.classList.add('active');
+    if (
+      n.getAttribute('onclick') &&
+      n.getAttribute('onclick').includes("'" + id + "'")
+    ) {
+      n.classList.add('active');
+    }
   });
+
   if(id === 'painel') renderPainel();
   if(id === 'historico') renderHistorico();
 }
 
 /* ─── FORM SETUP ─────────────────────────────────────── */
+
 function buildCatGrid() {
   const grid = document.getElementById('cat-grid');
+
   grid.innerHTML = CATEGORIES.map(c => `
-    <button class="cat-btn ${c.id === selectedCat ? 'selected' : ''}" id="cat-${c.id}"
-      onclick="selectCat('${c.id}')" style="${c.id === selectedCat ? `border-color:${c.color};background:${c.bg};` : ''}">
+    <button 
+      class="cat-btn ${c.id === selectedCat ? 'selected' : ''}" 
+      id="cat-${c.id}"
+      onclick="selectCat('${c.id}')" 
+      style="${c.id === selectedCat ? `border-color:${c.color};background:${c.bg};` : ''}"
+    >
       <span class="cat-btn-icon">${c.icon}</span>
       <span>${c.name}</span>
     </button>
@@ -156,40 +166,65 @@ function buildCatGrid() {
 
 function selectCat(id) {
   selectedCat = id;
+
   document.querySelectorAll('.cat-btn').forEach(b => {
     b.classList.remove('selected');
     b.style.borderColor = '';
     b.style.background = '';
   });
+
   const c = CATEGORIES.find(x => x.id === id);
   const btn = document.getElementById('cat-' + id);
+
   btn.classList.add('selected');
   btn.style.borderColor = c.color;
   btn.style.background = c.bg;
+
   updatePreview();
   updateEcoTip();
 }
 
 function setType(type) {
   currentType = type;
-  document.getElementById('type-expense').className = 'type-btn' + (type === 'expense' ? ' selected-expense' : '');
-  document.getElementById('type-income').className = 'type-btn' + (type === 'income' ? ' selected-income' : '');
+
+  document.getElementById('type-expense').className =
+    'type-btn' + (type === 'expense' ? ' selected-expense' : '');
+
+  document.getElementById('type-income').className =
+    'type-btn' + (type === 'income' ? ' selected-income' : '');
+
   const ecoSection = document.getElementById('eco-section');
   const ecoWrap = document.getElementById('eco-wrap');
+
   ecoSection.style.display = type === 'income' ? 'none' : '';
   ecoWrap.style.display = type === 'income' ? 'none' : '';
-  document.getElementById('prev-type').textContent = type === 'expense' ? 'Gasto' : 'Receita';
-  document.getElementById('prev-total').className = 'val' + (type === 'income' ? ' income' : '');
+
+  document.getElementById('prev-type').textContent =
+    type === 'expense' ? 'Gasto' : 'Receita';
+
+  document.getElementById('prev-total').className =
+    'val' + (type === 'income' ? ' income' : '');
+
   updatePreview();
 }
 
 function updateEcoBadge() {
   const val = parseInt(document.getElementById('f-eco').value);
   const badge = document.getElementById('eco-badge');
+
   badge.textContent = val + ' / 10';
-  if(val >= 7) { badge.style.background = 'var(--g100)'; badge.style.color = 'var(--g700)'; }
-  else if(val >= 4) { badge.style.background = '#FFF8E1'; badge.style.color = 'var(--amber-d)'; }
-  else { badge.style.background = 'var(--red-l)'; badge.style.color = 'var(--red)'; }
+
+  if(val >= 7) {
+    badge.style.background = 'var(--g100)';
+    badge.style.color = 'var(--g700)';
+  } else if(val >= 4) {
+    badge.style.background = '#FFF8E1';
+    badge.style.color = 'var(--amber-d)';
+  } else {
+    badge.style.background = 'var(--red-l)';
+    badge.style.color = 'var(--red)';
+  }
+
   updatePreview();
 }
 
@@ -198,20 +233,62 @@ function updatePreview() {
   const desc = document.getElementById('f-desc').value || '—';
   const dateRaw = document.getElementById('f-date').value;
   const eco = parseInt(document.getElementById('f-eco').value) || 8;
+
   const cat = CATEGORIES.find(c => c.id === selectedCat);
 
-  document.getElementById('prev-date').textContent = dateRaw ? new Date(dateRaw + 'T12:00').toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'}) : '—';
-  document.getElementById('prev-cat').textContent = cat ? cat.icon + ' ' + cat.name : '—';
+  document.getElementById('prev-date').textContent =
+    dateRaw
+      ? new Date(dateRaw + 'T12:00').toLocaleDateString(
+          'pt-BR',
+          {
+            day:'2-digit',
+            month:'long',
+            year:'numeric'
+          }
+        )
+      : '—';
+
+  document.getElementById('prev-cat').innerHTML =
+    cat ? cat.icon + ' ' + cat.name : '—';
+
   document.getElementById('prev-desc').textContent = desc;
-  document.getElementById('prev-total').textContent = 'R$ ' + val.toFixed(2).replace('.',',');
+
+  document.getElementById('prev-total').textContent =
+    'R$ ' + val.toFixed(2).replace('.',',');
 
   const pct = (eco / 10) * 100;
   const fill = document.getElementById('eco-meter-fill');
+
   fill.style.width = pct + '%';
-  fill.style.background = eco >= 7 ? 'var(--g500)' : eco >= 4 ? 'var(--amber)' : 'var(--red)';
-  const descs = ['','🔴 Gasto impulsivo — refletir!','🔴 Gasto sem planejamento','🔴 Pouco consciente','🟡 Abaixo do ideal','🟡 Gasto neutro','🟡 Razoável','🟢 Bom — gasto planejado','🟢 Gasto consciente — ótimo!','🌿 Excelente escolha!','🌿 Gasto 100% consciente!'];
-  document.getElementById('eco-meter-desc').textContent = descs[eco] || '—';
-  if(currentType === 'income') document.getElementById('eco-meter-desc').textContent = '💰 Receita — não avaliada';
+
+  fill.style.background =
+    eco >= 7
+      ? 'var(--g500)'
+      : eco >= 4
+      ? 'var(--amber)'
+      : 'var(--red)';
+
+  const descs = [
+    '',
+    '<i class="fa-solid fa-circle"></i> Gasto impulsivo — refletir!',
+    '<i class="fa-solid fa-circle"></i> Gasto sem planejamento',
+    '<i class="fa-solid fa-circle"></i> Pouco consciente',
+    '<i class="fa-solid fa-circle"></i> Abaixo do ideal',
+    '<i class="fa-solid fa-circle"></i> Gasto neutro',
+    '<i class="fa-solid fa-circle"></i> Razoável',
+    '<i class="fa-solid fa-circle"></i> Bom — gasto planejado',
+    '<i class="fa-solid fa-circle"></i> Gasto consciente — ótimo!',
+    '<i class="fa-solid fa-leaf"></i> Excelente escolha!',
+    '<i class="fa-solid fa-leaf"></i> Gasto 100% consciente!'
+  ];
+
+  document.getElementById('eco-meter-desc').innerHTML =
+    descs[eco] || '—';
+
+  if(currentType === 'income') {
+    document.getElementById('eco-meter-desc').innerHTML =
+      '<i class="fa-solid fa-money-bill-wave"></i> Receita — não avaliada';
+  }
 }
 
 function updateEcoTip() {
@@ -227,16 +304,41 @@ function updateEcoTip() {
     salario: 'Separe pelo menos 10% do salário para investimentos assim que receber.',
     outros: ECO_TIPS[Math.floor(Math.random() * ECO_TIPS.length)],
   };
-  document.getElementById('eco-tip').innerHTML = `<strong>💡 Dica ecoSpending</strong>${tips[selectedCat] || ECO_TIPS[0]}`;
+
+  document.getElementById('eco-tip').innerHTML =
+    `<strong><i class="fa-solid fa-lightbulb"></i> Dica ecoSpending</strong>${tips[selectedCat] || ECO_TIPS[0]}`;
 }
 
 async function submitExpense() {
   const val = parseFloat(document.getElementById('f-value').value);
-  if(!val || val <= 0) { showToast('⚠️ Informe um valor válido', true); return; }
+
+  if(!val || val <= 0) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Informe um valor válido',
+      true
+    );
+    return;
+  }
+
   const desc = document.getElementById('f-desc').value.trim();
-  if(!desc) { showToast('⚠️ Informe uma descrição', true); return; }
+
+  if(!desc) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Informe uma descrição',
+      true
+    );
+    return;
+  }
+
   const dateVal = document.getElementById('f-date').value;
-  if(!dateVal) { showToast('⚠️ Informe a data', true); return; }
+
+  if(!dateVal) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Informe a data',
+      true
+    );
+    return;
+  }
 
   const obs = document.getElementById('f-obs').value.trim();
   const eco = parseInt(document.getElementById('f-eco').value);
@@ -245,10 +347,15 @@ async function submitExpense() {
 
   if (currentType === 'expense') {
     const cat = CATEGORIES.find(c => c.id === selectedCat);
+
     if (!cat || !cat.backendId) {
-      showToast('⚠️ Categoria não cadastrada no backend (rode "npm run seed")', true);
+      showToast(
+        '<i class="fa-solid fa-triangle-exclamation"></i> Categoria não cadastrada no backend (rode "npm run seed")',
+        true
+      );
       return;
     }
+
     resposta = await apiFetch('/gastos', {
       method: 'POST',
       body: JSON.stringify({
@@ -259,7 +366,9 @@ async function submitExpense() {
         eco_score: eco
       })
     });
+
   } else {
+
     resposta = await apiFetch('/receitas', {
       method: 'POST',
       body: JSON.stringify({
@@ -273,11 +382,20 @@ async function submitExpense() {
 
   if (!resposta.ok) {
     const dados = await resposta.json().catch(() => ({}));
-    showToast('⚠️ ' + (dados.message || 'Erro ao salvar lançamento'), true);
+
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> ' +
+      (dados.message || 'Erro ao salvar lançamento'),
+      true
+    );
+
     return;
   }
 
-  showToast('✅ Lançamento salvo!');
+  showToast(
+    '<i class="fa-solid fa-circle-check"></i> Lançamento salvo!'
+  );
+
   resetForm();
   await loadEntries();
   buildMonthTabs();
@@ -290,50 +408,103 @@ function resetForm() {
   document.getElementById('f-date').value = todayStr();
   document.getElementById('f-obs').value = '';
   document.getElementById('f-eco').value = 8;
+
   updateEcoBadge();
   updatePreview();
 }
 
 async function deleteEntry(id) {
   const [tipo, backendId] = String(id).split(':');
-  const rota = tipo === 'gasto' ? '/gastos/' : '/receitas/';
 
-  const resposta = await apiFetch(rota + backendId, { method: 'DELETE' });
+  const rota =
+    tipo === 'gasto'
+      ? '/gastos/'
+      : '/receitas/';
+
+  const resposta = await apiFetch(
+    rota + backendId,
+    { method: 'DELETE' }
+  );
+
   if (!resposta || !resposta.ok) {
-    showToast('⚠️ Erro ao remover lançamento', true);
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Erro ao remover lançamento',
+      true
+    );
     return;
   }
 
   await loadEntries();
+
   renderPainel();
   renderHistorico();
   buildMonthTabs();
-  showToast('🗑️ Removido');
+
+  showToast(
+    '<i class="fa-solid fa-trash"></i> Removido'
+  );
 }
 
 /* ─── PAINEL ─────────────────────────────────────────── */
+
 function getMonthEntries(ym) {
   if(!ym) return entries;
-  return entries.filter(e => e.date && e.date.startsWith(ym));
+
+  return entries.filter(
+    e => e.date && e.date.startsWith(ym)
+  );
 }
 
 function renderPainel() {
   const filtered = getMonthEntries(currentMonth);
-  const expenses = filtered.filter(e => e.type === 'expense');
-  const incomes  = filtered.filter(e => e.type === 'income');
 
-  const totalExp = expenses.reduce((s, e) => s + e.value, 0);
-  const totalInc = incomes.reduce((s, e) => s + e.value, 0);
-  const balance  = totalInc - totalExp;
-  const ecoArr   = expenses.filter(e => e.eco != null).map(e => e.eco);
-  const ecoAvg   = ecoArr.length ? (ecoArr.reduce((a,b)=>a+b,0)/ecoArr.length).toFixed(1) : '—';
+  const expenses =
+    filtered.filter(e => e.type === 'expense');
 
-  document.getElementById('kpi-total').textContent   = 'R$ ' + totalExp.toFixed(2).replace('.',',');
-  document.getElementById('kpi-income').textContent  = 'R$ ' + totalInc.toFixed(2).replace('.',',');
-  document.getElementById('kpi-balance').textContent = (balance < 0 ? '−R$ ' : 'R$ ') + Math.abs(balance).toFixed(2).replace('.',',');
-  document.getElementById('kpi-balance').className   = 'kpi-value ' + (balance >= 0 ? 'green' : 'red');
-  document.getElementById('kpi-eco').textContent     = ecoAvg + (ecoAvg !== '—' ? '/10' : '');
-  document.getElementById('sidebar-eco-score').textContent = ecoAvg !== '—' ? ecoAvg : '—';
+  const incomes =
+    filtered.filter(e => e.type === 'income');
+
+  const totalExp =
+    expenses.reduce((s, e) => s + e.value, 0);
+
+  const totalInc =
+    incomes.reduce((s, e) => s + e.value, 0);
+
+  const balance =
+    totalInc - totalExp;
+
+  const ecoArr =
+    expenses
+      .filter(e => e.eco != null)
+      .map(e => e.eco);
+
+  const ecoAvg =
+    ecoArr.length
+      ? (
+          ecoArr.reduce((a,b) => a+b,0) /
+          ecoArr.length
+        ).toFixed(1)
+      : '—';
+
+  document.getElementById('kpi-total').textContent =
+    'R$ ' + totalExp.toFixed(2).replace('.',',');
+
+  document.getElementById('kpi-income').textContent =
+    'R$ ' + totalInc.toFixed(2).replace('.',',');
+
+  document.getElementById('kpi-balance').textContent =
+    (balance < 0 ? '−R$ ' : 'R$ ') +
+    Math.abs(balance).toFixed(2).replace('.',',');
+
+  document.getElementById('kpi-balance').className =
+    'kpi-value ' +
+    (balance >= 0 ? 'green' : 'red');
+
+  document.getElementById('kpi-eco').textContent =
+    ecoAvg + (ecoAvg !== '—' ? '/10' : '');
+
+  document.getElementById('sidebar-eco-score').textContent =
+    ecoAvg !== '—' ? ecoAvg : '—';
 
   renderGoals(expenses);
   renderBarChart(filtered);
@@ -342,310 +513,788 @@ function renderPainel() {
 }
 
 function renderGoals(expenses) {
-  const goals = { moradia: 1500, alimentacao: 800, lazer: 400 };
+  const goals = {
+    moradia: 1500,
+    alimentacao: 800,
+    lazer: 400
+  };
+
   const totals = {};
-  expenses.forEach(e => { totals[e.cat] = (totals[e.cat] || 0) + e.value; });
+
+  expenses.forEach(e => {
+    totals[e.cat] =
+      (totals[e.cat] || 0) + e.value;
+  });
 
   Object.entries(goals).forEach(([cat, goal]) => {
     const spent = totals[cat] || 0;
-    const pct   = Math.min(100, Math.round((spent / goal) * 100));
-    const over  = pct >= 100;
-    document.getElementById('gp-' + (cat === 'alimentacao' ? 'alim' : cat)).textContent = pct + '%';
-    const bar = document.getElementById('gb-' + (cat === 'alimentacao' ? 'alim' : cat));
+
+    const pct =
+      Math.min(
+        100,
+        Math.round((spent / goal) * 100)
+      );
+
+    const over = pct >= 100;
+
+    document.getElementById(
+      'gp-' +
+      (cat === 'alimentacao' ? 'alim' : cat)
+    ).textContent = pct + '%';
+
+    const bar =
+      document.getElementById(
+        'gb-' +
+        (cat === 'alimentacao' ? 'alim' : cat)
+      );
+
     bar.style.width = pct + '%';
-    bar.style.background = over ? 'var(--red)' : pct > 75 ? 'var(--amber)' : '';
-    document.getElementById('ga-' + (cat === 'alimentacao' ? 'alim' : cat)).textContent = 'R$ ' + spent.toFixed(2).replace('.',',');
+
+    bar.style.background =
+      over
+        ? 'var(--red)'
+        : pct > 75
+        ? 'var(--amber)'
+        : '';
+
+    document.getElementById(
+      'ga-' +
+      (cat === 'alimentacao' ? 'alim' : cat)
+    ).textContent =
+      'R$ ' +
+      spent.toFixed(2).replace('.',',');
   });
 }
 
 function renderBarChart(filtered) {
-  const ym = currentMonth || new Date().toISOString().slice(0,7);
-  const [y, m] = ym.split('-').map(Number);
-  const days = new Date(y, m, 0).getDate();
+  const ym =
+    currentMonth ||
+    new Date().toISOString().slice(0,7);
+
+  const [y, m] =
+    ym.split('-').map(Number);
+
+  const days =
+    new Date(y, m, 0).getDate();
+
   const byDay = {};
-  filtered.filter(e => e.type === 'expense').forEach(e => {
-    const d = parseInt(e.date.split('-')[2]);
-    byDay[d] = (byDay[d] || 0) + e.value;
-  });
-  const vals = Array.from({length: days}, (_, i) => byDay[i+1] || 0);
-  const max  = Math.max(...vals, 1);
 
-  const container = document.getElementById('bar-chart');
-  container.innerHTML = vals.map((v, i) => {
-    const h = Math.round((v / max) * 140);
-    const active = v > 0;
-    return `
-      <div class="bar-group" title="Dia ${i+1}: R$ ${v.toFixed(2)}">
-        ${active ? `<div class="bar-val" style="font-size:9px">R$${Math.round(v)}</div>` : ''}
-        <div class="bar" style="height:${h}px;opacity:${active?1:0.25}"></div>
-        <div class="bar-label">${i+1}</div>
-      </div>
-    `;
-  }).join('');
+  filtered
+    .filter(e => e.type === 'expense')
+    .forEach(e => {
+      const d =
+        parseInt(e.date.split('-')[2]);
 
-  const mNames = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  document.getElementById('chart-month-label').textContent = mNames[m-1] + '/' + y;
+      byDay[d] =
+        (byDay[d] || 0) + e.value;
+    });
+
+  const vals =
+    Array.from(
+      {length: days},
+      (_, i) => byDay[i+1] || 0
+    );
+
+  const max =
+    Math.max(...vals, 1);
+
+  const container =
+    document.getElementById('bar-chart');
+
+  container.innerHTML =
+    vals.map((v, i) => {
+      const h =
+        Math.round((v / max) * 140);
+
+      const active = v > 0;
+
+      return `
+        <div class="bar-group" title="Dia ${i+1}: R$ ${v.toFixed(2)}">
+          ${active ? `<div class="bar-val" style="font-size:9px">R$${Math.round(v)}</div>` : ''}
+          <div class="bar" style="height:${h}px;opacity:${active ? 1 : 0.25}"></div>
+          <div class="bar-label">${i+1}</div>
+        </div>
+      `;
+    }).join('');
+
+  const mNames = [
+    'Jan','Fev','Mar','Abr',
+    'Mai','Jun','Jul','Ago',
+    'Set','Out','Nov','Dez'
+  ];
+
+  document.getElementById(
+    'chart-month-label'
+  ).textContent =
+    mNames[m-1] + '/' + y;
 }
 
 function renderDonut(expenses) {
   const bycat = {};
-  expenses.forEach(e => { bycat[e.cat] = (bycat[e.cat] || 0) + e.value; });
-  const total = Object.values(bycat).reduce((a,b)=>a+b, 0);
-  const svg   = document.getElementById('donut-svg');
-  const legend= document.getElementById('donut-legend');
-  const CX=80, CY=80, R=64, r=44;
 
-  document.getElementById('donut-center-val').textContent = total > 0 ? 'R$' + Math.round(total) : '0';
+  expenses.forEach(e => {
+    bycat[e.cat] =
+      (bycat[e.cat] || 0) + e.value;
+  });
 
-  // remove old arcs
-  svg.querySelectorAll('.arc').forEach(e=>e.remove());
+  const total =
+    Object.values(bycat)
+      .reduce((a,b) => a+b, 0);
+
+  const svg =
+    document.getElementById('donut-svg');
+
+  const legend =
+    document.getElementById('donut-legend');
+
+  const CX = 80;
+  const CY = 80;
+  const R = 64;
+  const r = 44;
+
+  document.getElementById(
+    'donut-center-val'
+  ).textContent =
+    total > 0
+      ? 'R$' + Math.round(total)
+      : '0';
+
+  svg
+    .querySelectorAll('.arc')
+    .forEach(e => e.remove());
 
   if(total === 0) {
-    legend.innerHTML = '<div class="empty-state" style="padding:.5rem"><p style="font-size:12px">Sem gastos ainda</p></div>';
+    legend.innerHTML =
+      '<div class="empty-state" style="padding:.5rem"><p style="font-size:12px">Sem gastos ainda</p></div>';
     return;
   }
 
-  const sorted = Object.entries(bycat).sort((a,b)=>b[1]-a[1]);
-  const colors = ['#40916C','#2196A3','#E9C46A','#E63946','#7B5EA7','#6D4C41','#1565C0','#616161','#C77D11','#52B788'];
+  const sorted =
+    Object.entries(bycat)
+      .sort((a,b) => b[1] - a[1]);
 
-  let angle = -Math.PI/2;
+  const colors = [
+    '#40916C',
+    '#2196A3',
+    '#E9C46A',
+    '#E63946',
+    '#7B5EA7',
+    '#6D4C41',
+    '#1565C0',
+    '#616161',
+    '#C77D11',
+    '#52B788'
+  ];
+
+  let angle = -Math.PI / 2;
+
   sorted.forEach(([catId, val], i) => {
-    const frac   = val / total;
-    const sweep  = frac * 2 * Math.PI;
-    const x1 = CX + R * Math.cos(angle);
-    const y1 = CY + R * Math.sin(angle);
-    const x2 = CX + R * Math.cos(angle + sweep);
-    const y2 = CY + R * Math.sin(angle + sweep);
-    const large = sweep > Math.PI ? 1 : 0;
-    const xi1 = CX + r * Math.cos(angle);
-    const yi1 = CY + r * Math.sin(angle);
-    const xi2 = CX + r * Math.cos(angle + sweep);
-    const yi2 = CY + r * Math.sin(angle + sweep);
-    const d = `M${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`;
-    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const frac = val / total;
+    const sweep = frac * 2 * Math.PI;
+
+    const x1 =
+      CX + R * Math.cos(angle);
+
+    const y1 =
+      CY + R * Math.sin(angle);
+
+    const x2 =
+      CX + R * Math.cos(angle + sweep);
+
+    const y2 =
+      CY + R * Math.sin(angle + sweep);
+
+    const large =
+      sweep > Math.PI ? 1 : 0;
+
+    const xi1 =
+      CX + r * Math.cos(angle);
+
+    const yi1 =
+      CY + r * Math.sin(angle);
+
+    const xi2 =
+      CX + r * Math.cos(angle + sweep);
+
+    const yi2 =
+      CY + r * Math.sin(angle + sweep);
+
+    const d =
+      `M${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`;
+
+    const path =
+      document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'path'
+      );
+
     path.setAttribute('d', d);
-    path.setAttribute('fill', colors[i % colors.length]);
+
+    path.setAttribute(
+      'fill',
+      colors[i % colors.length]
+    );
+
     path.setAttribute('class','arc');
-    path.setAttribute('opacity','0.9');
-    svg.insertBefore(path, svg.firstChild);
+
+    path.setAttribute(
+      'opacity',
+      '0.9'
+    );
+
+    svg.insertBefore(
+      path,
+      svg.firstChild
+    );
+
     angle += sweep;
   });
 
-  legend.innerHTML = sorted.slice(0,5).map(([catId, val], i) => {
-    const cat = CATEGORIES.find(c => c.id === catId);
-    const pct = Math.round((val/total)*100);
-    return `
-      <div class="legend-item">
-        <div class="legend-dot" style="background:${colors[i % colors.length]}"></div>
-        <span class="legend-name">${cat ? cat.icon + ' ' + cat.name : catId}</span>
-        <span class="legend-val">R$${val.toFixed(0)}</span>
-        <span class="legend-pct">${pct}%</span>
-      </div>
-    `;
-  }).join('');
+  legend.innerHTML =
+    sorted
+      .slice(0,5)
+      .map(([catId, val], i) => {
+        const cat =
+          CATEGORIES.find(
+            c => c.id === catId
+          );
+
+        const pct =
+          Math.round(
+            (val / total) * 100
+          );
+
+        return `
+          <div class="legend-item">
+            <div class="legend-dot" style="background:${colors[i % colors.length]}"></div>
+            <span class="legend-name">${cat ? cat.icon + ' ' + cat.name : catId}</span>
+            <span class="legend-val">R$${val.toFixed(0)}</span>
+            <span class="legend-pct">${pct}%</span>
+          </div>
+        `;
+      })
+      .join('');
 }
 
 function renderRecent(list) {
-  const el = document.getElementById('recent-body');
+  const el =
+    document.getElementById('recent-body');
+
   if(!list.length) {
-    el.innerHTML = '<div class="empty-state"><span class="empty-icon">🌱</span><p>Nenhum lançamento ainda.<br>Comece adicionando um gasto!</p></div>';
+    el.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">
+          <i class="fa-solid fa-seedling"></i>
+        </span>
+        <p>
+          Nenhum lançamento ainda.
+          <br>
+          Comece adicionando um gasto!
+        </p>
+      </div>
+    `;
+
     return;
   }
+
   el.innerHTML = `
     <table class="expenses-table">
-      <thead><tr>
-        <th>Descrição</th>
-        <th>Categoria</th>
-        <th>Data</th>
-        <th>Eco</th>
-        <th style="text-align:right">Valor</th>
-        <th></th>
-      </tr></thead>
-      <tbody>${list.map(e => entryRow(e)).join('')}</tbody>
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th>Eco</th>
+          <th style="text-align:right">Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${list.map(e => entryRow(e)).join('')}
+      </tbody>
     </table>
   `;
 }
 
 function entryRow(e) {
-  const cat = CATEGORIES.find(c => c.id === e.cat) || { icon:'📦', name: e.cat, color:'#616161', bg:'#F5F5F5' };
-  const dateStr = e.date ? new Date(e.date + 'T12:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '—';
-  const ecoChip = e.eco != null
-    ? `<span class="eco-chip ${e.eco>=7?'chip-high':e.eco>=4?'chip-med':'chip-low'}">${e.eco>=7?'🌿':e.eco>=4?'🟡':'🔴'} ${e.eco}/10</span>`
-    : '<span style="color:var(--text3);font-size:11px">—</span>';
+  const cat =
+    CATEGORIES.find(c => c.id === e.cat) ||
+    {
+      icon:'<i class="fa-solid fa-box"></i>',
+      name: e.cat,
+      color:'#616161',
+      bg:'#F5F5F5'
+    };
+
+  const dateStr =
+    e.date
+      ? new Date(
+          e.date + 'T12:00'
+        ).toLocaleDateString(
+          'pt-BR',
+          {
+            day:'2-digit',
+            month:'2-digit',
+            year:'2-digit'
+          }
+        )
+      : '—';
+
+  const ecoChip =
+    e.eco != null
+      ? `
+        <span class="eco-chip ${
+          e.eco >= 7
+            ? 'chip-high'
+            : e.eco >= 4
+            ? 'chip-med'
+            : 'chip-low'
+        }">
+          ${
+            e.eco >= 7
+              ? '<i class="fa-solid fa-leaf"></i>'
+              : e.eco >= 4
+              ? '<i class="fa-solid fa-circle"></i>'
+              : '<i class="fa-solid fa-circle"></i>'
+          }
+          ${e.eco}/10
+        </span>
+      `
+      : `
+        <span style="color:var(--text3);font-size:11px">
+          —
+        </span>
+      `;
+
   return `
     <tr>
       <td>
         <div class="expense-name-cell">
-          <div class="cat-icon" style="background:${cat.bg}">${cat.icon}</div>
-          <div>
-            <div class="expense-title">${e.desc}</div>
-            ${e.obs ? `<div class="expense-note">${e.obs}</div>` : ''}
+
+          <div 
+            class="cat-icon" 
+            style="background:${cat.bg}"
+          >
+            ${cat.icon}
           </div>
+
+          <div>
+            <div class="expense-title">
+              ${e.desc}
+            </div>
+
+            ${
+              e.obs
+                ? `<div class="expense-note">${e.obs}</div>`
+                : ''
+            }
+          </div>
+
         </div>
       </td>
-      <td><span class="cat-badge" style="background:${cat.bg};color:${cat.color}">${cat.name}</span></td>
-      <td style="white-space:nowrap">${dateStr}</td>
-      <td>${ecoChip}</td>
-      <td style="text-align:right;white-space:nowrap" class="${e.type==='income'?'amount-green':'amount-red'}">
-        ${e.type==='income'?'+':'−'} R$ ${e.value.toFixed(2).replace('.',',')}
+
+      <td>
+        <span 
+          class="cat-badge" 
+          style="background:${cat.bg};color:${cat.color}"
+        >
+          ${cat.name}
+        </span>
       </td>
-      <td><button class="del-btn" onclick="deleteEntry('${e.id}')" title="Remover">✕</button></td>
+
+      <td style="white-space:nowrap">
+        ${dateStr}
+      </td>
+
+      <td>
+        ${ecoChip}
+      </td>
+
+      <td 
+        style="text-align:right;white-space:nowrap" 
+        class="${
+          e.type === 'income'
+            ? 'amount-green'
+            : 'amount-red'
+        }"
+      >
+        ${e.type === 'income' ? '+' : '−'}
+        R$ ${e.value.toFixed(2).replace('.',',')}
+      </td>
+
+      <td>
+        <button 
+          class="del-btn" 
+          onclick="deleteEntry('${e.id}')" 
+          title="Remover"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </td>
     </tr>
   `;
 }
 
 /* ─── HISTORICO ──────────────────────────────────────── */
+
 function renderHistorico() {
-  const monthSel  = document.getElementById('hist-month').value;
-  const catSel    = document.getElementById('hist-cat').value;
-  const typeSel   = document.getElementById('hist-type').value;
-  const search    = document.getElementById('hist-search').value.toLowerCase();
+  const monthSel =
+    document.getElementById('hist-month').value;
 
-  let list = entries.filter(e => {
-    const inMonth  = !monthSel || (e.date && e.date.startsWith(monthSel));
-    const inCat    = !catSel || e.cat === catSel;
-    const inType   = !typeSel || e.type === typeSel;
-    const inSearch = !search || e.desc.toLowerCase().includes(search) || (e.obs && e.obs.toLowerCase().includes(search));
-    return inMonth && inCat && inType && inSearch;
-  });
+  const catSel =
+    document.getElementById('hist-cat').value;
 
-  const el = document.getElementById('historico-body');
+  const typeSel =
+    document.getElementById('hist-type').value;
+
+  const search =
+    document
+      .getElementById('hist-search')
+      .value
+      .toLowerCase();
+
+  let list =
+    entries.filter(e => {
+      const inMonth =
+        !monthSel ||
+        (
+          e.date &&
+          e.date.startsWith(monthSel)
+        );
+
+      const inCat =
+        !catSel ||
+        e.cat === catSel;
+
+      const inType =
+        !typeSel ||
+        e.type === typeSel;
+
+      const inSearch =
+        !search ||
+        e.desc.toLowerCase().includes(search) ||
+        (
+          e.obs &&
+          e.obs.toLowerCase().includes(search)
+        );
+
+      return (
+        inMonth &&
+        inCat &&
+        inType &&
+        inSearch
+      );
+    });
+
+  const el =
+    document.getElementById('historico-body');
+
   if(!list.length) {
-    el.innerHTML = '<div class="empty-state"><span class="empty-icon">📭</span><p>Nenhum lançamento encontrado.</p></div>';
+    el.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-icon">
+          <i class="fa-solid fa-envelope-open"></i>
+        </span>
+
+        <p>
+          Nenhum lançamento encontrado.
+        </p>
+      </div>
+    `;
+
     return;
   }
+
   el.innerHTML = `
     <table class="expenses-table">
-      <thead><tr>
-        <th>Descrição</th>
-        <th>Categoria</th>
-        <th>Data</th>
-        <th>Eco</th>
-        <th style="text-align:right">Valor</th>
-        <th></th>
-      </tr></thead>
-      <tbody>${list.map(e => entryRow(e)).join('')}</tbody>
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th>Eco</th>
+          <th style="text-align:right">Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${list.map(e => entryRow(e)).join('')}
+      </tbody>
     </table>
   `;
 }
 
 function populateHistFilters() {
-  const months = [...new Set(entries.map(e => e.date ? e.date.slice(0,7) : '').filter(Boolean))].sort().reverse();
-  const mSel = document.getElementById('hist-month');
-  const cur  = mSel.value;
-  mSel.innerHTML = '<option value="">Todos os meses</option>' + months.map(m => {
-    const [y,mo] = m.split('-');
-    const mNames = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-    return `<option value="${m}" ${m===cur?'selected':''}>${mNames[parseInt(mo)-1]}/${y}</option>`;
-  }).join('');
+  const months =
+    [
+      ...new Set(
+        entries
+          .map(
+            e => e.date
+              ? e.date.slice(0,7)
+              : ''
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort()
+    .reverse();
 
-  const catSel = document.getElementById('hist-cat');
-  const curCat = catSel.value;
-  const usedCats = [...new Set(entries.map(e => e.cat))];
-  catSel.innerHTML = '<option value="">Todas as categorias</option>' + CATEGORIES.filter(c=>usedCats.includes(c.id)).map(c =>
-    `<option value="${c.id}" ${c.id===curCat?'selected':''}>${c.icon} ${c.name}</option>`
-  ).join('');
+  const mSel =
+    document.getElementById('hist-month');
+
+  const cur =
+    mSel.value;
+
+  mSel.innerHTML =
+    '<option value="">Todos os meses</option>' +
+    months.map(m => {
+      const [y,mo] =
+        m.split('-');
+
+      const mNames = [
+        'Jan','Fev','Mar','Abr',
+        'Mai','Jun','Jul','Ago',
+        'Set','Out','Nov','Dez'
+      ];
+
+      return `
+        <option 
+          value="${m}" 
+          ${m === cur ? 'selected' : ''}
+        >
+          ${mNames[parseInt(mo)-1]}/${y}
+        </option>
+      `;
+    }).join('');
+
+  const catSel =
+    document.getElementById('hist-cat');
+
+  const curCat =
+    catSel.value;
+
+  const usedCats =
+    [
+      ...new Set(
+        entries.map(e => e.cat)
+      )
+    ];
+
+  catSel.innerHTML =
+    '<option value="">Todas as categorias</option>' +
+    CATEGORIES
+      .filter(
+        c => usedCats.includes(c.id)
+      )
+      .map(c =>
+        `<option value="${c.id}" ${c.id === curCat ? 'selected' : ''}>
+          ${c.name}
+        </option>`
+      )
+      .join('');
 }
 
 /* ─── MONTH TABS ─────────────────────────────────────── */
+
 function buildMonthTabs() {
-  const months = [...new Set(entries.map(e => e.date ? e.date.slice(0,7) : '').filter(Boolean))].sort().reverse();
-  const now = new Date().toISOString().slice(0,7);
-  if(!months.includes(now)) months.unshift(now);
+  const months =
+    [
+      ...new Set(
+        entries
+          .map(
+            e =>
+              e.date
+                ? e.date.slice(0,7)
+                : ''
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort()
+    .reverse();
 
-  const mNames = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  if(!currentMonth) currentMonth = now;
+  const now =
+    new Date()
+      .toISOString()
+      .slice(0,7);
 
-  document.getElementById('month-tabs').innerHTML = months.slice(0,6).map(m => {
-    const [y,mo] = m.split('-');
-    return `<button class="month-tab ${m===currentMonth?'active':''}" onclick="setMonth('${m}')">${mNames[parseInt(mo)-1]}/${y}</button>`;
-  }).join('');
+  if(!months.includes(now)) {
+    months.unshift(now);
+  }
+
+  const mNames = [
+    'Jan','Fev','Mar','Abr',
+    'Mai','Jun','Jul','Ago',
+    'Set','Out','Nov','Dez'
+  ];
+
+  if(!currentMonth) {
+    currentMonth = now;
+  }
+
+  document.getElementById(
+    'month-tabs'
+  ).innerHTML =
+    months
+      .slice(0,6)
+      .map(m => {
+        const [y,mo] =
+          m.split('-');
+
+        return `
+          <button 
+            class="month-tab ${
+              m === currentMonth
+                ? 'active'
+                : ''
+            }"
+            onclick="setMonth('${m}')"
+          >
+            ${mNames[parseInt(mo)-1]}/${y}
+          </button>
+        `;
+      })
+      .join('');
 
   populateHistFilters();
 }
 
 function setMonth(ym) {
   currentMonth = ym;
+
   buildMonthTabs();
   renderPainel();
 }
 
 /* ─── UTILS ──────────────────────────────────────────── */
+
 function todayStr() {
-  return new Date().toISOString().slice(0,10);
+  return new Date()
+    .toISOString()
+    .slice(0,10);
 }
 
 function showToast(msg, warn=false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = warn ? 'var(--amber-d)' : 'var(--g700)';
+  const t =
+    document.getElementById('toast');
+
+  t.innerHTML = msg;
+
+  t.style.background =
+    warn
+      ? 'var(--amber-d)'
+      : 'var(--g700)';
+
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+
+  setTimeout(
+    () => t.classList.remove('show'),
+    2500
+  );
 }
 
 /* ─── LOGOUT ─────────────────────────────────────────── */
+
 async function logout() {
-  await apiFetch('/auth/logout', { method: 'POST' });
+  await apiFetch(
+    '/auth/logout',
+    { method: 'POST' }
+  );
+
   localStorage.removeItem('token');
   localStorage.removeItem('usuario');
-  window.location.href = 'login.html';
+
+  window.location.href =
+    'login.html';
 }
 
 /* ─── INIT ───────────────────────────────────────────── */
+
 async function init() {
   checkAuth();
 
   await loadCategories();
+
   buildCatGrid();
-  document.getElementById('f-date').value = todayStr();
+
+  document.getElementById(
+    'f-date'
+  ).value = todayStr();
+
   updateEcoBadge();
   updatePreview();
   updateEcoTip();
 
-  // topbar date
-  document.getElementById('topbar-date').textContent =
-    new Date().toLocaleDateString('pt-BR', {weekday:'short', day:'2-digit', month:'short'});
+  document.getElementById(
+    'topbar-date'
+  ).textContent =
+    new Date()
+      .toLocaleDateString(
+        'pt-BR',
+        {
+          weekday:'short',
+          day:'2-digit',
+          month:'short'
+        }
+      );
 
   await loadEntries();
+
   buildMonthTabs();
   renderPainel();
 }
 
 window.onload = init;
 
-// MENU HAMBÚRGUER
-const hamburger = document.getElementById("hamburger");
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("menu-overlay");
+/* ─── MENU HAMBÚRGUER ────────────────────────────────── */
 
-// Abrir / fechar menu
+const hamburger =
+  document.getElementById("hamburger");
+
+const sidebar =
+  document.getElementById("sidebar");
+
+const overlay =
+  document.getElementById("menu-overlay");
+
 hamburger.addEventListener("click", () => {
-    sidebar.classList.toggle("mobile-open");
-    overlay.classList.toggle("show");
-    hamburger.classList.toggle("active");
+  sidebar.classList.toggle("mobile-open");
+  overlay.classList.toggle("show");
+  hamburger.classList.toggle("active");
 
-    const aberto = sidebar.classList.contains("mobile-open");
-    hamburger.setAttribute("aria-expanded", aberto);
+  const aberto =
+    sidebar.classList.contains("mobile-open");
+
+  hamburger.setAttribute(
+    "aria-expanded",
+    aberto
+  );
 });
 
-// Fechar clicando fora do menu
 overlay.addEventListener("click", () => {
-    fecharMenu();
+  fecharMenu();
 });
 
-// Fechar menu
 function fecharMenu() {
-    sidebar.classList.remove("mobile-open");
-    overlay.classList.remove("show");
-    hamburger.classList.remove("active");
-    hamburger.setAttribute("aria-expanded", "false");
+  sidebar.classList.remove("mobile-open");
+  overlay.classList.remove("show");
+  hamburger.classList.remove("active");
+
+  hamburger.setAttribute(
+    "aria-expanded",
+    "false"
+  );
 }
 
-// Fechar menu ao escolher uma opção
-document.querySelectorAll(".sidebar .nav-item").forEach(item => {
+document
+  .querySelectorAll(".sidebar .nav-item")
+  .forEach(item => {
     item.addEventListener("click", () => {
-        if (window.innerWidth <= 900) {
-            fecharMenu();
-        }
+      if (window.innerWidth <= 900) {
+        fecharMenu();
+      }
     });
-});
+  });
