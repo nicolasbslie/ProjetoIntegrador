@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoSpending - Redefinir senha</title>
+  <link rel="stylesheet" href="../style/login.css">
+</head>
+<body>
+
+  <header>
+    <h1>EcoSpending</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Redefinir senha</h2>
+
+      <p class="texto-info">Escolha uma nova senha para acessar sua conta.</p>
+
+      <div class="input-group">
+        <input type="password" placeholder="Nova senha" id="senha" />
+      </div>
+
+      <div class="input-group">
+        <input type="password" placeholder="Confirmar nova senha" id="confirmar-senha" />
+      </div>
+
+      <button class="btn btn-primary" id="btn-redefinir" onclick="redefinirSenha()">Redefinir senha</button>
+
+      <button class="btn btn-secondary" onclick="window.location.href='login.html'">Voltar para o login</button>
+    </div>
+  </main>
+<script src="../js/redefinir-senha.js"></script>
+</body>
+</html>
