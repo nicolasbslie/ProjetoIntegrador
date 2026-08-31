@@ -158,9 +158,13 @@ export class GastoController {
         try {
 
             const id = Number(req.params.id);
+            const usuario_id = (req as any).user.id;
 
             const gasto = await gastoRepository.findOne({
-                where: { id },
+                where: {
+                    id,
+                    usuario: { id: usuario_id }
+                },
                 relations: {
                     categoria: true
                 }
@@ -232,9 +236,13 @@ export class GastoController {
         try {
 
             const id = Number(req.params.id);
+            const usuario_id = (req as any).user.id;
 
             const gasto = await gastoRepository.findOne({
-                where: { id }
+                where: {
+                    id,
+                    usuario: { id: usuario_id }
+                }
             });
 
             if (!gasto) {
