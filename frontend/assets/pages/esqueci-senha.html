@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoSpending - Esqueci minha senha</title>
+  <link rel="stylesheet" href="../style/login.css">
+</head>
+<body>
+
+  <header>
+    <h1>EcoSpending</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Esqueci minha senha</h2>
+
+      <p class="texto-info">
+        Informe o email cadastrado na sua conta. Se ele existir na nossa base,
+        enviaremos um link para você criar uma nova senha.
+      </p>
+
+      <div class="input-group">
+        <input type="text" placeholder="Seu email" id="email" />
+      </div>
+
+      <button class="btn btn-primary" id="btn-enviar" onclick="enviarLink()">Enviar link de redefinição</button>
+
+      <button class="btn btn-secondary" onclick="window.location.href='login.html'">Voltar para o login</button>
+    </div>
+  </main>
+<script src="../js/esqueci-senha.js"></script>
+</body>
+</html>
