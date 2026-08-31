@@ -63,6 +63,7 @@ let entries = [];
 let currentType = 'expense';
 let selectedCat = 'alimentacao';
 let currentMonth = '';
+let editingEntryId = null;
 
 async function loadCategories() {
   const resposta = await apiFetch('/categorias');
@@ -411,6 +412,195 @@ function resetForm() {
 
   updateEcoBadge();
   updatePreview();
+}
+
+
+/* ─── EDIÇÃO DE LANÇAMENTOS ─────────────────────────── */
+
+function openEditModal(id) {
+  const entry = entries.find(e => e.id === id);
+
+  if (!entry) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Lançamento não encontrado',
+      true
+    );
+    return;
+  }
+
+  editingEntryId = id;
+
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-type').value =
+    entry.type === 'income' ? 'Receita' : 'Gasto';
+
+  document.getElementById('edit-value').value = entry.value;
+  document.getElementById('edit-desc').value = entry.desc || '';
+  document.getElementById('edit-obs').value = entry.obs || '';
+  document.getElementById('edit-eco').value = entry.eco ?? 8;
+
+  const categorySelect = document.getElementById('edit-category');
+  categorySelect.innerHTML = CATEGORIES
+    .filter(c => c.id !== 'salario')
+    .map(c => `
+      <option value="${c.id}" ${c.id === entry.cat ? 'selected' : ''}>
+        ${c.name}
+      </option>
+    `)
+    .join('');
+
+  const isIncome = entry.type === 'income';
+
+  document.getElementById('edit-category-group').style.display =
+    isIncome ? 'none' : '';
+
+  document.getElementById('edit-observation-group').style.display =
+    isIncome ? 'none' : '';
+
+  document.getElementById('edit-eco-group').style.display =
+    isIncome ? 'none' : '';
+
+  updateEditEcoBadge();
+
+  const modal = document.getElementById('edit-modal');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+
+  setTimeout(() => document.getElementById('edit-value').focus(), 50);
+}
+
+function closeEditModal() {
+  const modal = document.getElementById('edit-modal');
+
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+
+  editingEntryId = null;
+  document.getElementById('edit-form').reset();
+}
+
+function updateEditEcoBadge() {
+  const eco = Number(document.getElementById('edit-eco').value);
+  const badge = document.getElementById('edit-eco-badge');
+
+  badge.textContent = `${eco} / 10`;
+
+  if (eco >= 7) {
+    badge.style.background = 'var(--g100)';
+    badge.style.color = 'var(--g700)';
+  } else if (eco >= 4) {
+    badge.style.background = '#FFF8E1';
+    badge.style.color = 'var(--amber-d)';
+  } else {
+    badge.style.background = 'var(--red-l)';
+    badge.style.color = 'var(--red)';
+  }
+}
+
+async function saveEdit(event) {
+  event.preventDefault();
+
+  const entry = entries.find(e => e.id === editingEntryId);
+
+  if (!entry) {
+    closeEditModal();
+    return;
+  }
+
+  const value = Number(document.getElementById('edit-value').value);
+  const desc = document.getElementById('edit-desc').value.trim();
+
+  if (!Number.isFinite(value) || value <= 0) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Informe um valor maior que zero',
+      true
+    );
+    return;
+  }
+
+  if (!desc) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Informe uma descrição',
+      true
+    );
+    return;
+  }
+
+  const [tipo, backendId] = String(editingEntryId).split(':');
+  const saveButton = document.getElementById('edit-save-btn');
+
+  saveButton.disabled = true;
+  saveButton.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+
+  let body;
+
+  if (tipo === 'gasto') {
+    const catId = document.getElementById('edit-category').value;
+    const cat = CATEGORIES.find(c => c.id === catId);
+
+    if (!cat?.backendId) {
+      showToast(
+        '<i class="fa-solid fa-triangle-exclamation"></i> Categoria inválida',
+        true
+      );
+      saveButton.disabled = false;
+      saveButton.innerHTML =
+        '<i class="fa-solid fa-floppy-disk"></i> Salvar alterações';
+      return;
+    }
+
+    body = {
+      valor: value,
+      descricao: desc,
+      categoria_id: cat.backendId,
+      observacao: document.getElementById('edit-obs').value.trim(),
+      eco_score: Number(document.getElementById('edit-eco').value)
+    };
+  } else {
+    body = {
+      valor: value,
+      descricao: desc
+    };
+  }
+
+  const rota =
+    tipo === 'gasto'
+      ? '/gastos/'
+      : '/receitas/';
+
+  const resposta = await apiFetch(rota + backendId, {
+    method: 'PATCH',
+    body: JSON.stringify(body)
+  });
+
+  saveButton.disabled = false;
+  saveButton.innerHTML =
+    '<i class="fa-solid fa-floppy-disk"></i> Salvar alterações';
+
+  if (!resposta || !resposta.ok) {
+    const dados = resposta
+      ? await resposta.json().catch(() => ({}))
+      : {};
+
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> ' +
+      (dados.message || 'Erro ao atualizar lançamento'),
+      true
+    );
+    return;
+  }
+
+  closeEditModal();
+
+  await loadEntries();
+  buildMonthTabs();
+  renderPainel();
+  renderHistorico();
+
+  showToast(
+    '<i class="fa-solid fa-circle-check"></i> Lançamento atualizado com sucesso!'
+  );
 }
 
 async function deleteEntry(id) {
@@ -924,13 +1114,27 @@ function entryRow(e) {
       </td>
 
       <td>
-        <button 
-          class="del-btn" 
-          onclick="deleteEntry('${e.id}')" 
-          title="Remover"
-        >
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <div class="row-actions">
+          <button
+            class="edit-btn"
+            type="button"
+            onclick="openEditModal('${e.id}')"
+            title="Editar lançamento"
+            aria-label="Editar lançamento"
+          >
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+
+          <button
+            class="del-btn"
+            type="button"
+            onclick="deleteEntry('${e.id}')"
+            title="Remover"
+            aria-label="Remover lançamento"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
       </td>
     </tr>
   `;
@@ -1210,6 +1414,21 @@ async function logout() {
   window.location.href =
     'login.html';
 }
+
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    closeEditModal();
+  }
+});
+
+document.addEventListener('click', event => {
+  const modal = document.getElementById('edit-modal');
+
+  if (event.target === modal) {
+    closeEditModal();
+  }
+});
 
 /* ─── INIT ───────────────────────────────────────────── */
 
