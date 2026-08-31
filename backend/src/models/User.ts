@@ -23,7 +23,7 @@ export class User {
     @Column({ type: 'enum', nullable: false, enum: ['admin', 'user'], default: 'user' })
     role: 'admin' | 'user'
 
-  @Column({ length: 255, nullable: true, name: "reset_password_token" })
+  @Column({type: "varchar", length: 255, nullable: true, name: "reset_password_token" })
   resetPasswordToken: string | null;
 
   @Column({ type: "datetime", nullable: true, name: "reset_password_expires" })
