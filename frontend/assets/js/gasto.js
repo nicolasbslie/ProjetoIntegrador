@@ -37,16 +37,16 @@ async function apiFetch(path, options = {}) {
 /* ─── DATA ───────────────────────────────────────────── */
 
 const CATEGORIES = [
-  { id:'moradia',     icon:'🏠', name:'Moradia',     color:'#2196A3', bg:'#E0F4F6' },
-  { id:'alimentacao', icon:'🍽️', name:'Alimentação', color:'#C77D11', bg:'#FFF8E1' },
-  { id:'transporte',  icon:'🚗', name:'Transporte',  color:'#7B5EA7', bg:'#F0EBF8' },
-  { id:'saude',       icon:'💊', name:'Saúde',       color:'#E63946', bg:'#FDECEA' },
-  { id:'lazer',       icon:'🎯', name:'Lazer',        color:'#40916C', bg:'#D8F3DC' },
-  { id:'educacao',    icon:'📚', name:'Educação',    color:'#2D6A4F', bg:'#D8F3DC' },
-  { id:'vestuario',   icon:'👕', name:'Vestuário',   color:'#6D4C41', bg:'#EFEBE9' },
-  { id:'investimento',icon:'📈', name:'Investimento',color:'#1565C0', bg:'#E3F2FD' },
-  { id:'salario',     icon:'💰', name:'Salário',     color:'#2D6A4F', bg:'#D8F3DC' },
-  { id:'outros',      icon:'📦', name:'Outros',      color:'#616161', bg:'#F5F5F5' },
+  { id:'moradia', icon:'<i class="fa-solid fa-house"></i>', name:'Moradia', color:'#2196A3', bg:'#E0F4F6' },
+  { id:'alimentacao', icon:'<i class="fa-solid fa-utensils"></i>', name:'Alimentação', color:'#C77D11', bg:'#FFF8E1' },
+  { id:'transporte', icon:'<i class="fa-solid fa-car"></i>', name:'Transporte', color:'#7B5EA7', bg:'#F0EBF8' },
+  { id:'saude', icon:'<i class="fa-solid fa-heart-pulse"></i>', name:'Saúde', color:'#E63946', bg:'#FDECEA' },
+  { id:'lazer', icon:'<i class="fa-solid fa-bullseye"></i>', name:'Lazer', color:'#40916C', bg:'#D8F3DC' },
+  { id:'educacao', icon:'<i class="fa-solid fa-book"></i>', name:'Educação', color:'#2D6A4F', bg:'#D8F3DC' },
+  { id:'vestuario', icon:'<i class="fa-solid fa-shirt"></i>', name:'Vestuário', color:'#6D4C41', bg:'#EFEBE9' },
+  { id:'investimento', icon:'<i class="fa-solid fa-chart-line"></i>', name:'Investimento', color:'#1565C0', bg:'#E3F2FD' },
+  { id:'salario', icon:'<i class="fa-solid fa-money-bill-wave"></i>', name:'Salário', color:'#2D6A4F', bg:'#D8F3DC' },
+  { id:'outros', icon:'<i class="fa-solid fa-box"></i>', name:'Outros', color:'#616161', bg:'#F5F5F5' },
 ];
 
 const ECO_TIPS = [
