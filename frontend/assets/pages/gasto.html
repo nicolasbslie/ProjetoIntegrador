@@ -328,6 +328,67 @@
   </main>
 </div>
 
+
+<!-- MODAL DE EDIÇÃO -->
+<div class="modal-overlay" id="edit-modal" aria-hidden="true">
+  <div class="edit-modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+    <div class="edit-modal-header">
+      <div>
+        <h2 id="edit-modal-title">Editar lançamento</h2>
+        <p id="edit-modal-subtitle">Atualize as informações do lançamento</p>
+      </div>
+      <button class="modal-close" type="button" onclick="closeEditModal()" aria-label="Fechar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <form id="edit-form" onsubmit="saveEdit(event)">
+      <input type="hidden" id="edit-id">
+
+      <div class="form-group">
+        <label>Tipo</label>
+        <input type="text" id="edit-type" disabled>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Valor (R$)</label>
+          <input type="number" id="edit-value" min="0.01" step="0.01" required>
+        </div>
+        <div class="form-group" id="edit-category-group">
+          <label>Categoria</label>
+          <select id="edit-category"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <input type="text" id="edit-desc" maxlength="60" required>
+      </div>
+
+      <div class="form-group" id="edit-observation-group">
+        <label>Observação <span style="color:var(--text3);font-weight:400">(opcional)</span></label>
+        <textarea id="edit-obs" placeholder="Ex: compra mensal, comparei preços..."></textarea>
+      </div>
+
+      <div class="form-group" id="edit-eco-group">
+        <div class="eco-slider-header">
+          <label>Impacto ecológico</label>
+          <span class="eco-score-badge" id="edit-eco-badge">8 / 10</span>
+        </div>
+        <input type="range" class="eco-range" id="edit-eco" min="1" max="10" value="8" oninput="updateEditEcoBadge()">
+      </div>
+
+      <div class="edit-modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeEditModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="edit-save-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar alterações
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">Lançamento salvo!</div>
 
