@@ -118,6 +118,31 @@
       background-color: #388e3c;
     }
 
+    /* ===== TEXTOS AUXILIARES ===== */
+    .texto-info {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .link-secundario {
+      text-align: right;
+      margin-top: -6px;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .link-secundario a {
+      color: var(--green-main);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link-secundario a:hover {
+      text-decoration: underline;
+    }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       main {
