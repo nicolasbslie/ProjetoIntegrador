@@ -132,9 +132,13 @@ export class ReceitaController {
         try {
 
             const id = Number(req.params.id);
+            const usuario_id = (req as any).user.id;
 
             const receita = await receitaRepository.findOne({
-                where: { id }
+                where: {
+                    id,
+                    usuario: { id: usuario_id }
+                }
             });
 
             if (!receita) {
@@ -172,9 +176,13 @@ export class ReceitaController {
         try {
 
             const id = Number(req.params.id);
+            const usuario_id = (req as any).user.id;
 
             const receita = await receitaRepository.findOne({
-                where: { id }
+                where: {
+                    id,
+                    usuario: { id: usuario_id }
+                }
             });
 
             if (!receita) {
