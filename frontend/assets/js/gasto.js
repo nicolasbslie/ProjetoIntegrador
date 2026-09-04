@@ -432,24 +432,39 @@ function openEditModal(id) {
 
   document.getElementById('edit-id').value = id;
   document.getElementById('edit-type').value =
-    entry.type === 'income' ? 'Receita' : 'Gasto';
+    entry.type === 'income' ? 'receita' : 'gasto';
 
   document.getElementById('edit-value').value = entry.value;
   document.getElementById('edit-desc').value = entry.desc || '';
   document.getElementById('edit-obs').value = entry.obs || '';
   document.getElementById('edit-eco').value = entry.eco ?? 8;
 
+  preencherCategoriasEdicao(entry.cat);
+  updateEditTypeFields();
+
+  const modal = document.getElementById('edit-modal');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+
+  setTimeout(() => document.getElementById('edit-value').focus(), 50);
+}
+
+function preencherCategoriasEdicao(selectedCat = 'outros') {
   const categorySelect = document.getElementById('edit-category');
+
   categorySelect.innerHTML = CATEGORIES
     .filter(c => c.id !== 'salario')
     .map(c => `
-      <option value="${c.id}" ${c.id === entry.cat ? 'selected' : ''}>
+      <option value="${c.id}" ${c.id === selectedCat ? 'selected' : ''}>
         ${c.name}
       </option>
     `)
     .join('');
+}
 
-  const isIncome = entry.type === 'income';
+function updateEditTypeFields() {
+  const tipo = document.getElementById('edit-type').value;
+  const isIncome = tipo === 'receita';
 
   document.getElementById('edit-category-group').style.display =
     isIncome ? 'none' : '';
@@ -460,13 +475,9 @@ function openEditModal(id) {
   document.getElementById('edit-eco-group').style.display =
     isIncome ? 'none' : '';
 
+  document.getElementById('edit-category').required = !isIncome;
+
   updateEditEcoBadge();
-
-  const modal = document.getElementById('edit-modal');
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden', 'false');
-
-  setTimeout(() => document.getElementById('edit-value').focus(), 50);
 }
 
 function closeEditModal() {
@@ -509,6 +520,10 @@ async function saveEdit(event) {
 
   const value = Number(document.getElementById('edit-value').value);
   const desc = document.getElementById('edit-desc').value.trim();
+  const novoTipo = document.getElementById('edit-type').value;
+  const tipoAtual = entry.type === 'income' ? 'receita' : 'gasto';
+  const [, backendId] = String(editingEntryId).split(':');
+  const saveButton = document.getElementById('edit-save-btn');
 
   if (!Number.isFinite(value) || value <= 0) {
     showToast(
@@ -526,81 +541,114 @@ async function saveEdit(event) {
     return;
   }
 
-  const [tipo, backendId] = String(editingEntryId).split(':');
-  const saveButton = document.getElementById('edit-save-btn');
-
   saveButton.disabled = true;
   saveButton.innerHTML =
     '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
 
-  let body;
+  let resposta;
 
-  if (tipo === 'gasto') {
-    const catId = document.getElementById('edit-category').value;
-    const cat = CATEGORIES.find(c => c.id === catId);
+  try {
+    // Quando o usuário troca Receita <-> Gasto, o backend faz a conversão
+    // dentro de uma transação e remove o registro antigo.
+    if (tipoAtual !== novoTipo) {
+      let body = {
+        novoTipo,
+        valor: value,
+        descricao: desc
+      };
 
-    if (!cat?.backendId) {
+      if (novoTipo === 'gasto') {
+        const catId = document.getElementById('edit-category').value;
+        const cat = CATEGORIES.find(c => c.id === catId);
+
+        if (!cat?.backendId) {
+          showToast(
+            '<i class="fa-solid fa-triangle-exclamation"></i> Categoria inválida',
+            true
+          );
+          return;
+        }
+
+        body = {
+          ...body,
+          categoria_id: cat.backendId,
+          observacao: document.getElementById('edit-obs').value.trim(),
+          eco_score: Number(document.getElementById('edit-eco').value)
+        };
+      }
+
+      resposta = await apiFetch(`/lancamentos/${tipoAtual}/${backendId}/tipo`, {
+        method: 'PATCH',
+        body: JSON.stringify(body)
+      });
+    } else {
+      let body = {
+        valor: value,
+        descricao: desc
+      };
+
+      if (novoTipo === 'gasto') {
+        const catId = document.getElementById('edit-category').value;
+        const cat = CATEGORIES.find(c => c.id === catId);
+
+        if (!cat?.backendId) {
+          showToast(
+            '<i class="fa-solid fa-triangle-exclamation"></i> Categoria inválida',
+            true
+          );
+          return;
+        }
+
+        body = {
+          ...body,
+          categoria_id: cat.backendId,
+          observacao: document.getElementById('edit-obs').value.trim(),
+          eco_score: Number(document.getElementById('edit-eco').value)
+        };
+      }
+
+      const rota = novoTipo === 'gasto' ? '/gastos/' : '/receitas/';
+
+      resposta = await apiFetch(rota + backendId, {
+        method: 'PATCH',
+        body: JSON.stringify(body)
+      });
+    }
+
+    if (!resposta || !resposta.ok) {
+      const dados = resposta
+        ? await resposta.json().catch(() => ({}))
+        : {};
+
       showToast(
-        '<i class="fa-solid fa-triangle-exclamation"></i> Categoria inválida',
+        '<i class="fa-solid fa-triangle-exclamation"></i> ' +
+        (dados.message || 'Erro ao atualizar lançamento'),
         true
       );
-      saveButton.disabled = false;
-      saveButton.innerHTML =
-        '<i class="fa-solid fa-floppy-disk"></i> Salvar alterações';
       return;
     }
 
-    body = {
-      valor: value,
-      descricao: desc,
-      categoria_id: cat.backendId,
-      observacao: document.getElementById('edit-obs').value.trim(),
-      eco_score: Number(document.getElementById('edit-eco').value)
-    };
-  } else {
-    body = {
-      valor: value,
-      descricao: desc
-    };
-  }
+    closeEditModal();
 
-  const rota =
-    tipo === 'gasto'
-      ? '/gastos/'
-      : '/receitas/';
-
-  const resposta = await apiFetch(rota + backendId, {
-    method: 'PATCH',
-    body: JSON.stringify(body)
-  });
-
-  saveButton.disabled = false;
-  saveButton.innerHTML =
-    '<i class="fa-solid fa-floppy-disk"></i> Salvar alterações';
-
-  if (!resposta || !resposta.ok) {
-    const dados = resposta
-      ? await resposta.json().catch(() => ({}))
-      : {};
+    await loadEntries();
+    buildMonthTabs();
+    renderPainel();
+    renderHistorico();
 
     showToast(
-      '<i class="fa-solid fa-triangle-exclamation"></i> ' +
-      (dados.message || 'Erro ao atualizar lançamento'),
+      '<i class="fa-solid fa-circle-check"></i> Lançamento atualizado com sucesso!'
+    );
+  } catch (error) {
+    console.error(error);
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Erro de conexão com o servidor',
       true
     );
-    return;
+  } finally {
+    saveButton.disabled = false;
+    saveButton.innerHTML =
+      '<i class="fa-solid fa-floppy-disk"></i> Salvar alterações';
   }
-
-  closeEditModal();
-
-  await loadEntries();
-  buildMonthTabs();
-  renderPainel();
-  renderHistorico();
-
-  showToast(
-    '<i class="fa-solid fa-circle-check"></i> Lançamento atualizado com sucesso!'
-  );
 }
 
 async function deleteEntry(id) {
