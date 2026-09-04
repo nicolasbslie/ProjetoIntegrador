@@ -12,6 +12,7 @@ import userRoutes from "./routes/userRoutes";
 import receitaRoutes from "./routes/receitaRoutes";
 import gastoRoutes from "./routes/gastoRoutes";
 import categoriaRoutes from "./routes/categoriaRoutes";
+import lancamentoRoutes from "./routes/lancamentoRoutes";
 
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -27,7 +28,7 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(
     cors({
-        origin: "http://127.0.0.1:5501", 
+        origin: "http://127.0.0.1:5502", 
         credentials: true,
         methods: [
             "GET",
@@ -70,6 +71,8 @@ app.use("/receitas", receitaRoutes);
 app.use("/gastos", gastoRoutes);
 
 app.use("/categorias", categoriaRoutes);
+
+app.use("/lancamentos", lancamentoRoutes);
 
 
 
