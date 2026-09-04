@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { LancamentoController } from "../controller/LancamentoController";
+import { LancamentoController } from "../controller/lancamentoController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = Router();
