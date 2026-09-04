@@ -346,8 +346,11 @@
       <input type="hidden" id="edit-id">
 
       <div class="form-group">
-        <label>Tipo</label>
-        <input type="text" id="edit-type" disabled>
+        <label for="edit-type">Tipo</label>
+        <select id="edit-type" onchange="updateEditTypeFields()" required>
+          <option value="gasto">Gasto</option>
+          <option value="receita">Receita</option>
+        </select>
       </div>
 
       <div class="form-row">
