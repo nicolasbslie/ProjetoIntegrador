@@ -799,3 +799,26 @@ footer strong {
   font-size: 11px;
   color: var(--text-muted);
 }
+
+/* Ícones Font Awesome no eBook */
+.topic-icon i,
+.chapter-intro-icon i,
+.overview-emoji i,
+.callout-icon i,
+.complete-checkmark i,
+.chapter-title-block h2 i,
+.chapter-level-badge i,
+.quiz-box h4 i,
+.cover-badge i,
+.level-pill i,
+.btn-voltar i,
+.sidebar > div i,
+footer i {
+  display: inline-block;
+  line-height: 1;
+}
+.topic-icon i { font-size: 20px; }
+.chapter-intro-icon i { font-size: inherit; }
+.overview-emoji i { font-size: inherit; }
+.callout-icon i { font-size: inherit; }
+.complete-checkmark i { font-size: inherit; }
