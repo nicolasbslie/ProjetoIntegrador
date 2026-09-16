@@ -35,18 +35,53 @@ async function apiFetch(path, options = {}) {
 
 /* ─── DATA ───────────────────────────────────────────── */
 
-const CATEGORIES = [
+// Categorias da aba GASTO (categorias de vida/orçamento).
+// IMPORTANTE: o nome de cada categoria precisa existir (com o mesmo texto,
+// case-insensitive) na tabela "categorias" do backend, pois o vínculo com
+// o backendId é feito por nome em loadCategories(). É esta lista que é
+// enviada como categoria_id ao salvar um gasto.
+const CATEGORIES_GASTO = [
   { id:'moradia', icon:'<i class="fa-solid fa-house"></i>', name:'Moradia', color:'#2196A3', bg:'#E0F4F6' },
   { id:'alimentacao', icon:'<i class="fa-solid fa-utensils"></i>', name:'Alimentação', color:'#C77D11', bg:'#FFF8E1' },
-  { id:'transporte', icon:'<i class="fa-solid fa-car"></i>', name:'Transporte', color:'#7B5EA7', bg:'#F0EBF8' },
-  { id:'saude', icon:'<i class="fa-solid fa-heart-pulse"></i>', name:'Saúde', color:'#E63946', bg:'#FDECEA' },
-  { id:'lazer', icon:'<i class="fa-solid fa-bullseye"></i>', name:'Lazer', color:'#40916C', bg:'#D8F3DC' },
-  { id:'educacao', icon:'<i class="fa-solid fa-book"></i>', name:'Educação', color:'#2D6A4F', bg:'#D8F3DC' },
-  { id:'vestuario', icon:'<i class="fa-solid fa-shirt"></i>', name:'Vestuário', color:'#6D4C41', bg:'#EFEBE9' },
-  { id:'investimento', icon:'<i class="fa-solid fa-chart-line"></i>', name:'Investimento', color:'#1565C0', bg:'#E3F2FD' },
-  { id:'salario', icon:'<i class="fa-solid fa-money-bill-wave"></i>', name:'Salário', color:'#2D6A4F', bg:'#D8F3DC' },
-  { id:'outros', icon:'<i class="fa-solid fa-box"></i>', name:'Outros', color:'#616161', bg:'#F5F5F5' },
+  { id:'transporte', icon:'<i class="fa-solid fa-car"></i>', name:'Transporte', color:'#455A64', bg:'#ECEFF1' },
+  { id:'saude', icon:'<i class="fa-solid fa-heart-pulse"></i>', name:'Saúde', color:'#CC092F', bg:'#FDEAEC' },
+  { id:'lazer', icon:'<i class="fa-solid fa-gamepad"></i>', name:'Lazer', color:'#7B5EA7', bg:'#F0EBF8' },
+  { id:'educacao', icon:'<i class="fa-solid fa-book"></i>', name:'Educação', color:'#1565C0', bg:'#E3F1FF' },
+  { id:'vestuario', icon:'<i class="fa-solid fa-shirt"></i>', name:'Vestuário', color:'#00897B', bg:'#E0F2F1' },
+  { id:'investimento', icon:'<i class="fa-solid fa-chart-line"></i>', name:'Investimento', color:'#2D6A4F', bg:'#D8F3DC' },
+  { id:'outro', icon:'<i class="fa-solid fa-box"></i>', name:'Outros', color:'#616161', bg:'#F5F5F5' },
 ];
+
+// Categorias da aba RECEITA = instituições/agências bancárias.
+// Mantidas exatamente como no arquivo original (não são enviadas ao
+// backend: toda receita é salva/mapeada internamente como 'salario').
+const CATEGORIES_RECEITA = [
+  { id:'bb', icon:'<i class="fa-solid fa-building-columns"></i>', name:'Banco do Brasil', color:'#B8860B', bg:'#FFF8E1' },
+  { id:'itau', icon:'<i class="fa-solid fa-landmark"></i>', name:'Itaú', color:'#EC7000', bg:'#FFF1E6' },
+  { id:'bradesco', icon:'<i class="fa-solid fa-sack-dollar"></i>', name:'Bradesco', color:'#CC092F', bg:'#FDEAEC' },
+  { id:'santander', icon:'<i class="fa-solid fa-piggy-bank"></i>', name:'Santander', color:'#D32F2F', bg:'#FFEBEE' },
+  { id:'caixa', icon:'<i class="fa-solid fa-coins"></i>', name:'Caixa', color:'#0057A8', bg:'#E3F1FF' },
+  { id:'nubank', icon:'<i class="fa-solid fa-credit-card"></i>', name:'Nubank', color:'#8A05BE', bg:'#F3E5FF' },
+  { id:'inter', icon:'<i class="fa-solid fa-mobile-screen-button"></i>', name:'Inter', color:'#FF6600', bg:'#FFF0E0' },
+  { id:'c6', icon:'<i class="fa-solid fa-qrcode"></i>', name:'C6 Bank', color:'#1A1A1A', bg:'#F0F0F0' },
+  { id:'salario', icon:'<i class="fa-solid fa-money-bill-wave"></i>', name:'Salário', color:'#2D6A4F', bg:'#D8F3DC' },
+  { id:'outro', icon:'<i class="fa-solid fa-box"></i>', name:'Outro', color:'#616161', bg:'#F5F5F5' },
+];
+
+// Lista combinada, usada apenas para "achar" uma categoria pelo id quando
+// não se sabe de antemão se ela é de gasto ou de receita (ex: montar uma
+// linha da tabela de histórico, que mistura os dois tipos).
+const ALL_CATEGORIES = [...CATEGORIES_GASTO, ...CATEGORIES_RECEITA];
+
+function findCategoryById(id) {
+  return ALL_CATEGORIES.find(c => c.id === id);
+}
+
+// Retorna a lista de categorias correspondente à aba/tipo atualmente
+// selecionado no formulário de "Adicionar lançamento".
+function getActiveCategories() {
+  return currentType === 'income' ? CATEGORIES_RECEITA : CATEGORIES_GASTO;
+}
 
 const ECO_TIPS = [
   'Planejar as compras do mês reduz despesas em até 25%.',
@@ -61,7 +96,7 @@ const ECO_TIPS = [
 
 let entries = [];
 let currentType = 'expense';
-let selectedCat = 'alimentacao';
+let selectedCat = 'moradia';
 let currentMonth = '';
 let editingEntryId = null;
 
@@ -71,7 +106,9 @@ async function loadCategories() {
 
   const categoriasBackend = await resposta.json();
 
-  CATEGORIES.forEach(c => {
+  // Só as categorias de GASTO precisam de backendId — são as únicas
+  // enviadas como categoria_id ao salvar (receita não usa categoria).
+  CATEGORIES_GASTO.forEach(c => {
     const encontrada = categoriasBackend.find(
       bc => bc.nome.toLowerCase() === c.name.toLowerCase()
     );
@@ -80,7 +117,7 @@ async function loadCategories() {
 }
 
 function categoriaLocalPorBackendId(id) {
-  return CATEGORIES.find(c => c.backendId === id);
+  return CATEGORIES_GASTO.find(c => c.backendId === id);
 }
 
 async function loadEntries() {
@@ -103,7 +140,7 @@ async function loadEntries() {
       value: parseFloat(g.valor),
       desc: g.descricao || '',
       date: (g.data_gasto || '').slice(0, 10),
-      cat: cat ? cat.id : 'outros',
+      cat: cat ? cat.id : 'outro',
       obs: g.observacao || '',
       eco: g.eco_score ?? null
     };
@@ -151,8 +188,9 @@ function showPage(id) {
 
 function buildCatGrid() {
   const grid = document.getElementById('cat-grid');
+  const cats = getActiveCategories();
 
-  grid.innerHTML = CATEGORIES.map(c => `
+  grid.innerHTML = cats.map(c => `
     <button 
       class="cat-btn ${c.id === selectedCat ? 'selected' : ''}" 
       id="cat-${c.id}"
@@ -174,7 +212,7 @@ function selectCat(id) {
     b.style.background = '';
   });
 
-  const c = CATEGORIES.find(x => x.id === id);
+  const c = getActiveCategories().find(x => x.id === id);
   const btn = document.getElementById('cat-' + id);
 
   btn.classList.add('selected');
@@ -183,6 +221,7 @@ function selectCat(id) {
 
   updatePreview();
   updateEcoTip();
+  toggleOutroHint();
 }
 
 function setType(type) {
@@ -206,7 +245,30 @@ function setType(type) {
   document.getElementById('prev-total').className =
     'val' + (type === 'income' ? ' income' : '');
 
+  // Ao trocar de aba, a categoria selecionada precisa pertencer à lista
+  // ativa (Gasto ou Receita); se não pertencer, cai na primeira da lista.
+  const activeCats = getActiveCategories();
+
+  if (!activeCats.find(c => c.id === selectedCat)) {
+    selectedCat = activeCats[0].id;
+  }
+
+  buildCatGrid();
   updatePreview();
+  toggleOutroHint();
+}
+
+// Mostra um aviso no campo Descrição quando a categoria "Outro" está
+// selecionada na aba Receita, lembrando que é obrigatório especificar a
+// instituição/agência de onde veio o dinheiro. Na aba Gasto, "Outro" usa
+// a descrição padrão (o que foi comprado), como as demais categorias.
+function toggleOutroHint() {
+  const descInput = document.getElementById('f-desc');
+  const isOutro = currentType === 'income' && selectedCat === 'outro';
+
+  descInput.placeholder = isOutro
+    ? 'Especifique a instituição/agência (obrigatório)'
+    : 'Ex: Supermercado Zona Sul';
 }
 
 function updateEcoBadge() {
@@ -235,7 +297,7 @@ function updatePreview() {
   const dateRaw = document.getElementById('f-date').value;
   const eco = parseInt(document.getElementById('f-eco').value) || 8;
 
-  const cat = CATEGORIES.find(c => c.id === selectedCat);
+  const cat = getActiveCategories().find(c => c.id === selectedCat);
 
   document.getElementById('prev-date').textContent =
     dateRaw
@@ -293,21 +355,18 @@ function updatePreview() {
 }
 
 function updateEcoTip() {
-  const tips = {
-    alimentacao: 'Planejar o cardápio semanal reduz desperdício e economiza até 30% nas compras.',
-    moradia: 'Revise seus contratos de serviços como internet e energia — há espaço para negociar.',
-    transporte: 'Combinar transporte público com bicicleta pode economizar mais de R$400/mês.',
-    lazer: 'Lazer em casa ou ao ar livre pode ser tão satisfatório e muito mais barato.',
-    saude: 'Plano de saúde preventivo sai mais barato que tratamentos emergenciais.',
-    educacao: 'Investimento em educação tem o melhor ROI da sua vida.',
-    vestuario: 'Comprar peças de qualidade dura mais e economiza a longo prazo.',
-    investimento: 'Consistência supera tentativas de timing. Invista todo mês, mesmo pouco.',
-    salario: 'Separe pelo menos 10% do salário para investimentos assim que receber.',
-    outros: ECO_TIPS[Math.floor(Math.random() * ECO_TIPS.length)],
-  };
+  const tip = ECO_TIPS[Math.floor(Math.random() * ECO_TIPS.length)];
 
   document.getElementById('eco-tip').innerHTML =
-    `<strong><i class="fa-solid fa-lightbulb"></i> Dica ecoSpending</strong>${tips[selectedCat] || ECO_TIPS[0]}`;
+    `<strong><i class="fa-solid fa-lightbulb"></i> Dica ecoSpending</strong>${tip}`;
+}
+
+// Retorna true se a descrição realmente especifica a instituição quando
+// a categoria "Outro" foi escolhida (não pode ficar vazia nem repetir
+// genericamente "outro"/"outros").
+function descricaoValidaParaOutro(desc) {
+  const d = (desc || '').toLowerCase().trim();
+  return d.length >= 3 && d !== 'outro' && d !== 'outros';
 }
 
 async function submitExpense() {
@@ -341,13 +400,24 @@ async function submitExpense() {
     return;
   }
 
+  // Regra: se a categoria for "Outro", a descrição precisa realmente
+  // especificar a instituição/agência. Sem isso, o lançamento NÃO é
+  // enviado (nem salvo, nem aparece no Histórico).
+  if (currentType === 'expense' && selectedCat === 'outro' && !descricaoValidaParaOutro(desc)) {
+    showToast(
+      '<i class="fa-solid fa-triangle-exclamation"></i> Especifique qual instituição no campo Descrição',
+      true
+    );
+    return;
+  }
+
   const obs = document.getElementById('f-obs').value.trim();
   const eco = parseInt(document.getElementById('f-eco').value);
 
   let resposta;
 
   if (currentType === 'expense') {
-    const cat = CATEGORIES.find(c => c.id === selectedCat);
+    const cat = CATEGORIES_GASTO.find(c => c.id === selectedCat);
 
     if (!cat || !cat.backendId) {
       showToast(
@@ -401,6 +471,11 @@ async function submitExpense() {
   await loadEntries();
   buildMonthTabs();
   renderPainel();
+
+  // Requisitos atendidos (validação passou e o backend confirmou o
+  // salvamento) => leva o usuário direto para a aba Histórico, onde o
+  // novo lançamento já aparece na lista.
+  showPage('historico');
 }
 
 function resetForm() {
@@ -412,6 +487,7 @@ function resetForm() {
 
   updateEcoBadge();
   updatePreview();
+  toggleOutroHint();
 }
 
 
@@ -449,11 +525,12 @@ function openEditModal(id) {
   setTimeout(() => document.getElementById('edit-value').focus(), 50);
 }
 
-function preencherCategoriasEdicao(selectedCat = 'outros') {
+function preencherCategoriasEdicao(selectedCat = 'outro') {
   const categorySelect = document.getElementById('edit-category');
 
-  categorySelect.innerHTML = CATEGORIES
-    .filter(c => c.id !== 'salario')
+  // A categoria só é gravada de fato para lançamentos do tipo Gasto, então
+  // o select de edição usa sempre a lista de categorias de Gasto.
+  categorySelect.innerHTML = CATEGORIES_GASTO
     .map(c => `
       <option value="${c.id}" ${c.id === selectedCat ? 'selected' : ''}>
         ${c.name}
@@ -541,6 +618,20 @@ async function saveEdit(event) {
     return;
   }
 
+  // Mesma regra do formulário de adicionar: categoria "Outro" exige
+  // que a descrição especifique a instituição.
+  if (novoTipo === 'gasto') {
+    const catSelecionadaEdicao = document.getElementById('edit-category').value;
+
+    if (catSelecionadaEdicao === 'outro' && !descricaoValidaParaOutro(desc)) {
+      showToast(
+        '<i class="fa-solid fa-triangle-exclamation"></i> Especifique qual instituição no campo Descrição',
+        true
+      );
+      return;
+    }
+  }
+
   saveButton.disabled = true;
   saveButton.innerHTML =
     '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
@@ -559,7 +650,7 @@ async function saveEdit(event) {
 
       if (novoTipo === 'gasto') {
         const catId = document.getElementById('edit-category').value;
-        const cat = CATEGORIES.find(c => c.id === catId);
+        const cat = CATEGORIES_GASTO.find(c => c.id === catId);
 
         if (!cat?.backendId) {
           showToast(
@@ -589,7 +680,7 @@ async function saveEdit(event) {
 
       if (novoTipo === 'gasto') {
         const catId = document.getElementById('edit-category').value;
-        const cat = CATEGORIES.find(c => c.id === catId);
+        const cat = CATEGORIES_GASTO.find(c => c.id === catId);
 
         if (!cat?.backendId) {
           showToast(
@@ -744,64 +835,9 @@ function renderPainel() {
   document.getElementById('sidebar-eco-score').textContent =
     ecoAvg !== '—' ? ecoAvg : '—';
 
-  renderGoals(expenses);
   renderBarChart(filtered);
   renderDonut(expenses);
   renderRecent(filtered.slice(0, 8));
-}
-
-function renderGoals(expenses) {
-  const goals = {
-    moradia: 1500,
-    alimentacao: 800,
-    lazer: 400
-  };
-
-  const totals = {};
-
-  expenses.forEach(e => {
-    totals[e.cat] =
-      (totals[e.cat] || 0) + e.value;
-  });
-
-  Object.entries(goals).forEach(([cat, goal]) => {
-    const spent = totals[cat] || 0;
-
-    const pct =
-      Math.min(
-        100,
-        Math.round((spent / goal) * 100)
-      );
-
-    const over = pct >= 100;
-
-    document.getElementById(
-      'gp-' +
-      (cat === 'alimentacao' ? 'alim' : cat)
-    ).textContent = pct + '%';
-
-    const bar =
-      document.getElementById(
-        'gb-' +
-        (cat === 'alimentacao' ? 'alim' : cat)
-      );
-
-    bar.style.width = pct + '%';
-
-    bar.style.background =
-      over
-        ? 'var(--red)'
-        : pct > 75
-        ? 'var(--amber)'
-        : '';
-
-    document.getElementById(
-      'ga-' +
-      (cat === 'alimentacao' ? 'alim' : cat)
-    ).textContent =
-      'R$ ' +
-      spent.toFixed(2).replace('.',',');
-  });
 }
 
 function renderBarChart(filtered) {
@@ -992,10 +1028,7 @@ function renderDonut(expenses) {
     sorted
       .slice(0,5)
       .map(([catId, val], i) => {
-        const cat =
-          CATEGORIES.find(
-            c => c.id === catId
-          );
+        const cat = findCategoryById(catId);
 
         const pct =
           Math.round(
@@ -1057,7 +1090,7 @@ function renderRecent(list) {
 
 function entryRow(e) {
   const cat =
-    CATEGORIES.find(c => c.id === e.cat) ||
+    findCategoryById(e.cat) ||
     {
       icon:'<i class="fa-solid fa-box"></i>',
       name: e.cat,
@@ -1337,7 +1370,7 @@ function populateHistFilters() {
 
   catSel.innerHTML =
     '<option value="">Todas as categorias</option>' +
-    CATEGORIES
+    ALL_CATEGORIES
       .filter(
         c => usedCats.includes(c.id)
       )
@@ -1494,6 +1527,7 @@ async function init() {
   updateEcoBadge();
   updatePreview();
   updateEcoTip();
+  toggleOutroHint();
 
   document.getElementById(
     'topbar-date'
