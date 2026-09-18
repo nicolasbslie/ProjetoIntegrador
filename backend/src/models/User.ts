@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, OneToMany } f
 
 import { Receita } from "./Receita";
 import { Gasto } from "./Gasto";
+import { Meta } from "./Meta"
 
 @Entity("usuarios")
 export class User {
@@ -37,4 +38,7 @@ export class User {
 
   @OneToMany(() => Gasto, (gasto) => gasto.usuario)
   gastos: Gasto[];
+
+  @OneToMany(() => Meta, (meta) => meta.usuario)
+  metas: Meta[]
 }

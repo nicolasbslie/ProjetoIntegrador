@@ -13,6 +13,7 @@ import receitaRoutes from "./routes/receitaRoutes";
 import gastoRoutes from "./routes/gastoRoutes";
 import categoriaRoutes from "./routes/categoriaRoutes";
 import lancamentoRoutes from "./routes/lancamentoRoutes";
+import metaRoutes from "./routes/metaRoutes"
 
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -74,7 +75,7 @@ app.use("/categorias", categoriaRoutes);
 
 app.use("/lancamentos", lancamentoRoutes);
 
-
+app.use("/metas", metaRoutes)
 
 // ==============================
 // ROTA TESTE

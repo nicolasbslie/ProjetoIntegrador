@@ -6,6 +6,7 @@ import { User } from "../models/User";
 import { Categoria } from "../models/Categoria";
 import { Receita } from "../models/Receita";
 import { Gasto } from "../models/Gasto";
+import { Meta } from "../models/Meta"
 
 dotenv.config();
 
@@ -27,7 +28,8 @@ export const AppDataSource = new DataSource({
         User,
         Categoria,
         Receita,
-        Gasto
+        Gasto,
+        Meta
     ],
 
     migrations: [],
