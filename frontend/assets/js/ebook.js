@@ -20,7 +20,7 @@ const chapters = [
       { id: "1e", icon: "fa-thumbtack", name: "CDI, Selic e IPCA", content: "Selic: taxa básica de juros do Brasil, definida pelo Banco Central. CDI: certificado de depósito interbancário, muito próximo da Selic, referência para renda fixa. IPCA: índice oficial da inflação brasileira.", tip: "A maioria dos CDBs paga um % do CDI — ex: 'CDB 110% do CDI'." },
       { id: "1f", icon: "fa-compass", name: "Perfil de investidor", content: "Existem 3 perfis: Conservador (prioriza segurança, aceita rendimentos menores), Moderado (equilíbrio entre segurança e rentabilidade) e Agressivo (aceita riscos maiores por retornos maiores).", tip: "Seu perfil pode mudar com o tempo e com seus objetivos." }
     ],
-    quiz: { q: "O que diferencia investir de poupar?", opts: ["Investir envolve guardar dinheiro em poupança", "Investir faz o dinheiro trabalhar e crescer acima da inflação", "Poupar gera juros compostos automaticamente", "São a mesma coisa"], answer: 1, feedback: "Correto! Investir significa alocar recursos em ativos que geram retorno real acima da inflação." }
+    downloadUrl: null
   },
   {
     id: 2, level: "iniciante", emoji: "fa-shield-halved",
@@ -33,7 +33,7 @@ const chapters = [
       { id: "2c", icon: "fa-location-dot", name: "Onde investir", content: "Tesouro Selic: rende próximo ao CDI, resgate em D+1. CDB de liquidez diária: opção segura em bancos digitais. Conta remunerada: fácil mas rendimento pode ser menor." },
       { id: "2d", icon: "fa-triangle-exclamation", name: "Erros mais comuns", content: "1) Não ter reserva nenhuma. 2) Usar a poupança como reserva (rendimento abaixo do CDI). 3) Colocar a reserva em investimentos sem liquidez. 4) Usar a reserva para oportunidades de investimento." }
     ],
-    quiz: { q: "Qual característica é ESSENCIAL para onde guardar a reserva de emergência?", opts: ["Alto risco e alta rentabilidade", "Liquidez diária e segurança", "Investimento em ações", "Prazo de 5 anos"], answer: 1, feedback: "Correto! A reserva precisa de liquidez imediata (resgate rápido) e segurança, pois é para emergências." }
+    downloadUrl: null
   },
   {
     id: 3, level: "iniciante", emoji: "fa-landmark",
@@ -48,7 +48,7 @@ const chapters = [
       { id: "3e", icon: "fa-money-bill-transfer", name: "Tributação", content: "Tabela regressiva de IR: até 180 dias: 22,5% / 181 a 360 dias: 20% / 361 a 720 dias: 17,5% / Acima de 720 dias: 15%. IOF nos primeiros 30 dias." },
       { id: "3f", icon: "fa-bolt", name: "Riscos", content: "Risco de crédito: quase zero (garantido pelo governo federal). Risco de mercado: existe para prefixado e IPCA+ se vendidos antes do vencimento. Ao segurar até o vencimento, o retorno é garantido." }
     ],
-    quiz: { q: "Qual Tesouro é ideal para reserva de emergência?", opts: ["Tesouro IPCA+", "Tesouro Prefixado", "Tesouro Selic", "Qualquer um"], answer: 2, feedback: "Tesouro Selic! Tem liquidez diária, baixo risco de perda e rendimento previsível." }
+    downloadUrl: null
   },
   {
     id: 4, level: "iniciante", emoji: "fa-gem",
@@ -63,7 +63,7 @@ const chapters = [
       { id: "4e", icon: "fa-box", name: "Fundos de renda fixa", content: "Carteira diversificada de títulos de renda fixa. Gestor profissional toma as decisões. Cobra taxa de administração. Conveniente para quem não quer gerir." },
       { id: "4f", icon: "fa-lock", name: "Garantia do FGC", content: "Fundo Garantidor de Crédito protege CDB, LCI, LCA, poupança. Limite: R$250 mil por CPF por instituição financeira. Teto global: R$1 milhão por CPF a cada 4 anos." }
     ],
-    quiz: { q: "Qual desses investimentos de renda fixa É ISENTO de imposto de renda?", opts: ["CDB", "Debêntures comuns", "LCI", "Fundos de renda fixa"], answer: 2, feedback: "Correto! LCI e LCA são isentos de IR para pessoa física — por isso, compare sempre o rendimento líquido." }
+    downloadUrl: null
   },
   {
     id: 5, level: "iniciante", emoji: "fa-bullseye",
@@ -75,7 +75,7 @@ const chapters = [
       { id: "5b", icon: "fa-scale-balanced", name: "Distribuição de patrimônio", content: "Conservador: 80-100% renda fixa, 0-20% variável. Moderado: 60-70% renda fixa, 30-40% variável. Arrojado: 30-50% renda fixa, 50-70% variável.", tip: "Comece conservador e aumente exposição ao risco gradualmente." },
       { id: "5c", icon: "fa-pen-to-square", name: "Exemplos de carteiras", content: "Carteira conservadora inicial: 50% Tesouro Selic (reserva), 30% CDB liquidez, 20% CDB médio prazo. Carteira moderada: 40% renda fixa, 30% FIIs, 20% ações, 10% Tesouro IPCA+." }
     ],
-    quiz: { q: "Qual o principal objetivo da diversificação de carteira?", opts: ["Maximizar o rendimento a qualquer custo", "Reduzir o risco sem sacrificar todo o retorno", "Concentrar em apenas um tipo de ativo", "Evitar pagar IR"], answer: 1, feedback: "Correto! Diversificar reduz o risco — se um ativo cai, outros podem compensar." }
+    downloadUrl: null
   },
 
   //INTERMEDIÁRIO
@@ -90,7 +90,7 @@ const chapters = [
       { id: "6c", icon: "fa-laptop", name: "Home broker", content: "Plataforma de negociação online das corretoras. Permite comprar e vender ativos em tempo real. Disponível em app, site e desktop." },
       { id: "6d", icon: "fa-clipboard", name: "Tipos de ordens", content: "Ordem a mercado: executa ao melhor preço disponível. Ordem limitada: define o preço máximo/mínimo. Ordem stop: ativada quando preço atinge determinado valor." }
     ],
-    quiz: { q: "O que é o 'home broker'?", opts: ["Um tipo de ação da B3", "Plataforma para comprar e vender ativos online", "Fundo de investimento imobiliário", "Taxa cobrada pela corretora"], answer: 1, feedback: "Correto! O home broker é a plataforma digital que permite negociar ativos na bolsa." }
+    downloadUrl: null
   },
   {
     id: 7, level: "intermediario", emoji: "fa-chart-line",
@@ -103,7 +103,7 @@ const chapters = [
       { id: "7c", icon: "fa-rocket", name: "Valorização", content: "Além dos dividendos, ações podem se valorizar (ou desvalorizar). Ganho de capital = diferença entre preço de venda e compra. IR: 15% sobre ganho de capital para venda acima de R$20 mil/mês." },
       { id: "7d", icon: "fa-magnifying-glass", name: "Como analisar empresas", content: "Analise resultados trimestrais, posição de mercado, qualidade da gestão, setor de atuação, endividamento, histórico de dividendos e crescimento de receita." }
     ],
-    quiz: { q: "Qual o significado de Dividend Yield?", opts: ["Lucro líquido da empresa", "Razão entre dividendo anual e preço da ação", "Valor de mercado da empresa", "Taxa de crescimento da ação"], answer: 1, feedback: "Correto! DY = dividendo anual ÷ preço da ação. Um DY de 8% significa que a empresa pagou 8% do preço atual em dividendos." }
+    downloadUrl: null
   },
   {
     id: 8, level: "intermediario", emoji: "fa-microscope",
@@ -117,7 +117,7 @@ const chapters = [
       { id: "8d", icon: "fa-chart-line", name: "Margens", content: "Margem bruta: lucro bruto / receita. Margem líquida: lucro líquido / receita. Margens crescentes indicam eficiência operacional aumentando." },
       { id: "8e", icon: "fa-dumbbell", name: "Endividamento", content: "Dívida líquida / EBITDA: mede capacidade de pagamento. Abaixo de 2x é saudável. Acima de 3x exige atenção. Empresa muito endividada tem risco financeiro maior." }
     ],
-    quiz: { q: "O que o P/L de uma ação indica?", opts: ["O valor total da empresa na bolsa", "Quantos anos de lucro você pagaria pelo preço atual", "O crescimento esperado para o próximo ano", "O percentual de dividendos distribuídos"], answer: 1, feedback: "Correto! P/L alto pode indicar empresa cara ou com expectativa de crescimento. P/L baixo pode indicar oportunidade ou empresa em dificuldade." }
+    downloadUrl: null
   },
   {
     id: 9, level: "intermediario", emoji: "fa-chart-line",
@@ -131,7 +131,7 @@ const chapters = [
       { id: "9d", icon: "fa-box", name: "Volume", content: "Quantidade de ativos negociados. Volume confirma movimentos: rompimento com alto volume é mais confiável. Movimentos sem volume são menos significativos." },
       { id: "9e", icon: "fa-chart-column", name: "Candlesticks", content: "Representação gráfica de preço. Cada candle mostra: abertura, fechamento, máxima e mínima. Verde/branco = fechou acima da abertura (alta). Vermelho/preto = fechou abaixo (baixa)." }
     ],
-    quiz: { q: "O que acontece quando um suporte é rompido?", opts: ["O ativo sobe automaticamente", "O suporte pode se tornar uma nova resistência", "O volume de negociação zera", "A tendência muda para alta"], answer: 1, feedback: "Correto! Quando um suporte é rompido, aquele nível de preço tende a se tornar uma resistência." }
+    downloadUrl: null
   },
   {
     id: 10, level: "intermediario", emoji: "fa-building",
@@ -144,7 +144,7 @@ const chapters = [
       { id: "10c", icon: "fa-money-bill-transfer", name: "Dividendos mensais", content: "FIIs são obrigados a distribuir no mínimo 95% do resultado semestral. Na prática, pagam mensalmente. DY médio do mercado: 8% a 12% ao ano." },
       { id: "10d", icon: "fa-magnifying-glass", name: "Como escolher", content: "Analise: DY (Dividend Yield), P/VP (preço sobre valor patrimonial), vacância física, qualidade dos imóveis e contratos, gestora, liquidez das cotas e histórico de dividendos." }
     ],
-    quiz: { q: "Qual é a principal vantagem dos FIIs para pessoa física?", opts: ["Rendimentos isentos de IR", "Garantia do FGC", "Proteção contra inflação garantida", "Rendimento fixo e previsível"], answer: 0, feedback: "Correto! Os rendimentos (dividendos) dos FIIs são isentos de IR para pessoa física — desde que o fundo tenha ao menos 50 cotistas e as cotas sejam negociadas em bolsa." }
+    downloadUrl: null
   },
   {
     id: 11, level: "intermediario", emoji: "fa-basket-shopping",
@@ -157,7 +157,7 @@ const chapters = [
       { id: "11c", icon: "fa-earth-americas", name: "ETFs internacionais", content: "Disponíveis nas bolsas americanas via BDR ou conta em corretora no exterior. VOO (S&P 500), QQQ (Nasdaq), VTI (mercado total EUA).", tip: "IVVB11 permite exposição ao S&P 500 sem precisar de conta no exterior." },
       { id: "11d", icon: "fa-scale-balanced", name: "Vantagens e desvantagens", content: '<i class="fa-solid fa-check" aria-hidden="true"></i> Diversificação instantânea. <i class="fa-solid fa-check" aria-hidden="true"></i> Taxas muito baixas. <i class="fa-solid fa-check" aria-hidden="true"></i> Simples de entender. <i class="fa-solid fa-xmark" aria-hidden="true"></i> Você não escolhe as ações individuais. <i class="fa-solid fa-xmark" aria-hidden="true"></i> Acompanha tanto as altas quanto as quedas do índice.'  }
     ],
-    quiz: { q: "O que o ETF BOVA11 replica?", opts: ["O índice S&P 500 americano", "O Ibovespa (principais ações da B3)", "Somente empresas de dividendos", "Títulos do Tesouro Nacional"], answer: 1, feedback: "Correto! BOVA11 replica o Ibovespa, que reúne as ações mais negociadas da B3." }
+    downloadUrl: null
   },
 
   //AVANÇADO
@@ -173,7 +173,7 @@ const chapters = [
       { id: "12d", icon: "fa-shield-halved", name: "Gestão de risco", content: "Defina antes de entrar: máximo de perda por operação (1-2% do capital), relação risco/retorno mínima de 1:2. Nunca opere sem stop." },
       { id: "12e", icon: "fa-brain", name: "Qual combina com cada perfil", content: "Day trade: requer dedicação integral, capital mínimo R$10-20k, perfil de alto risco. Swing trade: dá para conciliar com outro trabalho, capital mínimo R$5-10k, perfil de risco moderado-alto." }
     ],
-    quiz: { q: "Qual a principal diferença entre day trade e swing trade?", opts: ["Day trade usa análise fundamentalista", "Day trade abre e fecha no mesmo dia; swing trade mantém por dias/semanas", "Swing trade tem tributação de 20%", "Ambos são idênticos em risco"], answer: 1, feedback: "Correto! A principal diferença é o tempo de permanência na posição." }
+    downloadUrl: null
   },
   {
     id: 13, level: "avancado", emoji: "fa-shield-halved",
@@ -186,7 +186,7 @@ const chapters = [
       { id: "13c", icon: "fa-person", name: "Controle emocional", content: "Medo e ganância são os maiores inimigos. Tenha um plano e siga-o. Não tome decisões em momentos de euforia ou pânico. Journaling de operações ajuda a identificar padrões emocionais." },
       { id: "13d", icon: "fa-ruler", name: "Tamanho de posição", content: "Nunca arrisque mais de 1-2% do capital por operação. Se você tem R$20 mil, arrisque no máximo R$200-400 por trade. Isso garante que você sobreviva a uma sequência de perdas." }
     ],
-    quiz: { q: "Qual o objetivo principal do Stop Loss?", opts: ["Maximizar lucros", "Limitar perdas e proteger o capital", "Anular o IR sobre ganhos", "Aumentar o tamanho da posição"], answer: 1, feedback: "Correto! O stop loss existe para proteger seu capital, encerrando automaticamente posições que atingem seu limite de perda." }
+    downloadUrl: null
   },
   {
     id: 14, level: "avancado", emoji: "fa-brain",
@@ -199,7 +199,7 @@ const chapters = [
       { id: "14c", icon: "fa-magnifying-glass", name: "Viés cognitivo", content: "Viés de confirmação: buscar informações que confirmem sua tese. Efeito manada: seguir o que todos fazem. Ancoragem: se prender ao preço de compra. Loss aversion: sentir a dor da perda 2x mais que a alegria do ganho." },
       { id: "14d", icon: "fa-scale-balanced", name: "Disciplina", content: "Siga seu plano independente das emoções. Documente suas operações e decisões. Revise periodicamente. Aceite que perdas fazem parte do processo. Invista em educação financeira continuamente." }
     ],
-    quiz: { q: "O 'viés de confirmação' faz o investidor...", opts: ["Vender rápido demais", "Buscar apenas informações que confirmam sua tese", "Diversificar excessivamente", "Operar no mesmo dia"], answer: 1, feedback: "Correto! O viés de confirmação nos faz ignorar sinais contrários à nossa posição, aumentando o risco." }
+    downloadUrl: null
   },
   {
     id: 15, level: "avancado", emoji: "fa-money-bill-transfer",
@@ -211,7 +211,7 @@ const chapters = [
       { id: "15b", icon: "fa-chart-column", name: "Dividend Yield", content: "Foco em DY consistente, não apenas o mais alto. DY muito alto pode ser sinal de empresa com problemas ou queda no preço. Busque DY sustentável entre 6-12% ao ano." },
       { id: "15c", icon: "fa-arrow-rotate-right", name: "Reinvestimento", content: "A mágica dos dividendos está no reinvestimento. Use os proventos recebidos para comprar mais ações/cotas. Isso acelera o efeito dos juros compostos e cresce exponencialmente." }
     ],
-    quiz: { q: "Por que reinvestir dividendos é importante?", opts: ["Para evitar IR", "Para acelerar os juros compostos e crescimento da carteira", "Para aumentar o DY rapidamente", "Para garantir liquidez"], answer: 1, feedback: "Correto! Reinvestir dividendos potencializa o efeito dos juros compostos — a bola de neve cresce mais rápido." }
+    downloadUrl: null
   },
   {
     id: 16, level: "avancado", emoji: "fa-lightbulb",
@@ -223,7 +223,7 @@ const chapters = [
       { id: "16b", icon: "fa-magnifying-glass-plus", name: "Empresas descontadas", content: "Buscar empresas com P/L, P/VP, EV/EBITDA abaixo da média histórica ou do setor. Razão para o desconto precisa ser temporária, não estrutural." },
       { id: "16c", icon: "fa-shield-halved", name: "Margem de segurança", content: "Comprar apenas quando o desconto for suficientemente grande. Ex: se o valor intrínseco é R$50, só comprar abaixo de R$35 (30% de desconto). Protege de erros de análise." }
     ],
-    quiz: { q: "O que é a 'margem de segurança' no value investing?", opts: ["A diferença entre o CDI e o DY", "O desconto entre preço de mercado e valor intrínseco estimado", "O histórico de dividendos da empresa", "A taxa livre de risco do Tesouro"], answer: 1, feedback: "Correto! A margem de segurança é o colchão que protege sua análise de estar errada — você compra só se o desconto for grande o suficiente." }
+    downloadUrl: null
   },
   {
     id: 17, level: "avancado", emoji: "fa-earth-europe",
@@ -236,7 +236,7 @@ const chapters = [
       { id: "17c", icon: "fa-chart-line", name: "Stocks", content: "Ações individuais de empresas americanas: Apple (AAPL), Microsoft (MSFT), Amazon (AMZN). Requer mais pesquisa e acompanhamento. Risco de empresa específica." },
       { id: "17d", icon: "fa-money-bill-transfer", name: "Tributação", content: "BDRs na B3: isenção até R$20 mil/mês em vendas, IR 15% acima. Conta no exterior: bens devem ser declarados no IRPF. Remessas acima de US$20 mil por mês pagam IOF. Rendimentos tributados pelo carnê-leão." }
     ],
-    quiz: { q: "O que é um BDR?", opts: ["Tipo de título do Tesouro", "Certificado de ação estrangeira negociado na B3", "Fundo de debêntures", "Moeda digital regulamentada"], answer: 1, feedback: "Correto! BDRs permitem investir em empresas como Apple e Google diretamente pela B3, sem precisar de conta no exterior." }
+    downloadUrl: null
   }
 ];
 
@@ -279,20 +279,9 @@ function createChapterEl(ch) {
     <div class="topic-card ${completedTopics.has(t.id) ? 'done' : ''}" onclick="toggleTopic('${t.id}', ${ch.id}, event)">
       <div class="topic-icon">${faIcon(t.icon)}</div>
       <div class="topic-name">${t.name}</div>
-      <div class="topic-status">${completedTopics.has(t.id) ? faIcon('fa-check') + ' Estudado' : 'Toque para estudar'}</div>
+      <div class="topic-status">${completedTopics.has(t.id) ? faIcon('fa-check') + ' Estudado' : ''}</div>
     </div>
   `).join('');
-
-  const quizHTML = ch.quiz ? `
-    <div class="quiz-box" id="quiz-${ch.id}">
-      <h4>${faIcon('fa-bullseye')} Teste seus conhecimentos</h4>
-      <p style="font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:12px;">${ch.quiz.q}</p>
-      <div class="quiz-options">
-        ${ch.quiz.opts.map((opt, i) => `<button class="quiz-opt" onclick="answerQuiz(${ch.id}, ${i})">${String.fromCharCode(65+i)}) ${opt}</button>`).join('')}
-      </div>
-      <div class="quiz-feedback" id="qf-${ch.id}"></div>
-    </div>
-  ` : '';
 
   const done = completedChapters.has(ch.id);
 
@@ -316,7 +305,11 @@ function createChapterEl(ch) {
       </div>
       <div class="topics-grid">${topicsHTML}</div>
       <div id="topic-panel-${ch.id}" style="display:none;"></div>
-      ${quizHTML}
+      <div class="chapter-download">
+        <a class="btn btn-outline" href="${ch.downloadUrl || '#'}" ${ch.downloadUrl ? 'download' : ''} onclick="handleDownload(event, ${ch.id})">
+          ${faIcon('fa-download')} Baixar capítulo em PDF
+        </a>
+      </div>
       <div class="chapter-complete" id="ch-done-${ch.id}" style="${done ? '' : 'display:none'}">
         <span class="complete-checkmark">${faIcon(ch.emoji)}</span>
         <h4>Capítulo concluído!</h4>
@@ -365,7 +358,7 @@ function updateCard(topicId) {
     if(card.getAttribute('onclick') && card.getAttribute('onclick').includes(`'${topicId}'`)) {
       const done = completedTopics.has(topicId);
       card.className = 'topic-card' + (done ? ' done' : '');
-      card.querySelector('.topic-status').innerHTML = done ? faIcon('fa-check') + ' Estudado' : 'Toque para estudar';
+      card.querySelector('.topic-status').innerHTML = done ? faIcon('fa-check') + ' Estudado' : '';
     }
   });
 }
@@ -395,17 +388,16 @@ function updateProgress() {
   if(nav) nav.textContent = completedChapters.size + ' / 17 capítulos';
 }
 
-function answerQuiz(chapterId, chosenIdx) {
+// Enquanto o PDF do capítulo não é publicado (ch.downloadUrl vazio), o clique
+// não navega para lugar nenhum e só avisa o usuário. Assim que o eBook for
+// produzido, basta preencher `downloadUrl` do capítulo correspondente em
+// `chapters` (topo deste arquivo) com o link real do PDF.
+function handleDownload(event, chapterId) {
   const ch = chapters.find(c => c.id === chapterId);
-  const opts = document.querySelectorAll(`#quiz-${chapterId} .quiz-opt`);
-  const fb = document.getElementById('qf-' + chapterId);
-  opts.forEach(o => o.disabled = true);
-  opts[ch.quiz.answer].classList.add('correct');
-  if(chosenIdx !== ch.quiz.answer) opts[chosenIdx].classList.add('wrong');
-  fb.style.display = 'block';
-  fb.style.background = chosenIdx === ch.quiz.answer ? 'rgba(183,228,199,0.25)' : 'rgba(255,100,100,0.2)';
-  fb.style.color = 'white';
-  fb.innerHTML = (chosenIdx === ch.quiz.answer ? faIcon('fa-check') + ' ' : faIcon('fa-xmark') + ' ') + ch.quiz.feedback;
+  if (!ch.downloadUrl) {
+    event.preventDefault();
+    alert('O PDF deste capítulo ainda não foi publicado.');
+  }
 }
 
 function filterLevel(level) {

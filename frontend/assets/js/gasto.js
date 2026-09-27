@@ -472,6 +472,10 @@ async function submitExpense() {
   buildMonthTabs();
   renderPainel();
 
+  // Mantém a aba "Minhas metas" em dia com o gasto recém-lançado,
+  // sem precisar de F5 (carregarMetas() vem de metas.js).
+  if (typeof carregarMetas === 'function') carregarMetas();
+
   // Requisitos atendidos (validação passou e o backend confirmou o
   // salvamento) => leva o usuário direto para a aba Histórico, onde o
   // novo lançamento já aparece na lista.
@@ -726,6 +730,9 @@ async function saveEdit(event) {
     renderPainel();
     renderHistorico();
 
+    // Mantém a aba "Minhas metas" em dia com a edição.
+    if (typeof carregarMetas === 'function') carregarMetas();
+
     showToast(
       '<i class="fa-solid fa-circle-check"></i> Lançamento atualizado com sucesso!'
     );
@@ -768,6 +775,9 @@ async function deleteEntry(id) {
   renderPainel();
   renderHistorico();
   buildMonthTabs();
+
+  // Mantém a aba "Minhas metas" em dia com a exclusão.
+  if (typeof carregarMetas === 'function') carregarMetas();
 
   showToast(
     '<i class="fa-solid fa-trash"></i> Removido'

@@ -1,4 +1,8 @@
-const API_URL = "http://localhost:3000";
+// API_URL e apiFetch() já são definidos globalmente por gasto.js,
+// que é carregado antes deste script em gasto.html. Reutilizamos
+// esse wrapper (em vez de redeclarar API_URL e usar fetch cru) para
+// evitar o SyntaxError de redeclaração e para enviar o Authorization
+// Bearer <token> exigido pelo authMiddleware do backend.
 
 
 // ==========================================
@@ -40,12 +44,15 @@ async function carregarCategorias() {
     try {
 
         const resposta =
-            await fetch(
-                `${API_URL}/categorias`,
-                {
-                    credentials: "include"
-                }
+            await apiFetch(
+                `/categorias`
             );
+
+        if (!resposta) {
+
+            return;
+
+        }
 
 
         if (!resposta.ok) {
@@ -114,12 +121,15 @@ async function carregarMetas() {
     try {
 
         const resposta =
-            await fetch(
-                `${API_URL}/metas/me?mes=${mes}&ano=${ano}`,
-                {
-                    credentials: "include"
-                }
+            await apiFetch(
+                `/metas/me?mes=${mes}&ano=${ano}`
             );
+
+        if (!resposta) {
+
+            return;
+
+        }
 
 
         if (!resposta.ok) {
@@ -378,18 +388,11 @@ metaForm.addEventListener(
         try {
 
             const resposta =
-                await fetch(
-                    `${API_URL}/metas`,
+                await apiFetch(
+                    `/metas`,
                     {
 
                         method: "POST",
-
-                        credentials: "include",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
 
                         body: JSON.stringify({
 
@@ -407,6 +410,12 @@ metaForm.addEventListener(
 
                     }
                 );
+
+            if (!resposta) {
+
+                return;
+
+            }
 
 
             const dados =
@@ -490,18 +499,11 @@ async function editarMeta(
     try {
 
         const resposta =
-            await fetch(
-                `${API_URL}/metas/${id}`,
+            await apiFetch(
+                `/metas/${id}`,
                 {
 
                     method: "PATCH",
-
-                    credentials: "include",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
 
                     body: JSON.stringify({
                         valor_limite: valor
@@ -509,6 +511,12 @@ async function editarMeta(
 
                 }
             );
+
+        if (!resposta) {
+
+            return;
+
+        }
 
 
         const dados =
@@ -565,16 +573,20 @@ async function excluirMeta(id) {
     try {
 
         const resposta =
-            await fetch(
-                `${API_URL}/metas/${id}`,
+            await apiFetch(
+                `/metas/${id}`,
                 {
 
-                    method: "DELETE",
-
-                    credentials: "include"
+                    method: "DELETE"
 
                 }
             );
+
+        if (!resposta) {
+
+            return;
+
+        }
 
 
         const dados =
