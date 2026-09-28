@@ -20,7 +20,7 @@ const chapters = [
       { id: "1e", icon: "fa-thumbtack", name: "CDI, Selic e IPCA", content: "Selic: taxa básica de juros do Brasil, definida pelo Banco Central. CDI: certificado de depósito interbancário, muito próximo da Selic, referência para renda fixa. IPCA: índice oficial da inflação brasileira.", tip: "A maioria dos CDBs paga um % do CDI — ex: 'CDB 110% do CDI'." },
       { id: "1f", icon: "fa-compass", name: "Perfil de investidor", content: "Existem 3 perfis: Conservador (prioriza segurança, aceita rendimentos menores), Moderado (equilíbrio entre segurança e rentabilidade) e Agressivo (aceita riscos maiores por retornos maiores).", tip: "Seu perfil pode mudar com o tempo e com seus objetivos." }
     ],
-    downloadUrl: null
+    downloadUrl: '../pdf/Capitulo1.pdf'
   },
   {
     id: 2, level: "iniciante", emoji: "fa-shield-halved",
