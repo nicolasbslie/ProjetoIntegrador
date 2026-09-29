@@ -4,7 +4,7 @@
   --green-dark: #0f3d1e;
   --green-main: #1fa463;
   --green-light: #7ed957;
-  --bg: #f2f5f3;
+  --bg1: #f2f5f3;
   }
 :root {
   --g900: #0D2418;
@@ -17,7 +17,7 @@
   --g200: #B7E4C7;
   --g100: #D8F3DC;
   --g50:  #F0FBF4;
-
+  --g49: #2a2a2a;
   --amber: #E9C46A;
   --amber-d: #C77D11;
   --red:   #E63946;
@@ -32,7 +32,7 @@
   --text3: #7A9E8A;
   --border:#E0EDE5;
   --surf:  #FFFFFF;
-  --bg:    #F4FAF6;
+  --bg:    #FFFFFF;
   --shadow: 0 1px 3px rgba(13,36,24,.06), 0 4px 16px rgba(13,36,24,.05);
 }
 
@@ -55,7 +55,7 @@ body {
 
 .topbar {
   grid-column: 1 / -1;
-  background: linear-gradient(90deg, var(--green-main), var(--green-light));
+ background: linear-gradient(90deg, var(--green-main), var(--green-light));
   height: 56px;
   display: flex;
   align-items: center;
@@ -69,7 +69,7 @@ body {
 .topbar-logo {
   font-family: 'Playfair Display', serif;
   font-size: 17px;
-  color: var(--g200);
+  color: var(--bg);
   letter-spacing: 1px;
   display: flex;
   align-items: center;
@@ -84,7 +84,11 @@ body {
 
 .topbar-date {
   font-size: 12px;
+<<<<<<< HEAD:frontend/assets/style/gasto.css
   color: white;
+=======
+  color: var(--bg);
+>>>>>>> ffae76217a56f95ce4650a68a4759aa9decf155c:src/assets/style/gasto.css
   font-weight: 400;
 }
 
@@ -127,7 +131,7 @@ body {
 }
 
 .nav-item.active {
-  background: var(--g50);
+  background: var(--text3);
   color: var(--g700);
   border-left-color: var(--g600);
   font-weight: 600;
@@ -199,6 +203,8 @@ body {
 .main {
   padding: 2rem;
   overflow-y: auto;
+ background: var(--g400)
+;
 }
 
 /* ─── PAGE HEADER ────────────────────────────────────── */
@@ -214,13 +220,13 @@ body {
 .page-header h1 {
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
-  color: var(--text);
+  color: var(--bg);
   line-height: 1.2;
 }
 
 .page-header p {
   font-size: 13px;
-  color: var(--text3);
+  color: var(--bg);
   margin-top: 4px;
 }
 
@@ -343,7 +349,7 @@ body {
 .chart-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text3);
   margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
@@ -455,7 +461,7 @@ body {
 .table-header h3 {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text3);
 }
 
 table.expenses-table {
@@ -464,7 +470,7 @@ table.expenses-table {
 }
 
 .expenses-table th {
-  background: var(--bg);
+  background: var(--text);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .8px;
@@ -484,7 +490,7 @@ table.expenses-table {
 }
 
 .expenses-table tr:last-child td { border-bottom: none; }
-.expenses-table tr:hover td { background: var(--g50); }
+.expenses-table tr:hover td { background: var(--text); }
 
 .expense-name-cell {
   display: flex;
@@ -502,8 +508,8 @@ table.expenses-table {
   flex-shrink: 0;
 }
 
-.expense-title { font-weight: 500; color: var(--text); font-size: 13px; }
-.expense-note { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.expense-title { font-weight: 500; color: var(--text3); font-size: 13px; }
+.expense-note { font-size: 11px; color: var(--text1); margin-top: 2px; }
 
 .cat-badge {
   display: inline-block;
@@ -695,7 +701,7 @@ table.expenses-table {
 .goal-label {
   font-size: 12px;
   font-weight: 500;
-  color: var(--text2);
+  color: var(--text3);
   margin-bottom: 8px;
   display: flex;
   align-items: center;
@@ -794,7 +800,7 @@ table.expenses-table {
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--g500);
-  background: white;
+  background: var(--text);
   box-shadow: 0 0 0 3px rgba(82,183,136,.15);
 }
 
@@ -805,7 +811,7 @@ table.expenses-table {
   text-align: center;
   padding: 16px 20px;
   border-radius: 14px;
-  background: var(--g50);
+  background: var(--text3);
   border-color: var(--g200);
 }
 

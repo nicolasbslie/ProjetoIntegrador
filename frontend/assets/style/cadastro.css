@@ -46,7 +46,7 @@
   padding: 40px 36px;
   width: 400px;
   max-width: 460px;
-  
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
     .card h2 {
@@ -98,23 +98,22 @@
     }
 
     .btn-primary {
-      background-color: #43a047;
+        background: var(--green-main);
       color: #fff;
       margin-top: 16px;
     }
 
     .btn-primary:hover {
-      background-color: #388e3c;
+  background-color: #135228;
     }
 
     .btn-outline {
-      background-color: transparent;
-      color: #43a047;
-      border: 2px solid #43a047;
+        background: var(--green-main);
+        color: #fff;
     }
 
     .btn-outline:hover {
-      background-color: #f1f8f1;
+  background-color: #135228;
     }
 
     /* ===== MENSAGEM DE ERRO ===== */
