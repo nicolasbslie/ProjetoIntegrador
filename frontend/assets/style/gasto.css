@@ -1991,3 +1991,23 @@ body,
     color .25s ease,
     border-color .25s ease;
 }
+
+/* CATEGORIAS SELECIONADAS NO MODO ESCURO */
+:root[data-theme="dark"] .cat-btn.selected {
+    background: #0b100d !important;
+    border: 1px solid #40916c !important;
+    color: #a3edb8 !important;
+    box-shadow: inset 0 0 0 1px rgba(82, 183, 136, 0.12);
+}
+
+/* ÍCONES DA CATEGORIA SELECIONADA */
+:root[data-theme="dark"] .cat-btn.selected .cat-btn-icon {
+    color: #73d69a !important;
+}
+
+/* EFEITO AO PASSAR O MOUSE */
+:root[data-theme="dark"] .cat-btn.selected:hover {
+    background: #14231a !important;
+    border-color: #52b788 !important;
+}
+  
