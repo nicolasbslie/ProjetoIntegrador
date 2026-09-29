@@ -33,7 +33,7 @@ const chapters = [
       { id: "2c", icon: "fa-location-dot", name: "Onde investir", content: "Tesouro Selic: rende próximo ao CDI, resgate em D+1. CDB de liquidez diária: opção segura em bancos digitais. Conta remunerada: fácil mas rendimento pode ser menor." },
       { id: "2d", icon: "fa-triangle-exclamation", name: "Erros mais comuns", content: "1) Não ter reserva nenhuma. 2) Usar a poupança como reserva (rendimento abaixo do CDI). 3) Colocar a reserva em investimentos sem liquidez. 4) Usar a reserva para oportunidades de investimento." }
     ],
-    downloadUrl: null
+    downloadUrl: '../pdf/Capitulo2.pdf'
   },
   {
     id: 3, level: "iniciante", emoji: "fa-landmark",
