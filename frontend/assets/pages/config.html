@@ -1,21 +1,37 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoSpending - Minha conta</title>
+
+  <!-- Aplica o tema antes de carregar o CSS -->
+  <script>
+    const temaSalvo = localStorage.getItem("ecosending-theme");
+    if (temaSalvo === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+  </script>
+
   <link rel="stylesheet" href="../style/config.css">
 </head>
 <body>
 
   <header>
     <h1>EcoSpending</h1>
-    <button class="btn-voltar" onclick="window.location.href='gasto.html'">← Voltar</button>
+    <button class="btn-voltar"
+      onclick="window.location.href='gasto.html'">
+      ← Voltar
+    </button>
   </header>
 
   <main>
     <div class="config-wrap">
 
+      <!-- DADOS DA CONTA -->
       <div class="card">
         <h2>Meus dados</h2>
 
@@ -23,40 +39,85 @@
 
         <div class="input-group">
           <label for="nome">Nome completo</label>
-          <input type="text" id="nome" placeholder="Seu nome">
+          <input
+            type="text"
+            id="nome"
+            placeholder="Seu nome"
+          >
         </div>
 
         <div class="input-group">
           <label for="email">Email</label>
-          <input type="text" id="email" placeholder="Seu email">
+          <input
+            type="email"
+            id="email"
+            placeholder="Seu email"
+          >
         </div>
 
-        <p class="section-sub">Deixe em branco se não quiser alterar a senha</p>
+        <p class="section-sub">
+          Deixe em branco se não quiser alterar a senha
+        </p>
 
         <div class="input-group">
           <label for="nova-senha">Nova senha</label>
-          <input type="password" id="nova-senha" placeholder="Nova senha">
+          <input
+            type="password"
+            id="nova-senha"
+            placeholder="Nova senha"
+          >
         </div>
 
         <div class="input-group">
-          <label for="confirmar-nova-senha">Confirmar nova senha</label>
-          <input type="password" id="confirmar-nova-senha" placeholder="Confirmar nova senha">
+          <label for="confirmar-nova-senha">
+            Confirmar nova senha
+          </label>
+          <input
+            type="password"
+            id="confirmar-nova-senha"
+            placeholder="Confirmar nova senha"
+          >
         </div>
 
-        <button class="btn btn-primary" onclick="salvarPerfil()">Salvar alterações</button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          onclick="salvarPerfil()"
+        >
+          Salvar alterações
+        </button>
       </div>
 
+      <!-- EXCLUIR CONTA -->
       <div class="card card-danger">
         <h2>Excluir Conta!</h2>
-        <p class="section-sub">Excluir sua conta remove permanentemente todos os seus gastos e receitas. Essa ação não pode ser desfeita.</p>
-        <button class="btn btn-danger" onclick="excluirConta()">Excluir minha conta</button>
+
+        <p class="section-sub">
+          Excluir sua conta remove permanentemente todos os
+          seus gastos e receitas. Essa ação não pode ser desfeita.
+        </p>
+
+        <button
+          class="btn btn-danger"
+          type="button"
+          onclick="excluirConta()"
+        >
+          Excluir minha conta
+        </button>
       </div>
 
-      <button class="btn btn-outline" onclick="logout()">Sair da conta</button>
+      <!-- SAIR -->
+      <button
+        class="btn btn-outline"
+        type="button"
+        onclick="logout()"
+      >
+        Sair da conta
+      </button>
 
     </div>
   </main>
 
-<script src="../js/config.js"></script>
+  <script src="../js/config.js"></script>
 </body>
 </html>
