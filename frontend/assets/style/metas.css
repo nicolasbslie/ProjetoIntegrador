@@ -1,456 +1,464 @@
-:root {
 
+:root {
     --green-dark: #0f3d1e;
     --green-main: #1fa463;
     --green-light: #7ed957;
     --bg: #f2f5f3;
 
+    --surface: #ffffff;
+    --surface-soft: #f2f5f3;
+    --border: #d4ddd7;
+    --text: #0f3d1e;
+    --text-muted: #65736a;
+    --shadow: 0 4px 15px rgba(15, 61, 30, 0.08);
 }
 
+/* =========================
+   MODO ESCURO
+========================= */
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --green-dark: #a3edb8;
+    --green-main: #52b788;
+    --green-light: #7ed957;
+    --bg: #090d0b;
+
+    --surface: #111813;
+    --surface-soft: #17251c;
+    --border: #26372c;
+    --text: #e7f5eb;
+    --text-muted: #8cae98;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================
+   RESET
+========================= */
 
 * {
-
     margin: 0;
     padding: 0;
-
     box-sizing: border-box;
-
 }
 
+/* =========================
+   PÁGINA
+========================= */
 
 body {
-
     font-family: Arial, sans-serif;
-
     background: var(--bg);
-
-    color: var(--green-dark);
-
+    color: var(--text);
+    transition: background 0.25s ease, color 0.25s ease;
 }
 
+/* =========================
+   CONTAINER
+========================= */
 
 .container {
-
     width: 90%;
     max-width: 1100px;
-
     margin: 0 auto;
-
     padding: 40px 0;
-
 }
 
+/* =========================
+   CABEÇALHO
+========================= */
 
 .top {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     gap: 20px;
-
     margin-bottom: 35px;
-
 }
-
 
 .small-title {
-
     color: var(--green-main);
-
     font-size: 13px;
-
     font-weight: bold;
-
     letter-spacing: 2px;
-
 }
-
 
 h1 {
-
     font-size: 36px;
-
     margin: 8px 0;
-
+    color: var(--text);
 }
-
 
 .top p {
-
-    color: #65736a;
-
+    color: var(--text-muted);
 }
 
+/* =========================
+   BOTÃO PRINCIPAL
+========================= */
 
 .btn-primary {
-
     border: none;
-
     background: var(--green-main);
-
-    color: white;
-
+    color: #ffffff;
     padding: 13px 20px;
-
     border-radius: 10px;
-
     font-size: 15px;
-
     font-weight: bold;
-
     cursor: pointer;
-
     transition: 0.2s;
-
 }
-
 
 .btn-primary:hover {
-
     background: var(--green-dark);
-
+    color: #ffffff;
 }
 
+:root[data-theme="dark"] .btn-primary:hover {
+    background: #347a57;
+}
+
+/* =========================
+   FILTRO DE MÊS
+========================= */
 
 .filtro {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
     margin-bottom: 25px;
-
 }
-
 
 .filtro label {
-
     font-weight: bold;
-
+    color: var(--text);
 }
 
+/* =========================
+   CAMPOS E SELETORES
+========================= */
 
 select,
 input {
-
-    border: 1px solid #d4ddd7;
-
-    background: white;
-
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
     border-radius: 8px;
-
     padding: 12px;
-
     font-size: 15px;
-
     outline: none;
-
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
 }
-
 
 select:focus,
 input:focus {
-
     border-color: var(--green-main);
-
 }
 
+/* Seletor de mês no modo escuro */
+:root[data-theme="dark"] .filtro select {
+    background: #17251c;
+    color: #a3edb8;
+    border: 1px solid #315840;
+}
+
+:root[data-theme="dark"] .filtro select:focus {
+    border-color: #52b788;
+    box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.12);
+}
+
+/* Opções do seletor */
+:root[data-theme="dark"] select option {
+    background: #111813;
+    color: #e7f5eb;
+}
+
+/* =========================
+   CONTAINER DAS METAS
+========================= */
 
 .metas-container {
-
     display: grid;
-
     grid-template-columns:
         repeat(auto-fit, minmax(280px, 1fr));
-
     gap: 20px;
-
 }
 
+/* =========================
+   CARTÃO DE META
+========================= */
 
 .meta-card {
-
-    background: white;
-
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
-
     padding: 24px;
-
-    box-shadow:
-        0 4px 15px rgba(15, 61, 30, 0.08);
-
+    box-shadow: var(--shadow);
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
-
 
 .meta-header {
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     margin-bottom: 20px;
-
 }
-
 
 .meta-header h3 {
-
     font-size: 20px;
-
+    color: var(--text);
 }
 
+/* =========================
+   MENU DA META
+========================= */
 
 .menu-meta {
-
     display: flex;
-
     gap: 5px;
-
 }
-
 
 .menu-meta button {
-
     border: none;
-
-    background: #f2f5f3;
-
+    background: var(--surface-soft);
+    color: var(--text);
     border-radius: 7px;
-
     padding: 7px 10px;
-
     cursor: pointer;
-
+    transition: background 0.2s ease;
 }
 
+.menu-meta button:hover {
+    background: var(--green-main);
+    color: #ffffff;
+}
+
+/* =========================
+   VALORES DA META
+========================= */
 
 .meta-values {
-
     display: flex;
-
     justify-content: space-between;
-
     margin-bottom: 12px;
-
+    color: var(--text);
 }
-
 
 .meta-values strong {
-
     color: var(--green-main);
-
 }
 
+/* =========================
+   BARRA DE PROGRESSO
+========================= */
 
 .progress {
-
     width: 100%;
-
     height: 12px;
-
     background: #e3e9e5;
-
     border-radius: 20px;
-
     overflow: hidden;
-
 }
-
 
 .progress-bar {
-
     height: 100%;
-
     background: var(--green-main);
-
     border-radius: 20px;
-
     transition: width 0.3s;
-
 }
 
+:root[data-theme="dark"] .progress {
+    background: #26372c;
+}
+
+/* =========================
+   RODAPÉ DA META
+========================= */
 
 .meta-footer {
-
     display: flex;
-
     justify-content: space-between;
-
     margin-top: 15px;
-
     font-size: 14px;
-
-    color: #65736a;
-
+    color: var(--text-muted);
 }
-
 
 .meta-warning {
-
     color: #c77d00;
-
 }
-
 
 .meta-danger {
-
     color: #c0392b;
-
 }
 
+/* =========================
+   CARREGAMENTO E META VAZIA
+========================= */
 
 .loading,
 .empty {
-
-    background: white;
-
+    background: var(--surface);
+    border: 1px solid var(--border);
     padding: 40px;
-
     border-radius: 16px;
-
     text-align: center;
-
-    color: #65736a;
-
+    color: var(--text-muted);
+    box-shadow: var(--shadow);
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
 }
 
+/* Cartão "Nenhuma meta criada" */
+:root[data-theme="dark"] .empty,
+:root[data-theme="dark"] .loading {
+    background: #17251c;
+    border: 1px solid #263f30;
+    color: #a3cbb1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Título dentro do cartão vazio */
+:root[data-theme="dark"] .empty h2,
+:root[data-theme="dark"] .empty h3,
+:root[data-theme="dark"] .loading h2,
+:root[data-theme="dark"] .loading h3 {
+    color: #a3edb8;
+}
+
+/* Texto do cartão vazio */
+:root[data-theme="dark"] .empty p,
+:root[data-theme="dark"] .loading p {
+    color: #8cae98;
+}
+
+/* =========================
+   MODAL
+========================= */
 
 .modal {
-
     display: none;
-
     position: fixed;
-
     inset: 0;
-
     background: rgba(15, 61, 30, 0.45);
-
     justify-content: center;
-
     align-items: center;
-
     padding: 20px;
-
+    z-index: 1000;
 }
-
 
 .modal.active {
-
     display: flex;
-
 }
-
 
 .modal-content {
-
-    background: white;
-
+    background: var(--surface);
+    color: var(--text);
     width: 100%;
-
     max-width: 450px;
-
+    border: 1px solid var(--border);
     border-radius: 18px;
-
     padding: 30px;
-
     position: relative;
-
+    box-shadow: var(--shadow);
+    transition: background 0.25s ease, color 0.25s ease;
 }
-
 
 .modal-content h2 {
-
     margin-bottom: 8px;
-
+    color: var(--text);
 }
-
 
 .modal-content p {
-
-    color: #65736a;
-
+    color: var(--text-muted);
     margin-bottom: 25px;
-
 }
-
 
 .modal-content form {
-
     display: flex;
-
     flex-direction: column;
-
     gap: 10px;
-
 }
-
 
 .modal-content label {
-
     font-weight: bold;
-
     margin-top: 8px;
-
+    color: var(--text);
 }
-
 
 .btn-full {
-
     width: 100%;
-
     margin-top: 15px;
-
 }
 
+/* =========================
+   BOTÃO FECHAR
+========================= */
 
 .fechar {
-
     position: absolute;
-
     right: 18px;
-
     top: 15px;
-
     border: none;
-
     background: none;
-
     font-size: 28px;
-
     cursor: pointer;
-
-    color: #65736a;
-
+    color: var(--text-muted);
 }
 
+.fechar:hover {
+    color: var(--green-main);
+}
+
+/* =========================
+   TRANSIÇÕES
+========================= */
+
+.meta-card,
+.menu-meta button,
+.btn-primary,
+.progress,
+.modal-content,
+.loading,
+.empty {
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
 
 @media (max-width: 650px) {
-
     .top {
-
         flex-direction: column;
-
         align-items: flex-start;
-
     }
 
     .top button {
-
         width: 100%;
-
     }
 
     h1 {
-
         font-size: 30px;
-
     }
 
+    .filtro {
+        flex-wrap: wrap;
+    }
+
+    .metas-container {
+        grid-template-columns: 1fr;
+    }
 }
