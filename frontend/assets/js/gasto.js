@@ -33,6 +33,54 @@ async function apiFetch(path, options = {}) {
   return resposta;
 }
 
+/* ─── MODO ESCURO ────────────────────────────────────── */
+
+const THEME_KEY = 'theme';
+
+function getCurrentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark'
+    ? 'dark'
+    : 'light';
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+  const toggle = document.getElementById('theme-toggle');
+
+  if (toggle) {
+    toggle.setAttribute('aria-checked', String(isDark));
+  }
+}
+
+function toggleTheme() {
+  const next = getCurrentTheme() === 'dark' ? 'light' : 'dark';
+
+  applyTheme(next);
+
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch (e) {
+    /* localStorage indisponível: o tema só vale para esta sessão */
+  }
+}
+
+function initTheme() {
+  let saved = null;
+
+  try {
+    saved = localStorage.getItem(THEME_KEY);
+  } catch (e) { }
+
+  const prefersDark =
+    window.matchMedia &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+}
+
 /* ─── DATA ───────────────────────────────────────────── */
 
 // Categorias da aba GASTO (categorias de vida/orçamento).
@@ -180,8 +228,8 @@ function showPage(id) {
     }
   });
 
-  if(id === 'painel') renderPainel();
-  if(id === 'historico') renderHistorico();
+  if (id === 'painel') renderPainel();
+  if (id === 'historico') renderHistorico();
 }
 
 /* ─── FORM SETUP ─────────────────────────────────────── */
@@ -277,10 +325,10 @@ function updateEcoBadge() {
 
   badge.textContent = val + ' / 10';
 
-  if(val >= 7) {
+  if (val >= 7) {
     badge.style.background = 'var(--g100)';
     badge.style.color = 'var(--g700)';
-  } else if(val >= 4) {
+  } else if (val >= 4) {
     badge.style.background = '#FFF8E1';
     badge.style.color = 'var(--amber-d)';
   } else {
@@ -303,11 +351,7 @@ function updatePreview() {
     dateRaw
       ? new Date(dateRaw + 'T12:00').toLocaleDateString(
           'pt-BR',
-          {
-            day:'2-digit',
-            month:'long',
-            year:'numeric'
-          }
+          { day: '2-digit', month: 'long', year: 'numeric' }
         )
       : '—';
 
@@ -317,7 +361,7 @@ function updatePreview() {
   document.getElementById('prev-desc').textContent = desc;
 
   document.getElementById('prev-total').textContent =
-    'R$ ' + val.toFixed(2).replace('.',',');
+    'R$ ' + val.toFixed(2).replace('.', ',');
 
   const pct = (eco / 10) * 100;
   const fill = document.getElementById('eco-meter-fill');
@@ -328,8 +372,8 @@ function updatePreview() {
     eco >= 7
       ? 'var(--g500)'
       : eco >= 4
-      ? 'var(--amber)'
-      : 'var(--red)';
+        ? 'var(--amber)'
+        : 'var(--red)';
 
   const descs = [
     '',
@@ -348,7 +392,7 @@ function updatePreview() {
   document.getElementById('eco-meter-desc').innerHTML =
     descs[eco] || '—';
 
-  if(currentType === 'income') {
+  if (currentType === 'income') {
     document.getElementById('eco-meter-desc').innerHTML =
       '<i class="fa-solid fa-money-bill-wave"></i> Receita — não avaliada';
   }
@@ -372,7 +416,7 @@ function descricaoValidaParaOutro(desc) {
 async function submitExpense() {
   const val = parseFloat(document.getElementById('f-value').value);
 
-  if(!val || val <= 0) {
+  if (!val || val <= 0) {
     showToast(
       '<i class="fa-solid fa-triangle-exclamation"></i> Informe um valor válido',
       true
@@ -382,7 +426,7 @@ async function submitExpense() {
 
   const desc = document.getElementById('f-desc').value.trim();
 
-  if(!desc) {
+  if (!desc) {
     showToast(
       '<i class="fa-solid fa-triangle-exclamation"></i> Informe uma descrição',
       true
@@ -392,7 +436,7 @@ async function submitExpense() {
 
   const dateVal = document.getElementById('f-date').value;
 
-  if(!dateVal) {
+  if (!dateVal) {
     showToast(
       '<i class="fa-solid fa-triangle-exclamation"></i> Informe a data',
       true
@@ -752,10 +796,7 @@ async function saveEdit(event) {
 async function deleteEntry(id) {
   const [tipo, backendId] = String(id).split(':');
 
-  const rota =
-    tipo === 'gasto'
-      ? '/gastos/'
-      : '/receitas/';
+  const rota = tipo === 'gasto' ? '/gastos/' : '/receitas/';
 
   const resposta = await apiFetch(
     rota + backendId,
@@ -779,65 +820,47 @@ async function deleteEntry(id) {
   // Mantém a aba "Minhas metas" em dia com a exclusão.
   if (typeof carregarMetas === 'function') carregarMetas();
 
-  showToast(
-    '<i class="fa-solid fa-trash"></i> Removido'
-  );
+  showToast('<i class="fa-solid fa-trash"></i> Removido');
 }
 
 /* ─── PAINEL ─────────────────────────────────────────── */
 
 function getMonthEntries(ym) {
-  if(!ym) return entries;
+  if (!ym) return entries;
 
-  return entries.filter(
-    e => e.date && e.date.startsWith(ym)
-  );
+  return entries.filter(e => e.date && e.date.startsWith(ym));
 }
 
 function renderPainel() {
   const filtered = getMonthEntries(currentMonth);
 
-  const expenses =
-    filtered.filter(e => e.type === 'expense');
+  const expenses = filtered.filter(e => e.type === 'expense');
+  const incomes = filtered.filter(e => e.type === 'income');
 
-  const incomes =
-    filtered.filter(e => e.type === 'income');
+  const totalExp = expenses.reduce((s, e) => s + e.value, 0);
+  const totalInc = incomes.reduce((s, e) => s + e.value, 0);
+  const balance = totalInc - totalExp;
 
-  const totalExp =
-    expenses.reduce((s, e) => s + e.value, 0);
+  const ecoArr = expenses
+    .filter(e => e.eco != null)
+    .map(e => e.eco);
 
-  const totalInc =
-    incomes.reduce((s, e) => s + e.value, 0);
-
-  const balance =
-    totalInc - totalExp;
-
-  const ecoArr =
-    expenses
-      .filter(e => e.eco != null)
-      .map(e => e.eco);
-
-  const ecoAvg =
-    ecoArr.length
-      ? (
-          ecoArr.reduce((a,b) => a+b,0) /
-          ecoArr.length
-        ).toFixed(1)
-      : '—';
+  const ecoAvg = ecoArr.length
+    ? (ecoArr.reduce((a, b) => a + b, 0) / ecoArr.length).toFixed(1)
+    : '—';
 
   document.getElementById('kpi-total').textContent =
-    'R$ ' + totalExp.toFixed(2).replace('.',',');
+    'R$ ' + totalExp.toFixed(2).replace('.', ',');
 
   document.getElementById('kpi-income').textContent =
-    'R$ ' + totalInc.toFixed(2).replace('.',',');
+    'R$ ' + totalInc.toFixed(2).replace('.', ',');
 
   document.getElementById('kpi-balance').textContent =
     (balance < 0 ? '−R$ ' : 'R$ ') +
-    Math.abs(balance).toFixed(2).replace('.',',');
+    Math.abs(balance).toFixed(2).replace('.', ',');
 
   document.getElementById('kpi-balance').className =
-    'kpi-value ' +
-    (balance >= 0 ? 'green' : 'red');
+    'kpi-value ' + (balance >= 0 ? 'green' : 'red');
 
   document.getElementById('kpi-eco').textContent =
     ecoAvg + (ecoAvg !== '—' ? '/10' : '');
@@ -851,123 +874,84 @@ function renderPainel() {
 }
 
 function renderBarChart(filtered) {
-  const ym =
-    currentMonth ||
-    new Date().toISOString().slice(0,7);
+  const ym = currentMonth || new Date().toISOString().slice(0, 7);
 
-  const [y, m] =
-    ym.split('-').map(Number);
+  const [y, m] = ym.split('-').map(Number);
 
-  const days =
-    new Date(y, m, 0).getDate();
+  const days = new Date(y, m, 0).getDate();
 
   const byDay = {};
 
   filtered
     .filter(e => e.type === 'expense')
     .forEach(e => {
-      const d =
-        parseInt(e.date.split('-')[2]);
-
-      byDay[d] =
-        (byDay[d] || 0) + e.value;
+      const d = parseInt(e.date.split('-')[2]);
+      byDay[d] = (byDay[d] || 0) + e.value;
     });
 
-  const vals =
-    Array.from(
-      {length: days},
-      (_, i) => byDay[i+1] || 0
-    );
+  const vals = Array.from({ length: days }, (_, i) => byDay[i + 1] || 0);
 
-  const max =
-    Math.max(...vals, 1);
+  const max = Math.max(...vals, 1);
 
-  const container =
-    document.getElementById('bar-chart');
+  const container = document.getElementById('bar-chart');
 
   container.innerHTML =
     vals.map((v, i) => {
-      const h =
-        Math.round((v / max) * 140);
-
+      const h = Math.round((v / max) * 140);
       const active = v > 0;
 
       return `
-        <div class="bar-group" title="Dia ${i+1}: R$ ${v.toFixed(2)}">
+        <div class="bar-group" title="Dia ${i + 1}: R$ ${v.toFixed(2)}">
           ${active ? `<div class="bar-val" style="font-size:9px">R$${Math.round(v)}</div>` : ''}
           <div class="bar" style="height:${h}px;opacity:${active ? 1 : 0.25}"></div>
-          <div class="bar-label">${i+1}</div>
+          <div class="bar-label">${i + 1}</div>
         </div>
       `;
     }).join('');
 
   const mNames = [
-    'Jan','Fev','Mar','Abr',
-    'Mai','Jun','Jul','Ago',
-    'Set','Out','Nov','Dez'
+    'Jan', 'Fev', 'Mar', 'Abr',
+    'Mai', 'Jun', 'Jul', 'Ago',
+    'Set', 'Out', 'Nov', 'Dez'
   ];
 
-  document.getElementById(
-    'chart-month-label'
-  ).textContent =
-    mNames[m-1] + '/' + y;
+  document.getElementById('chart-month-label').textContent =
+    mNames[m - 1] + '/' + y;
 }
 
 function renderDonut(expenses) {
   const bycat = {};
 
   expenses.forEach(e => {
-    bycat[e.cat] =
-      (bycat[e.cat] || 0) + e.value;
+    bycat[e.cat] = (bycat[e.cat] || 0) + e.value;
   });
 
-  const total =
-    Object.values(bycat)
-      .reduce((a,b) => a+b, 0);
+  const total = Object.values(bycat).reduce((a, b) => a + b, 0);
 
-  const svg =
-    document.getElementById('donut-svg');
-
-  const legend =
-    document.getElementById('donut-legend');
+  const svg = document.getElementById('donut-svg');
+  const legend = document.getElementById('donut-legend');
 
   const CX = 80;
   const CY = 80;
   const R = 64;
   const r = 44;
 
-  document.getElementById(
-    'donut-center-val'
-  ).textContent =
-    total > 0
-      ? 'R$' + Math.round(total)
-      : '0';
+  document.getElementById('donut-center-val').textContent =
+    total > 0 ? 'R$' + Math.round(total) : '0';
 
-  svg
-    .querySelectorAll('.arc')
-    .forEach(e => e.remove());
+  svg.querySelectorAll('.arc').forEach(e => e.remove());
 
-  if(total === 0) {
+  if (total === 0) {
     legend.innerHTML =
       '<div class="empty-state" style="padding:.5rem"><p style="font-size:12px">Sem gastos ainda</p></div>';
     return;
   }
 
-  const sorted =
-    Object.entries(bycat)
-      .sort((a,b) => b[1] - a[1]);
+  const sorted = Object.entries(bycat).sort((a, b) => b[1] - a[1]);
 
   const colors = [
-    '#40916C',
-    '#2196A3',
-    '#E9C46A',
-    '#E63946',
-    '#7B5EA7',
-    '#6D4C41',
-    '#1565C0',
-    '#616161',
-    '#C77D11',
-    '#52B788'
+    '#40916C', '#2196A3', '#E9C46A', '#E63946', '#7B5EA7',
+    '#6D4C41', '#1565C0', '#616161', '#C77D11', '#52B788'
   ];
 
   let angle = -Math.PI / 2;
@@ -976,74 +960,39 @@ function renderDonut(expenses) {
     const frac = val / total;
     const sweep = frac * 2 * Math.PI;
 
-    const x1 =
-      CX + R * Math.cos(angle);
+    const x1 = CX + R * Math.cos(angle);
+    const y1 = CY + R * Math.sin(angle);
+    const x2 = CX + R * Math.cos(angle + sweep);
+    const y2 = CY + R * Math.sin(angle + sweep);
 
-    const y1 =
-      CY + R * Math.sin(angle);
+    const large = sweep > Math.PI ? 1 : 0;
 
-    const x2 =
-      CX + R * Math.cos(angle + sweep);
-
-    const y2 =
-      CY + R * Math.sin(angle + sweep);
-
-    const large =
-      sweep > Math.PI ? 1 : 0;
-
-    const xi1 =
-      CX + r * Math.cos(angle);
-
-    const yi1 =
-      CY + r * Math.sin(angle);
-
-    const xi2 =
-      CX + r * Math.cos(angle + sweep);
-
-    const yi2 =
-      CY + r * Math.sin(angle + sweep);
+    const xi1 = CX + r * Math.cos(angle);
+    const yi1 = CY + r * Math.sin(angle);
+    const xi2 = CX + r * Math.cos(angle + sweep);
+    const yi2 = CY + r * Math.sin(angle + sweep);
 
     const d =
       `M${x1},${y1} A${R},${R} 0 ${large},1 ${x2},${y2} L${xi2},${yi2} A${r},${r} 0 ${large},0 ${xi1},${yi1} Z`;
 
-    const path =
-      document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'path'
-      );
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     path.setAttribute('d', d);
+    path.setAttribute('fill', colors[i % colors.length]);
+    path.setAttribute('class', 'arc');
+    path.setAttribute('opacity', '0.9');
 
-    path.setAttribute(
-      'fill',
-      colors[i % colors.length]
-    );
-
-    path.setAttribute('class','arc');
-
-    path.setAttribute(
-      'opacity',
-      '0.9'
-    );
-
-    svg.insertBefore(
-      path,
-      svg.firstChild
-    );
+    svg.insertBefore(path, svg.firstChild);
 
     angle += sweep;
   });
 
   legend.innerHTML =
     sorted
-      .slice(0,5)
+      .slice(0, 5)
       .map(([catId, val], i) => {
         const cat = findCategoryById(catId);
-
-        const pct =
-          Math.round(
-            (val / total) * 100
-          );
+        const pct = Math.round((val / total) * 100);
 
         return `
           <div class="legend-item">
@@ -1058,10 +1007,9 @@ function renderDonut(expenses) {
 }
 
 function renderRecent(list) {
-  const el =
-    document.getElementById('recent-body');
+  const el = document.getElementById('recent-body');
 
-  if(!list.length) {
+  if (!list.length) {
     el.innerHTML = `
       <div class="empty-state">
         <span class="empty-icon">
@@ -1102,23 +1050,17 @@ function entryRow(e) {
   const cat =
     findCategoryById(e.cat) ||
     {
-      icon:'<i class="fa-solid fa-box"></i>',
+      icon: '<i class="fa-solid fa-box"></i>',
       name: e.cat,
-      color:'#616161',
-      bg:'#F5F5F5'
+      color: '#616161',
+      bg: '#F5F5F5'
     };
 
   const dateStr =
     e.date
-      ? new Date(
-          e.date + 'T12:00'
-        ).toLocaleDateString(
+      ? new Date(e.date + 'T12:00').toLocaleDateString(
           'pt-BR',
-          {
-            day:'2-digit',
-            month:'2-digit',
-            year:'2-digit'
-          }
+          { day: '2-digit', month: '2-digit', year: '2-digit' }
         )
       : '—';
 
@@ -1129,14 +1071,12 @@ function entryRow(e) {
           e.eco >= 7
             ? 'chip-high'
             : e.eco >= 4
-            ? 'chip-med'
-            : 'chip-low'
+              ? 'chip-med'
+              : 'chip-low'
         }">
           ${
             e.eco >= 7
               ? '<i class="fa-solid fa-leaf"></i>'
-              : e.eco >= 4
-              ? '<i class="fa-solid fa-circle"></i>'
               : '<i class="fa-solid fa-circle"></i>'
           }
           ${e.eco}/10
@@ -1153,10 +1093,7 @@ function entryRow(e) {
       <td>
         <div class="expense-name-cell">
 
-          <div 
-            class="cat-icon" 
-            style="background:${cat.bg}"
-          >
+          <div class="cat-icon" style="background:${cat.bg}">
             ${cat.icon}
           </div>
 
@@ -1165,21 +1102,14 @@ function entryRow(e) {
               ${e.desc}
             </div>
 
-            ${
-              e.obs
-                ? `<div class="expense-note">${e.obs}</div>`
-                : ''
-            }
+            ${e.obs ? `<div class="expense-note">${e.obs}</div>` : ''}
           </div>
 
         </div>
       </td>
 
       <td>
-        <span 
-          class="cat-badge" 
-          style="background:${cat.bg};color:${cat.color}"
-        >
+        <span class="cat-badge" style="background:${cat.bg};color:${cat.color}">
           ${cat.name}
         </span>
       </td>
@@ -1192,16 +1122,12 @@ function entryRow(e) {
         ${ecoChip}
       </td>
 
-      <td 
-        style="text-align:right;white-space:nowrap" 
-        class="${
-          e.type === 'income'
-            ? 'amount-green'
-            : 'amount-red'
-        }"
+      <td
+        style="text-align:right;white-space:nowrap"
+        class="${e.type === 'income' ? 'amount-green' : 'amount-red'}"
       >
         ${e.type === 'income' ? '+' : '−'}
-        R$ ${e.value.toFixed(2).replace('.',',')}
+        R$ ${e.value.toFixed(2).replace('.', ',')}
       </td>
 
       <td>
@@ -1234,58 +1160,26 @@ function entryRow(e) {
 /* ─── HISTORICO ──────────────────────────────────────── */
 
 function renderHistorico() {
-  const monthSel =
-    document.getElementById('hist-month').value;
+  const monthSel = document.getElementById('hist-month').value;
+  const catSel = document.getElementById('hist-cat').value;
+  const typeSel = document.getElementById('hist-type').value;
+  const search = document.getElementById('hist-search').value.toLowerCase();
 
-  const catSel =
-    document.getElementById('hist-cat').value;
+  const list = entries.filter(e => {
+    const inMonth = !monthSel || (e.date && e.date.startsWith(monthSel));
+    const inCat = !catSel || e.cat === catSel;
+    const inType = !typeSel || e.type === typeSel;
+    const inSearch =
+      !search ||
+      e.desc.toLowerCase().includes(search) ||
+      (e.obs && e.obs.toLowerCase().includes(search));
 
-  const typeSel =
-    document.getElementById('hist-type').value;
+    return inMonth && inCat && inType && inSearch;
+  });
 
-  const search =
-    document
-      .getElementById('hist-search')
-      .value
-      .toLowerCase();
+  const el = document.getElementById('historico-body');
 
-  let list =
-    entries.filter(e => {
-      const inMonth =
-        !monthSel ||
-        (
-          e.date &&
-          e.date.startsWith(monthSel)
-        );
-
-      const inCat =
-        !catSel ||
-        e.cat === catSel;
-
-      const inType =
-        !typeSel ||
-        e.type === typeSel;
-
-      const inSearch =
-        !search ||
-        e.desc.toLowerCase().includes(search) ||
-        (
-          e.obs &&
-          e.obs.toLowerCase().includes(search)
-        );
-
-      return (
-        inMonth &&
-        inCat &&
-        inType &&
-        inSearch
-      );
-    });
-
-  const el =
-    document.getElementById('historico-body');
-
-  if(!list.length) {
+  if (!list.length) {
     el.innerHTML = `
       <div class="empty-state">
         <span class="empty-icon">
@@ -1322,68 +1216,46 @@ function renderHistorico() {
 }
 
 function populateHistFilters() {
-  const months =
-    [
-      ...new Set(
-        entries
-          .map(
-            e => e.date
-              ? e.date.slice(0,7)
-              : ''
-          )
-          .filter(Boolean)
-      )
-    ]
+  const months = [
+    ...new Set(
+      entries
+        .map(e => (e.date ? e.date.slice(0, 7) : ''))
+        .filter(Boolean)
+    )
+  ]
     .sort()
     .reverse();
 
-  const mSel =
-    document.getElementById('hist-month');
+  const mSel = document.getElementById('hist-month');
+  const cur = mSel.value;
 
-  const cur =
-    mSel.value;
+  const mNames = [
+    'Jan', 'Fev', 'Mar', 'Abr',
+    'Mai', 'Jun', 'Jul', 'Ago',
+    'Set', 'Out', 'Nov', 'Dez'
+  ];
 
   mSel.innerHTML =
     '<option value="">Todos os meses</option>' +
     months.map(m => {
-      const [y,mo] =
-        m.split('-');
-
-      const mNames = [
-        'Jan','Fev','Mar','Abr',
-        'Mai','Jun','Jul','Ago',
-        'Set','Out','Nov','Dez'
-      ];
+      const [y, mo] = m.split('-');
 
       return `
-        <option 
-          value="${m}" 
-          ${m === cur ? 'selected' : ''}
-        >
-          ${mNames[parseInt(mo)-1]}/${y}
+        <option value="${m}" ${m === cur ? 'selected' : ''}>
+          ${mNames[parseInt(mo) - 1]}/${y}
         </option>
       `;
     }).join('');
 
-  const catSel =
-    document.getElementById('hist-cat');
+  const catSel = document.getElementById('hist-cat');
+  const curCat = catSel.value;
 
-  const curCat =
-    catSel.value;
-
-  const usedCats =
-    [
-      ...new Set(
-        entries.map(e => e.cat)
-      )
-    ];
+  const usedCats = [...new Set(entries.map(e => e.cat))];
 
   catSel.innerHTML =
     '<option value="">Todas as categorias</option>' +
     ALL_CATEGORIES
-      .filter(
-        c => usedCats.includes(c.id)
-      )
+      .filter(c => usedCats.includes(c.id))
       .map(c =>
         `<option value="${c.id}" ${c.id === curCat ? 'selected' : ''}>
           ${c.name}
@@ -1395,60 +1267,44 @@ function populateHistFilters() {
 /* ─── MONTH TABS ─────────────────────────────────────── */
 
 function buildMonthTabs() {
-  const months =
-    [
-      ...new Set(
-        entries
-          .map(
-            e =>
-              e.date
-                ? e.date.slice(0,7)
-                : ''
-          )
-          .filter(Boolean)
-      )
-    ]
+  const months = [
+    ...new Set(
+      entries
+        .map(e => (e.date ? e.date.slice(0, 7) : ''))
+        .filter(Boolean)
+    )
+  ]
     .sort()
     .reverse();
 
-  const now =
-    new Date()
-      .toISOString()
-      .slice(0,7);
+  const now = new Date().toISOString().slice(0, 7);
 
-  if(!months.includes(now)) {
+  if (!months.includes(now)) {
     months.unshift(now);
   }
 
   const mNames = [
-    'Jan','Fev','Mar','Abr',
-    'Mai','Jun','Jul','Ago',
-    'Set','Out','Nov','Dez'
+    'Jan', 'Fev', 'Mar', 'Abr',
+    'Mai', 'Jun', 'Jul', 'Ago',
+    'Set', 'Out', 'Nov', 'Dez'
   ];
 
-  if(!currentMonth) {
+  if (!currentMonth) {
     currentMonth = now;
   }
 
-  document.getElementById(
-    'month-tabs'
-  ).innerHTML =
+  document.getElementById('month-tabs').innerHTML =
     months
-      .slice(0,6)
+      .slice(0, 6)
       .map(m => {
-        const [y,mo] =
-          m.split('-');
+        const [y, mo] = m.split('-');
 
         return `
           <button 
-            class="month-tab ${
-              m === currentMonth
-                ? 'active'
-                : ''
-            }"
+            class="month-tab ${m === currentMonth ? 'active' : ''}"
             onclick="setMonth('${m}')"
           >
-            ${mNames[parseInt(mo)-1]}/${y}
+            ${mNames[parseInt(mo) - 1]}/${y}
           </button>
         `;
       })
@@ -1467,43 +1323,30 @@ function setMonth(ym) {
 /* ─── UTILS ──────────────────────────────────────────── */
 
 function todayStr() {
-  return new Date()
-    .toISOString()
-    .slice(0,10);
+  return new Date().toISOString().slice(0, 10);
 }
 
-function showToast(msg, warn=false) {
-  const t =
-    document.getElementById('toast');
+function showToast(msg, warn = false) {
+  const t = document.getElementById('toast');
 
   t.innerHTML = msg;
 
-  t.style.background =
-    warn
-      ? 'var(--amber-d)'
-      : 'var(--g700)';
+  t.style.background = warn ? 'var(--amber-d)' : 'var(--g700)';
 
   t.classList.add('show');
 
-  setTimeout(
-    () => t.classList.remove('show'),
-    2500
-  );
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 /* ─── LOGOUT ─────────────────────────────────────────── */
 
 async function logout() {
-  await apiFetch(
-    '/auth/logout',
-    { method: 'POST' }
-  );
+  await apiFetch('/auth/logout', { method: 'POST' });
 
   localStorage.removeItem('token');
   localStorage.removeItem('usuario');
 
-  window.location.href =
-    'login.html';
+  window.location.href = 'login.html';
 }
 
 
@@ -1524,33 +1367,27 @@ document.addEventListener('click', event => {
 /* ─── INIT ───────────────────────────────────────────── */
 
 async function init() {
+  // Tema primeiro, para a interface já aparecer no modo certo
+  initTheme();
+
   checkAuth();
 
   await loadCategories();
 
   buildCatGrid();
 
-  document.getElementById(
-    'f-date'
-  ).value = todayStr();
+  document.getElementById('f-date').value = todayStr();
 
   updateEcoBadge();
   updatePreview();
   updateEcoTip();
   toggleOutroHint();
 
-  document.getElementById(
-    'topbar-date'
-  ).textContent =
-    new Date()
-      .toLocaleDateString(
-        'pt-BR',
-        {
-          weekday:'short',
-          day:'2-digit',
-          month:'short'
-        }
-      );
+  document.getElementById('topbar-date').textContent =
+    new Date().toLocaleDateString(
+      'pt-BR',
+      { weekday: 'short', day: '2-digit', month: 'short' }
+    );
 
   await loadEntries();
 
@@ -1562,48 +1399,39 @@ window.onload = init;
 
 /* ─── MENU HAMBÚRGUER ────────────────────────────────── */
 
-const hamburger =
-  document.getElementById("hamburger");
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('menu-overlay');
 
-const sidebar =
-  document.getElementById("sidebar");
+hamburger.addEventListener('click', () => {
+  sidebar.classList.toggle('mobile-open');
+  overlay.classList.toggle('show');
+  hamburger.classList.toggle('active');
 
-const overlay =
-  document.getElementById("menu-overlay");
+  const aberto = sidebar.classList.contains('mobile-open');
 
-hamburger.addEventListener("click", () => {
-  sidebar.classList.toggle("mobile-open");
-  overlay.classList.toggle("show");
-  hamburger.classList.toggle("active");
-
-  const aberto =
-    sidebar.classList.contains("mobile-open");
-
-  hamburger.setAttribute(
-    "aria-expanded",
-    aberto
-  );
+  hamburger.setAttribute('aria-expanded', aberto);
 });
 
-overlay.addEventListener("click", () => {
+overlay.addEventListener('click', () => {
   fecharMenu();
 });
 
 function fecharMenu() {
-  sidebar.classList.remove("mobile-open");
-  overlay.classList.remove("show");
-  hamburger.classList.remove("active");
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('show');
+  hamburger.classList.remove('active');
 
-  hamburger.setAttribute(
-    "aria-expanded",
-    "false"
-  );
+  hamburger.setAttribute('aria-expanded', 'false');
 }
 
 document
-  .querySelectorAll(".sidebar .nav-item")
+  .querySelectorAll('.sidebar .nav-item')
   .forEach(item => {
-    item.addEventListener("click", () => {
+    item.addEventListener('click', () => {
+      // O botão de tema não fecha o menu no celular
+      if (item.id === 'theme-toggle') return;
+
       if (window.innerWidth <= 900) {
         fecharMenu();
       }

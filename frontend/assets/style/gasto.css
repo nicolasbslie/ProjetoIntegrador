@@ -84,7 +84,7 @@ body {
 
 .topbar-date {
   font-size: 12px;
-  color: var(white);
+  color: white;
   font-weight: 400;
 }
 
@@ -1678,4 +1678,182 @@ input[type="range"].eco-range::-webkit-slider-thumb {
   .charts-row {
     grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr);
   }
+}
+
+
+/* =========================================================
+   MODO ESCURO
+   ========================================================= */
+
+/* Variáveis do tema escuro */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:     #0A0E0B;
+  --surf:   #12170F;
+  --border: #223028;
+  --text:   #E9F5EC;
+  --text2:  #A9C9B6;
+  --text3:  #6E9481;
+  --g50:  #16231A;
+  --g100: #1B2E20;
+  --g200: #234030;
+  --g300: #2F5940;
+  --g400: #3D7A54;
+  --g500: #52B788;
+  --g600: #40916C;
+  --g700: #2D6A4F;
+  --g800: #7ed957;
+  --red-l: rgba(230, 57, 70, .15);
+  --shadow: 0 1px 3px rgba(0,0,0,.5), 0 4px 20px rgba(0,0,0,.4);
+}
+
+/* Transição suave ao trocar de tema */
+body, .sidebar, .topbar, .kpi, .chart-card, .recent-card,
+.form-card, .preview-card, .goal-card, .edit-modal, .card {
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+
+/* ── Botão "Modo escuro" na sidebar ── */
+#theme-toggle:focus-visible {
+  outline: 2px solid var(--g500);
+  outline-offset: -2px;
+}
+
+/* Ícone: lua no modo claro, sol no modo escuro */
+#theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] #theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] #theme-toggle .icon-sun { display: inline-block; }
+
+/* Interruptor */
+.theme-switch-track {
+  margin-left: auto;
+  width: 34px;
+  height: 18px;
+  background: var(--border);
+  border-radius: 100px;
+  position: relative;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+
+.theme-switch-track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+
+:root[data-theme="dark"] .theme-switch-track {
+  background: var(--g500);
+}
+
+:root[data-theme="dark"] .theme-switch-track::after {
+  transform: translateX(16px);
+}
+
+/* ── Ajustes das cores fixas (que não usam variáveis) ── */
+:root[data-theme="dark"] .topbar-right svg {
+  color: #fff;
+}
+
+:root[data-theme="dark"] .nav-item:hover,
+:root[data-theme="dark"] .nav-item.active {
+  color: var(--g400);
+}
+
+:root[data-theme="dark"] .kpi-value.green,
+:root[data-theme="dark"] .amount-green,
+:root[data-theme="dark"] .receipt-logo,
+:root[data-theme="dark"] .receipt-row.total .val.income {
+  color: var(--g500);
+}
+
+/* Botões */
+:root[data-theme="dark"] .btn-ghost {
+  background: var(--surf);
+  color: var(--g400);
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .btn-ghost:hover {
+  background: var(--g50);
+  border-color: var(--g400);
+}
+
+:root[data-theme="dark"] .btn-danger:hover {
+  background: rgba(230, 57, 70, .25);
+}
+
+:root[data-theme="dark"] .month-tab {
+  background: var(--surf);
+}
+
+:root[data-theme="dark"] .month-tab.active {
+  background: var(--g700);
+  color: #fff;
+}
+
+/* Campos de formulário */
+:root[data-theme="dark"] .filter-bar select,
+:root[data-theme="dark"] .filter-bar input,
+:root[data-theme="dark"] .edit-modal select {
+  background: var(--surf);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .form-group input:focus,
+:root[data-theme="dark"] .form-group select:focus,
+:root[data-theme="dark"] .form-group textarea:focus {
+  background: var(--g50);
+}
+
+:root[data-theme="dark"] .form-group input::placeholder,
+:root[data-theme="dark"] .form-group textarea::placeholder,
+:root[data-theme="dark"] .filter-bar input::placeholder {
+  color: var(--text3);
+}
+
+:root[data-theme="dark"] .cat-btn.selected {
+  color: var(--text);
+}
+
+/* Chips, alertas e ações da tabela */
+:root[data-theme="dark"] .chip-med {
+  background: rgba(233, 196, 106, .15);
+  color: var(--amber);
+}
+
+:root[data-theme="dark"] .alert-warn {
+  background: rgba(233, 196, 106, .12);
+  border-color: rgba(233, 196, 106, .35);
+  color: var(--amber);
+}
+
+:root[data-theme="dark"] .edit-btn:hover {
+  background: rgba(33, 150, 163, .18);
+}
+
+/* Ícones e selos de categoria (cores pastel vindas do JS) ficam mais suaves */
+:root[data-theme="dark"] .cat-icon,
+:root[data-theme="dark"] .cat-badge {
+  filter: brightness(.88) saturate(.9);
+}
+
+/* Modal */
+:root[data-theme="dark"] .modal-overlay {
+  background: rgba(0, 0, 0, .65);
+}
+
+:root[data-theme="dark"] .edit-modal {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+}
+
+/* Toast */
+:root[data-theme="dark"] .toast {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .6);
 }
