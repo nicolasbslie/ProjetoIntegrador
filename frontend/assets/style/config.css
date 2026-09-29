@@ -1,145 +1,21 @@
 
+/* =========================
+   VARIÁVEIS
+========================= */
 :root {
   --green-dark: #0f3d1e;
   --green-main: #1fa463;
   --green-light: #7ed957;
   --red: #d32f2f;
-  --bg: #f2f5f3;
-
-  --page-bg: #f0f0f0;
+  --bg: #f0f0f0;
+  --text: #1b1b1b;
   --card-bg: #ffffff;
-  --text: #222222;
-  --text-muted: #777777;
   --input-bg: #ffffff;
-  --input-border: #cccccc;
-  --outline-hover: #f1f8f1;
-  --shadow: rgba(0, 0, 0, 0.12);
-}
-
-/* ==========================================
-   MODO ESCURO
-   
-========================================== */
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-}
-
-:root[data-theme="dark"] body {
-  background-color: #090d0b;
-  color: #e7f5eb;
-}
-
-/* Cartões */
-:root[data-theme="dark"] .card {
-  background-color: #111813;
-  color: #e7f5eb;
-  border: 1px solid #26372c;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Cartão de exclusão */
-:root[data-theme="dark"] .card-danger {
-  background-color: #191211;
-  border: 1px solid #8f3030;
-}
-
-/* Títulos */
-:root[data-theme="dark"] .card h2 {
-  color: #a3edb8;
-}
-
-:root[data-theme="dark"] .card-danger h2 {
-  color: #ff6262;
-}
-
-/* Textos */
-:root[data-theme="dark"] .section-sub {
-  color: #a3cbb1;
-}
-
-:root[data-theme="dark"] .input-group label {
-  color: #a3cbb1;
-}
-
-/* Campos de texto */
-:root[data-theme="dark"] .input-group input {
-  background-color: #090d0b;
-  color: #e7f5eb;
-  border: 1px solid #315840;
-}
-
-:root[data-theme="dark"] .input-group input::placeholder {
-  color: #789783;
-}
-
-:root[data-theme="dark"] .input-group input:focus {
-  border-color: #52b788;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(82, 183, 136, 0.15);
-}
-
-/* Botão de voltar */
-:root[data-theme="dark"] .btn-voltar {
-  background: rgba(0, 0, 0, 0.2);
-  color: #fff;
-}
-
-/* Botão salvar */
-:root[data-theme="dark"] .btn-primary {
-  background-color: #16834e;
-  color: #fff;
-}
-
-:root[data-theme="dark"] .btn-primary:hover {
-  background-color: #20a464;
-}
-
-/* Botão excluir */
-:root[data-theme="dark"] .btn-danger {
-  background-color: #c62828;
-  color: #fff;
-}
-
-/* Botão sair */
-:root[data-theme="dark"] .btn-outline {
-  background-color: #111813;
-  color: #7ed957;
-  border: 2px solid #299b55;
-}
-
-:root[data-theme="dark"] .btn-outline:hover {
-  background-color: #17251c;
-}
-
-/* Mensagens */
-:root[data-theme="dark"] .feedback.erro {
-  background-color: #351817;
-  color: #ff8a80;
-}
-
-:root[data-theme="dark"] .feedback.sucesso {
-  background-color: #12331f;
-  color: #a3edb8;
-}
-
-/* Transição suave */
-body,
-.card,
-.input-group input,
-.btn,
-.btn-voltar {
-  transition:
-    background-color 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
 }
 
 /* =========================
-   CONFIGURAÇÕES GERAIS
+   RESET
 ========================= */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -148,24 +24,23 @@ body,
 
 html {
   min-height: 100%;
-  background: var(--page-bg);
+  background-color: var(--bg);
 }
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: var(--page-bg);
+  background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.25s, color 0.25s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* =========================
-   HEADER
+   CABEÇALHO
 ========================= */
-
 header {
   background: linear-gradient(
     90deg,
@@ -192,7 +67,6 @@ header h1 {
   padding: 8px 14px;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .btn-voltar:hover {
@@ -200,16 +74,14 @@ header h1 {
 }
 
 /* =========================
-   ÁREA PRINCIPAL
+   CONTEÚDO PRINCIPAL
 ========================= */
-
 main {
   flex: 1;
   display: flex;
   justify-content: center;
   padding: 40px 20px;
-  background: var(--page-bg);
-  transition: background-color 0.25s;
+  background-color: transparent;
 }
 
 .config-wrap {
@@ -223,19 +95,12 @@ main {
 /* =========================
    CARTÕES
 ========================= */
-
 .card {
-  background: var(--card-bg);
-  color: var(--text);
-  border: 1px solid transparent;
+  background-color: var(--card-bg);
   border-radius: 16px;
-  box-shadow: 0 8px 32px var(--shadow);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   padding: 32px;
-  transition:
-    background-color 0.25s,
-    color 0.25s,
-    border-color 0.25s,
-    box-shadow 0.25s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .card h2 {
@@ -243,14 +108,7 @@ main {
   font-weight: bold;
   color: #1b3a1b;
   margin-bottom: 20px;
-  transition: color 0.25s;
 }
-
-:root[data-theme="dark"] .card h2 {
-  color: #a3edb8;
-}
-
-/* Cartão de exclusão */
 
 .card-danger {
   border: 1px solid #f3c1c1;
@@ -260,35 +118,15 @@ main {
   color: var(--red);
 }
 
-/* Mantém o título de exclusão vermelho no modo escuro */
-:root[data-theme="dark"] .card-danger {
-  background: #191211;
-  border: 1px solid #8f3030;
-}
-
-:root[data-theme="dark"] .card-danger h2 {
-  color: #ff7777;
-}
-
-/* =========================
-   TEXTOS
-========================= */
-
 .section-sub {
   font-size: 13px;
-  color: var(--text-muted);
+  color: #777777;
   margin-bottom: 16px;
-  transition: color 0.25s;
-}
-
-:root[data-theme="dark"] .card p {
-  color: #a3cbb1;
 }
 
 /* =========================
-   CAMPOS DE TEXTO
+   CAMPOS DE ENTRADA
 ========================= */
-
 .input-group {
   margin-bottom: 16px;
 }
@@ -299,50 +137,27 @@ main {
   color: #444444;
   margin-bottom: 6px;
   font-weight: 600;
-  transition: color 0.25s;
 }
 
 .input-group input {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid var(--input-border);
+  border: 1px solid #cccccc;
   border-radius: 8px;
   font-size: 15px;
-  color: var(--text);
-  background: var(--input-bg);
+  color: #333333;
+  background-color: var(--input-bg);
   outline: none;
-  transition:
-    background-color 0.25s,
-    color 0.25s,
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
-
-:root[data-theme="dark"] .input-group label {
-  color: #a3cbb1;
-}
-
-.input-group input::placeholder {
-  color: #888888;
-}
-
-:root[data-theme="dark"] .input-group input::placeholder {
-  color: #789783;
+  transition: border-color 0.2s, background-color 0.3s;
 }
 
 .input-group input:focus {
   border-color: var(--green-dark);
 }
 
-:root[data-theme="dark"] .input-group input:focus {
-  border-color: #52b788;
-  box-shadow: 0 0 0 2px rgba(82, 183, 136, 0.15);
-}
-
 /* =========================
    FEEDBACK
 ========================= */
-
 .feedback {
   display: none;
   font-size: 13px;
@@ -363,22 +178,9 @@ main {
   color: #1e7e34;
 }
 
-:root[data-theme="dark"] .feedback.erro {
-  background: #321817;
-  color: #ff9999;
-  border: 1px solid #8f3030;
-}
-
-:root[data-theme="dark"] .feedback.sucesso {
-  background: #10291c;
-  color: #8ee5a8;
-  border: 1px solid #286a43;
-}
-
 /* =========================
    BOTÕES
 ========================= */
-
 .btn {
   width: 100%;
   padding: 15px;
@@ -387,11 +189,7 @@ main {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  transition:
-    background-color 0.2s,
-    color 0.2s,
-    border-color 0.2s,
-    transform 0.1s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .btn:active {
@@ -399,7 +197,6 @@ main {
 }
 
 /* Salvar */
-
 .btn-primary {
   background-color: #43a047;
   color: #ffffff;
@@ -409,18 +206,7 @@ main {
   background-color: #388e3c;
 }
 
-:root[data-theme="dark"] .btn-primary {
-  background: #16834e;
-  color: #ffffff;
-  border: 1px solid #249e62;
-}
-
-:root[data-theme="dark"] .btn-primary:hover {
-  background: #20a464;
-}
-
 /* Excluir */
-
 .btn-danger {
   background-color: var(--red);
   color: #ffffff;
@@ -430,17 +216,7 @@ main {
   background-color: #b71c1c;
 }
 
-:root[data-theme="dark"] .btn-danger {
-  background: #c62828;
-  color: #ffffff;
-}
-
-:root[data-theme="dark"] .btn-danger:hover {
-  background: #e53935;
-}
-
-/* Sair da conta */
-
+/* Sair */
 .btn-outline {
   background-color: transparent;
   color: #43a047;
@@ -451,20 +227,116 @@ main {
   background-color: #f1f8f1;
 }
 
-:root[data-theme="dark"] .btn-outline {
-  background: #111813;
+/* =========================
+   MODO ESCURO
+========================= */
+
+/* Fundo de toda a página */
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] main,
+body[data-theme="dark"],
+body[data-theme="dark"] main {
+  background-color: #090d0b !important;
+  color: #e7f5eb;
+}
+
+/* Cartão de dados */
+html[data-theme="dark"] .card,
+body[data-theme="dark"] .card {
+  background-color: #111813;
+  color: #e7f5eb;
+  border: 1px solid #26372c;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Títulos */
+html[data-theme="dark"] .card h2,
+body[data-theme="dark"] .card h2 {
+  color: #a3edb8;
+}
+
+/* Cartão de exclusão */
+html[data-theme="dark"] .card-danger,
+body[data-theme="dark"] .card-danger {
+  background-color: #191211;
+  border: 1px solid #8f3030;
+}
+
+html[data-theme="dark"] .card-danger h2,
+body[data-theme="dark"] .card-danger h2 {
+  color: #ff6b6b;
+}
+
+/* Textos e rótulos */
+html[data-theme="dark"] .section-sub,
+html[data-theme="dark"] .input-group label,
+body[data-theme="dark"] .section-sub,
+body[data-theme="dark"] .input-group label {
+  color: #a3cbb1;
+}
+
+/* Campos */
+html[data-theme="dark"] .input-group input,
+body[data-theme="dark"] .input-group input {
+  background-color: #090d0b;
+  color: #e7f5eb;
+  border: 1px solid #315840;
+}
+
+html[data-theme="dark"] .input-group input::placeholder,
+body[data-theme="dark"] .input-group input::placeholder {
+  color: #789783;
+}
+
+html[data-theme="dark"] .input-group input:focus,
+body[data-theme="dark"] .input-group input:focus {
+  border-color: #52b788;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(82, 183, 136, 0.15);
+}
+
+/* Botão salvar */
+html[data-theme="dark"] .btn-primary,
+body[data-theme="dark"] .btn-primary {
+  background-color: #16834e;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .btn-primary:hover,
+body[data-theme="dark"] .btn-primary:hover {
+  background-color: #20a464;
+}
+
+/* Botão excluir */
+html[data-theme="dark"] .btn-danger,
+body[data-theme="dark"] .btn-danger {
+  background-color: #c62828;
+  color: #ffffff;
+}
+
+/* Botão sair */
+html[data-theme="dark"] .btn-outline,
+body[data-theme="dark"] .btn-outline {
+  background-color: #111813;
   color: #7ed957;
   border: 2px solid #299b55;
 }
 
-:root[data-theme="dark"] .btn-outline:hover {
-  background: #17251c;
+html[data-theme="dark"] .btn-outline:hover,
+body[data-theme="dark"] .btn-outline:hover {
+  background-color: #17251c;
+}
+
+/* Botão voltar */
+html[data-theme="dark"] .btn-voltar,
+body[data-theme="dark"] .btn-voltar {
+  background: rgba(0, 0, 0, 0.15);
 }
 
 /* =========================
    RESPONSIVIDADE
 ========================= */
-
 @media (max-width: 600px) {
   main {
     padding: 24px 16px;
@@ -472,13 +344,5 @@ main {
 
   .card {
     padding: 24px;
-  }
-
-  header {
-    padding: 16px 20px;
-  }
-
-  header h1 {
-    font-size: 20px;
   }
 }
