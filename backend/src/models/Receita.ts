@@ -31,6 +31,14 @@ export class Receita {
   })
   descricao: string;
 
+  // id da categoria escolhida no front (ex.: "nubank", "itau", "salario").
+  // Nullable para não quebrar receitas antigas (o front usa "salario" nelas).
+  @Column({
+    length: 30,
+    nullable: true,
+  })
+  categoria: string;
+
   @CreateDateColumn({
     name: "data_receita",
   })
