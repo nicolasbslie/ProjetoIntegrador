@@ -1,140 +1,427 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ecoSpending — Guia Completo de Investimentos</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-<!-- TEMA: usa a mesma chave ('theme') do gasto.js -->
+<!-- TEMA: utiliza a mesma chave da página principal -->
 <script>
-  (function () {
-    function temaAtual() {
-      var salvo = null;
-      try { salvo = localStorage.getItem('theme'); } catch (e) {}
+(function () {
+  function getThemeKey() {
+    try {
+      const usuario = JSON.parse(
+        localStorage.getItem('usuario') || 'null'
+      );
 
-      var prefereEscuro =
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const id = usuario && (usuario.id ?? usuario.email);
+      return id ? 'theme:' + id : 'theme';
+    } catch (e) {
+      return 'theme';
+    }
+  }
 
-      return salvo || (prefereEscuro ? 'dark' : 'light');
+  function aplicarTema() {
+    let tema = 'light';
+
+    try {
+      const salvo = localStorage.getItem(getThemeKey());
+      tema = salvo === 'dark' ? 'dark' : 'light';
+    } catch (e) {
+      tema = 'light';
     }
 
-    document.documentElement.setAttribute('data-theme', temaAtual());
+    document.documentElement.setAttribute('data-theme', tema);
+  }
 
-    window.addEventListener('storage', function (e) {
-      if (e.key === 'theme') {
-        document.documentElement.setAttribute('data-theme', temaAtual());
-      }
-    });
-  })();
+  // Aplica o tema antes de carregar o conteúdo visual.
+  aplicarTema();
+
+  // Atualiza o tema se a preferência mudar em outra aba.
+  window.addEventListener('storage', function (e) {
+    if (e.key === getThemeKey() || e.key === 'usuario') {
+      aplicarTema();
+    }
+  });
+})();
 </script>
 
 <link rel="stylesheet" href="../style/ebook.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
+  rel="stylesheet"
+>
+
 </head>
+
 <body>
 
+<!-- BOTÃO VOLTAR -->
 <div>
-<button onclick="window.location.href='gasto.html'" class="btn-voltar">
+  <button
+    onclick="window.location.href='gasto.html'"
+    class="btn-voltar"
+  >
     ← Voltar
-</button>
+  </button>
 </div>
 
-<!-- COVER -->
+
+<!-- CAPA -->
 <section class="cover" id="cover">
-  <div class="cover-badge"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Guia Definitivo</div>
-  <div class="cover-logo">ecoSpending</div>
-  <h1>Invista com <span>Consciência</span> e Inteligência</h1>
-  <p class="cover-sub">Do primeiro investimento à estratégia avançada — tudo que você precisa para crescer seu patrimônio de forma sustentável.</p>
+
+  <div class="cover-badge">
+    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+    Guia Definitivo
+  </div>
+
+  <div class="cover-logo">
+    ecoSpending
+  </div>
+
+  <h1>
+    Invista com
+    <span>Consciência</span>
+    e Inteligência
+  </h1>
+
+  <p class="cover-sub">
+    Do primeiro investimento à estratégia avançada —
+    tudo que você precisa para crescer seu patrimônio
+    de forma sustentável.
+  </p>
+
   <div class="cover-levels">
-    <span class="level-pill iniciante"><i class="fa-solid fa-book" aria-hidden="true"></i> Nível 1 — Iniciante</span>
-    <span class="level-pill intermediario"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Nível 2 — Intermediário</span>
-    <span class="level-pill avancado"><i class="fa-solid fa-rocket" aria-hidden="true"></i> Nível 3 — Avançado</span>
+
+    <span class="level-pill iniciante">
+      <i class="fa-solid fa-book" aria-hidden="true"></i>
+      Nível 1 — Iniciante
+    </span>
+
+    <span class="level-pill intermediario">
+      <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+      Nível 2 — Intermediário
+    </span>
+
+    <span class="level-pill avancado">
+      <i class="fa-solid fa-rocket" aria-hidden="true"></i>
+      Nível 3 — Avançado
+    </span>
+
   </div>
-  <div class="overview-grid" style="max-width:600px; width:100%;">
+
+
+  <div
+    class="overview-grid"
+    style="max-width:600px; width:100%;"
+  >
+
     <div class="overview-card iniciante">
-      <span class="overview-emoji"><i class="fa-solid fa-book" aria-hidden="true"></i></span>
+
+      <span class="overview-emoji">
+        <i class="fa-solid fa-book" aria-hidden="true"></i>
+      </span>
+
       <h3>Iniciante</h3>
-      <p>Base sólida para começar</p>
-      <div class="overview-count">5</div>
-      <div class="overview-count-label">capítulos</div>
+
+      <p>
+        Base sólida para começar
+      </p>
+
+      <div class="overview-count">
+        5
+      </div>
+
+      <div class="overview-count-label">
+        capítulos
+      </div>
+
     </div>
+
+
     <div class="overview-card intermediario">
-      <span class="overview-emoji"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+
+      <span class="overview-emoji">
+        <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+      </span>
+
       <h3>Intermediário</h3>
-      <p>Bolsa, ações e fundos</p>
-      <div class="overview-count">6</div>
-      <div class="overview-count-label">capítulos</div>
+
+      <p>
+        Bolsa, ações e fundos
+      </p>
+
+      <div class="overview-count">
+        6
+      </div>
+
+      <div class="overview-count-label">
+        capítulos
+      </div>
+
     </div>
+
+
     <div class="overview-card avancado">
-      <span class="overview-emoji"><i class="fa-solid fa-rocket" aria-hidden="true"></i></span>
+
+      <span class="overview-emoji">
+        <i class="fa-solid fa-rocket" aria-hidden="true"></i>
+      </span>
+
       <h3>Avançado</h3>
-      <p>Estratégias e psicologia</p>
-      <div class="overview-count">6</div>
-      <div class="overview-count-label">capítulos</div>
+
+      <p>
+        Estratégias e psicologia
+      </p>
+
+      <div class="overview-count">
+        6
+      </div>
+
+      <div class="overview-count-label">
+        capítulos
+      </div>
+
     </div>
+
   </div>
-  <div class="scroll-hint">↓ começar leitura</div>
+
+
+  <div class="scroll-hint">
+    ↓ começar leitura
+  </div>
+
 </section>
 
-<!-- NAV -->
+
+<!-- NAVEGAÇÃO -->
 <nav id="main-nav" style="display:none;">
-  <div class="nav-logo">EcoSpending</div>
+
+  <div class="nav-logo">
+    EcoSpending
+  </div>
+
   <ul class="nav-links" id="nav-links">
-    <li><a href="#" onclick="filterLevel('all')" class="active" id="nav-all">Todos</a></li>
-    <li><a href="#" onclick="filterLevel('iniciante')" id="nav-iniciante"><i class="fa-solid fa-book" aria-hidden="true"></i> Iniciante</a></li>
-    <li><a href="#" onclick="filterLevel('intermediario')" id="nav-intermediario"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Intermediário</a></li>
-    <li><a href="#" onclick="filterLevel('avancado')" id="nav-avancado"><i class="fa-solid fa-rocket" aria-hidden="true"></i> Avançado</a></li>
+
+    <li>
+      <a
+        href="#"
+        onclick="filterLevel('all')"
+        class="active"
+        id="nav-all"
+      >
+        Todos
+      </a>
+    </li>
+
+    <li>
+      <a
+        href="#"
+        onclick="filterLevel('iniciante')"
+        id="nav-iniciante"
+      >
+        <i class="fa-solid fa-book" aria-hidden="true"></i>
+        Iniciante
+      </a>
+    </li>
+
+    <li>
+      <a
+        href="#"
+        onclick="filterLevel('intermediario')"
+        id="nav-intermediario"
+      >
+        <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+        Intermediário
+      </a>
+    </li>
+
+    <li>
+      <a
+        href="#"
+        onclick="filterLevel('avancado')"
+        id="nav-avancado"
+      >
+        <i class="fa-solid fa-rocket" aria-hidden="true"></i>
+        Avançado
+      </a>
+    </li>
+
   </ul>
-  <span id="progress-nav" style="font-size:12px;color:var(--text-muted);">0 / 17 capítulos</span>
+
+  <span
+    id="progress-nav"
+    style="font-size:12px;color:var(--text-muted);"
+  >
+    0 / 17 capítulos
+  </span>
+
 </nav>
 
-<!-- MAIN -->
-<div class="layout" id="main-layout" style="display:none;">
 
-  <!-- SIDEBAR -->
+<!-- CONTEÚDO PRINCIPAL -->
+<div
+  class="layout"
+  id="main-layout"
+  style="display:none;"
+>
+
+  <!-- BARRA LATERAL -->
   <aside class="sidebar">
-    <div class="sidebar-title">Conteúdo</div>
+
+    <div class="sidebar-title">
+      Conteúdo
+    </div>
+
 
     <div class="sidebar-level">
       <span class="dot dot-green"></span>
       Nível 1 — Iniciante
     </div>
-    <a class="sidebar-link active" href="#" onclick="showOnly('iniciante')">
-      <span class="sidebar-num">5</span>Capítulos básicos
+
+
+    <a
+      class="sidebar-link active"
+      href="#"
+      onclick="showOnly('iniciante')"
+    >
+      <span class="sidebar-num">5</span>
+      Capítulos básicos
     </a>
-    <div class="sidebar-level" style="margin-top:1rem;">
+
+
+    <div
+      class="sidebar-level"
+      style="margin-top:1rem;"
+    >
       <span class="dot dot-amber"></span>
       Nível 2 — Intermediário
     </div>
-    <a class="sidebar-link" href="#" onclick="showOnly('intermediario')">
-      <span class="sidebar-num">6</span>Capítulos médios
+
+
+    <a
+      class="sidebar-link"
+      href="#"
+      onclick="showOnly('intermediario')"
+    >
+      <span class="sidebar-num">6</span>
+      Capítulos médios
     </a>
-    <div class="sidebar-level" style="margin-top:1rem;">
+
+
+    <div
+      class="sidebar-level"
+      style="margin-top:1rem;"
+    >
       <span class="dot dot-dark"></span>
       Nível 3 — Avançado
     </div>
-    <a class="sidebar-link" href="#" onclick="showOnly('avancado')">
-      <span class="sidebar-num">6</span>Capítulos avançados
+
+
+    <a
+      class="sidebar-link"
+      href="#"
+      onclick="showOnly('avancado')"
+    >
+      <span class="sidebar-num">6</span>
+      Capítulos avançados
     </a>
-    <div style="margin-top:1.5rem;padding:14px;background:var(--eco-green-pale);border-radius:12px;border:1px solid var(--border);">
-      <p style="font-size:12px;color:var(--eco-dark);font-weight:600;margin-bottom:4px;"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dica ecoSpending</p>
-      <p style="font-size:12px;color:var(--text-muted);line-height:1.5;">Investir de forma consciente é também cuidar do seu futuro com responsabilidade.</p>
+
+
+    <!-- DICA -->
+    <div
+      style="
+        margin-top:1.5rem;
+        padding:14px;
+        background:var(--eco-green-pale);
+        border-radius:12px;
+        border:1px solid var(--border);
+      "
+    >
+
+      <p
+        style="
+          font-size:12px;
+          color:var(--eco-dark);
+          font-weight:600;
+          margin-bottom:4px;
+        "
+      >
+        <i
+          class="fa-solid fa-lightbulb"
+          aria-hidden="true"
+        ></i>
+        Dica ecoSpending
+      </p>
+
+
+      <p
+        style="
+          font-size:12px;
+          color:var(--text-muted);
+          line-height:1.5;
+        "
+      >
+        Investir de forma consciente é também cuidar
+        do seu futuro com responsabilidade.
+      </p>
+
     </div>
+
+
+    <!-- VER TODOS -->
     <div style="margin-top:1rem;">
-      <button class="btn btn-outline" style="width:100%;justify-content:center;font-size:13px;" onclick="filterLevel('all')">Ver todos os capítulos</button>
+
+      <button
+        class="btn btn-outline"
+        style="
+          width:100%;
+          justify-content:center;
+          font-size:13px;
+        "
+        onclick="filterLevel('all')"
+      >
+        Ver todos os capítulos
+      </button>
+
     </div>
+
   </aside>
 
-  <!-- CHAPTERS -->
+
+  <!-- CAPÍTULOS -->
   <main id="chapters-container"></main>
+
 </div>
 
+
+<!-- RODAPÉ -->
 <footer>
-  Feito com <i class="fa-solid fa-heart" aria-hidden="true"></i> pelo projeto <strong>ecoSpending</strong> — Finanças conscientes para um futuro melhor.
+
+  Feito com
+
+  <i
+    class="fa-solid fa-heart"
+    aria-hidden="true"
+  ></i>
+
+  pelo projeto
+
+  <strong>ecoSpending</strong>
+
+  — Finanças conscientes para um futuro melhor.
+
 </footer>
+
+
+<!-- JAVASCRIPT DO EBOOK -->
 <script src="../js/ebook.js"></script>
+
 </body>
 </html>
