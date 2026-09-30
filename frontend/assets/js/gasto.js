@@ -117,8 +117,9 @@ const CATEGORIES_GASTO = [
 ];
 
 // Categorias da aba RECEITA = instituições/agências bancárias.
-// Mantidas exatamente como no arquivo original (não são enviadas ao
-// backend: toda receita é salva/mapeada internamente como 'salario').
+// O id da categoria escolhida é enviado ao backend (campo "categoria" da
+// receita) e devolvido em loadEntries(), para o ícone ser sempre o correto.
+// Os ids precisam ser iguais a backend/src/utils/categoriasReceita.ts.
 const CATEGORIES_RECEITA = [
   { id:'bb', icon:'<i class="fa-solid fa-building-columns"></i>', name:'Banco do Brasil', color:'#B8860B', bg:'#FFF8E1' },
   { id:'itau', icon:'<i class="fa-solid fa-landmark"></i>', name:'Itaú', color:'#EC7000', bg:'#FFF1E6' },
@@ -137,8 +138,11 @@ const CATEGORIES_RECEITA = [
 // linha da tabela de histórico, que mistura os dois tipos).
 const ALL_CATEGORIES = [...CATEGORIES_GASTO, ...CATEGORIES_RECEITA];
 
-function findCategoryById(id) {
-  return ALL_CATEGORIES.find(c => c.id === id);
+// "outro" existe nas duas listas (Gasto e Receita), então o tipo é
+// necessário para devolver a categoria certa.
+function findCategoryById(id, type) {
+  const lista = type === 'income' ? CATEGORIES_RECEITA : CATEGORIES_GASTO;
+  return lista.find(c => c.id === id) || ALL_CATEGORIES.find(c => c.id === id);
 }
 
 // Retorna a lista de categorias correspondente à aba/tipo atualmente
@@ -216,7 +220,8 @@ async function loadEntries() {
     value: parseFloat(r.valor),
     desc: r.descricao || '',
     date: (r.data_receita || '').slice(0, 10),
-    cat: 'salario',
+    // receitas antigas (sem categoria salva) continuam como 'salario'
+    cat: CATEGORIES_RECEITA.some(c => c.id === r.categoria) ? r.categoria : 'salario',
     obs: '',
     eco: null
   }));
@@ -504,7 +509,8 @@ async function submitExpense() {
       method: 'POST',
       body: JSON.stringify({
         valor: val,
-        descricao: desc
+        descricao: desc,
+        categoria: selectedCat
       })
     });
   }
@@ -579,7 +585,7 @@ function openEditModal(id) {
   document.getElementById('edit-obs').value = entry.obs || '';
   document.getElementById('edit-eco').value = entry.eco ?? 8;
 
-  preencherCategoriasEdicao(entry.cat);
+  preencherCategoriasEdicao(entry.cat, entry.type === 'income' ? 'receita' : 'gasto');
   updateEditTypeFields();
 
   const modal = document.getElementById('edit-modal');
@@ -589,14 +595,17 @@ function openEditModal(id) {
   setTimeout(() => document.getElementById('edit-value').focus(), 50);
 }
 
-function preencherCategoriasEdicao(selectedCat = 'outro') {
+function preencherCategoriasEdicao(selectedCat = 'outro', tipo = 'gasto') {
   const categorySelect = document.getElementById('edit-category');
 
-  // A categoria só é gravada de fato para lançamentos do tipo Gasto, então
-  // o select de edição usa sempre a lista de categorias de Gasto.
-  categorySelect.innerHTML = CATEGORIES_GASTO
+  // O select mostra as categorias do tipo escolhido (Gasto ou Receita).
+  // Se a categoria atual não existe na lista do tipo, cai em "outro".
+  const lista = tipo === 'receita' ? CATEGORIES_RECEITA : CATEGORIES_GASTO;
+  const catFinal = lista.some(c => c.id === selectedCat) ? selectedCat : 'outro';
+
+  categorySelect.innerHTML = lista
     .map(c => `
-      <option value="${c.id}" ${c.id === selectedCat ? 'selected' : ''}>
+      <option value="${c.id}" ${c.id === catFinal ? 'selected' : ''}>
         ${c.name}
       </option>
     `)
@@ -607,8 +616,12 @@ function updateEditTypeFields() {
   const tipo = document.getElementById('edit-type').value;
   const isIncome = tipo === 'receita';
 
-  document.getElementById('edit-category-group').style.display =
-    isIncome ? 'none' : '';
+  // Recria as opções conforme o tipo (Gasto/Receita), mantendo a
+  // categoria selecionada quando ela existir na nova lista.
+  preencherCategoriasEdicao(
+    document.getElementById('edit-category').value,
+    tipo
+  );
 
   document.getElementById('edit-observation-group').style.display =
     isIncome ? 'none' : '';
@@ -616,7 +629,7 @@ function updateEditTypeFields() {
   document.getElementById('edit-eco-group').style.display =
     isIncome ? 'none' : '';
 
-  document.getElementById('edit-category').required = !isIncome;
+  document.getElementById('edit-category').required = true;
 
   updateEditEcoBadge();
 }
@@ -730,6 +743,11 @@ async function saveEdit(event) {
           observacao: document.getElementById('edit-obs').value.trim(),
           eco_score: Number(document.getElementById('edit-eco').value)
         };
+      } else {
+        body = {
+          ...body,
+          categoria: document.getElementById('edit-category').value
+        };
       }
 
       resposta = await apiFetch(`/lancamentos/${tipoAtual}/${backendId}/tipo`, {
@@ -759,6 +777,11 @@ async function saveEdit(event) {
           categoria_id: cat.backendId,
           observacao: document.getElementById('edit-obs').value.trim(),
           eco_score: Number(document.getElementById('edit-eco').value)
+        };
+      } else {
+        body = {
+          ...body,
+          categoria: document.getElementById('edit-category').value
         };
       }
 
@@ -1064,7 +1087,7 @@ function renderRecent(list) {
 
 function entryRow(e) {
   const cat =
-    findCategoryById(e.cat) ||
+    findCategoryById(e.cat, e.type) ||
     {
       icon: '<i class="fa-solid fa-box"></i>',
       name: e.cat,
@@ -1268,9 +1291,14 @@ function populateHistFilters() {
 
   const usedCats = [...new Set(entries.map(e => e.cat))];
 
+  // "outro" existe em Gasto e Receita: remove ids repetidos da lista.
+  const catsUnicas = ALL_CATEGORIES.filter(
+    (c, i) => ALL_CATEGORIES.findIndex(x => x.id === c.id) === i
+  );
+
   catSel.innerHTML =
     '<option value="">Todas as categorias</option>' +
-    ALL_CATEGORIES
+    catsUnicas
       .filter(c => usedCats.includes(c.id))
       .map(c =>
         `<option value="${c.id}" ${c.id === curCat ? 'selected' : ''}>

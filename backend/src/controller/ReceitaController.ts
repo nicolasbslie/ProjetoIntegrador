@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source";
 import { Receita } from "../models/Receita";
 import { User } from "../models/User";
+import { categoriaReceitaValida } from "../utils/categoriasReceita";
 
 const receitaRepository = AppDataSource.getRepository(Receita);
 const userRepository = AppDataSource.getRepository(User);
@@ -13,7 +14,13 @@ export class ReceitaController {
 
         try {
 
-            const { valor, descricao } = req.body;
+            const { valor, descricao, categoria } = req.body;
+
+            if (categoria !== undefined && !categoriaReceitaValida(categoria)) {
+                return res.status(400).json({
+                    message: "Categoria de receita inválida."
+                });
+            }
 
             // usuario logado (vem do token, via authMiddleware)
             const usuario_id = (req as any).user.id;
@@ -31,7 +38,8 @@ export class ReceitaController {
             const receita = receitaRepository.create({
                 usuario,
                 valor,
-                descricao
+                descricao,
+                categoria: categoria ?? "salario"
             });
 
             await receitaRepository.save(receita);
@@ -147,7 +155,16 @@ export class ReceitaController {
                 });
             }
 
-            const { valor, descricao } = req.body;
+            const { valor, descricao, categoria } = req.body;
+
+            if (categoria !== undefined && !categoriaReceitaValida(categoria)) {
+                return res.status(400).json({
+                    message: "Categoria de receita inválida."
+                });
+            }
+
+            if (categoria !== undefined)
+                receita.categoria = categoria;
 
             if (valor !== undefined)
                 receita.valor = valor;

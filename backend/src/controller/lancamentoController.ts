@@ -4,6 +4,7 @@ import { Gasto } from "../models/Gasto";
 import { Receita } from "../models/Receita";
 import { User } from "../models/User";
 import { Categoria } from "../models/Categoria";
+import { categoriaReceitaValida } from "../utils/categoriasReceita";
 
 export class LancamentoController {
     static async changeType(req: Request, res: Response) {
@@ -12,7 +13,7 @@ export class LancamentoController {
         try {
             const tipoAtual = String(req.params.tipoAtual).toLowerCase();
             const id = Number(req.params.id);
-            const { novoTipo, valor, descricao, categoria_id, observacao, eco_score } = req.body;
+            const { novoTipo, valor, descricao, categoria_id, observacao, eco_score, categoria: categoriaReceita } = req.body;
             const usuario_id = (req as any).user.id;
 
             if (!Number.isInteger(id) || id <= 0) {
@@ -21,6 +22,10 @@ export class LancamentoController {
 
             if (!["gasto", "receita"].includes(tipoAtual) || !["gasto", "receita"].includes(novoTipo)) {
                 return res.status(400).json({ message: "Tipo de lançamento inválido." });
+            }
+
+            if (categoriaReceita !== undefined && !categoriaReceitaValida(categoriaReceita)) {
+                return res.status(400).json({ message: "Categoria de receita inválida." });
             }
 
             if (tipoAtual === novoTipo) {
@@ -55,7 +60,8 @@ export class LancamentoController {
                 const receita = receitaRepository.create({
                     usuario,
                     valor: valor ?? gasto.valor,
-                    descricao: descricao ?? gasto.descricao
+                    descricao: descricao ?? gasto.descricao,
+                    categoria: categoriaReceita ?? "outro"
                 });
 
                 await receitaRepository.save(receita);
