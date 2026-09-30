@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,24 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoSpending - Minha conta</title>
 
-  <!-- Aplica o tema antes de carregar o CSS -->
+  <!-- Aplica o mesmo tema usado pela página de gastos -->
   <script>
-    const temaSalvo = localStorage.getItem("ecosending-theme");
-    if (temaSalvo === "dark") {
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
+    (function () {
+      let temaSalvo = 'light';
+
+      try {
+        const usuario = JSON.parse(
+          localStorage.getItem('usuario') || 'null'
+        );
+
+        const id = usuario && (usuario.id ?? usuario.email);
+
+        const themeKey = id
+          ? 'theme:' + id
+          : 'theme';
+
+        temaSalvo = localStorage.getItem(themeKey) || 'light';
+      } catch (erro) {
+        temaSalvo = 'light';
+      }
+
+      if (temaSalvo === 'dark') {
+        document.documentElement.setAttribute(
+          'data-theme',
+          'dark'
+        );
+      } else {
+        document.documentElement.setAttribute(
+          'data-theme',
+          'light'
+        );
+      }
+    })();
   </script>
 
   <link rel="stylesheet" href="../style/config.css">
 </head>
+
 <body>
 
   <header>
     <h1>EcoSpending</h1>
-    <button class="btn-voltar"
-      onclick="window.location.href='gasto.html'">
+
+    <button
+      class="btn-voltar"
+      onclick="window.location.href='gasto.html'"
+    >
       ← Voltar
     </button>
   </header>
@@ -33,12 +61,14 @@
 
       <!-- DADOS DA CONTA -->
       <div class="card">
+
         <h2>Meus dados</h2>
 
         <div id="feedback" class="feedback"></div>
 
         <div class="input-group">
           <label for="nome">Nome completo</label>
+
           <input
             type="text"
             id="nome"
@@ -48,6 +78,7 @@
 
         <div class="input-group">
           <label for="email">Email</label>
+
           <input
             type="email"
             id="email"
@@ -61,6 +92,7 @@
 
         <div class="input-group">
           <label for="nova-senha">Nova senha</label>
+
           <input
             type="password"
             id="nova-senha"
@@ -72,6 +104,7 @@
           <label for="confirmar-nova-senha">
             Confirmar nova senha
           </label>
+
           <input
             type="password"
             id="confirmar-nova-senha"
@@ -86,10 +119,12 @@
         >
           Salvar alterações
         </button>
+
       </div>
 
       <!-- EXCLUIR CONTA -->
       <div class="card card-danger">
+
         <h2>Excluir Conta!</h2>
 
         <p class="section-sub">
@@ -104,6 +139,7 @@
         >
           Excluir minha conta
         </button>
+
       </div>
 
       <!-- SAIR -->
@@ -119,5 +155,6 @@
   </main>
 
   <script src="../js/config.js"></script>
+
 </body>
 </html>

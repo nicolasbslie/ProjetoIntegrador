@@ -1,21 +1,25 @@
-
 /* =========================
    VARIÁVEIS
 ========================= */
+
 :root {
   --green-dark: #0f3d1e;
   --green-main: #1fa463;
   --green-light: #7ed957;
+
   --red: #d32f2f;
+
   --bg: #f0f0f0;
   --text: #1b1b1b;
   --card-bg: #ffffff;
   --input-bg: #ffffff;
 }
 
+
 /* =========================
    RESET
 ========================= */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -29,25 +33,36 @@ html {
 
 body {
   margin: 0;
+
   font-family: Arial, sans-serif;
+
   background-color: var(--bg);
   color: var(--text);
+
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
-  transition: background-color 0.3s ease, color 0.3s ease;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
+
 
 /* =========================
    CABEÇALHO
 ========================= */
+
 header {
   background: linear-gradient(
     90deg,
     var(--green-main),
     var(--green-light)
   );
+
   padding: 18px 28px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -61,11 +76,16 @@ header h1 {
 
 .btn-voltar {
   background: rgba(255, 255, 255, 0.2);
+
   color: #ffffff;
+
   border: none;
   border-radius: 8px;
+
   padding: 8px 14px;
+
   font-size: 14px;
+
   cursor: pointer;
 }
 
@@ -73,40 +93,59 @@ header h1 {
   background: rgba(255, 255, 255, 0.35);
 }
 
+
 /* =========================
    CONTEÚDO PRINCIPAL
 ========================= */
+
 main {
   flex: 1;
+
   display: flex;
   justify-content: center;
+
   padding: 40px 20px;
+
   background-color: transparent;
 }
 
 .config-wrap {
   width: 100%;
   max-width: 460px;
+
   display: flex;
   flex-direction: column;
+
   gap: 20px;
 }
+
 
 /* =========================
    CARTÕES
 ========================= */
+
 .card {
   background-color: var(--card-bg);
+
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.12);
+
   padding: 32px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .card h2 {
   font-size: 20px;
   font-weight: bold;
+
   color: #1b3a1b;
+
   margin-bottom: 20px;
 }
 
@@ -120,83 +159,121 @@ main {
 
 .section-sub {
   font-size: 13px;
+
   color: #777777;
+
   margin-bottom: 16px;
 }
+
 
 /* =========================
    CAMPOS DE ENTRADA
 ========================= */
+
 .input-group {
   margin-bottom: 16px;
 }
 
 .input-group label {
   display: block;
+
   font-size: 13px;
+
   color: #444444;
+
   margin-bottom: 6px;
+
   font-weight: 600;
 }
 
 .input-group input {
   width: 100%;
+
   padding: 14px 16px;
+
   border: 1px solid #cccccc;
+
   border-radius: 8px;
+
   font-size: 15px;
+
   color: #333333;
+
   background-color: var(--input-bg);
+
   outline: none;
-  transition: border-color 0.2s, background-color 0.3s;
+
+  transition:
+    border-color 0.2s,
+    background-color 0.3s,
+    color 0.3s;
 }
 
 .input-group input:focus {
   border-color: var(--green-dark);
 }
 
+
 /* =========================
    FEEDBACK
 ========================= */
+
 .feedback {
   display: none;
+
   font-size: 13px;
+
   padding: 10px 12px;
+
   border-radius: 8px;
+
   margin-bottom: 16px;
 }
 
 .feedback.erro {
   display: block;
+
   background: #fdecea;
   color: var(--red);
 }
 
 .feedback.sucesso {
   display: block;
+
   background: #e6f6ea;
   color: #1e7e34;
 }
 
+
 /* =========================
    BOTÕES
 ========================= */
+
 .btn {
   width: 100%;
+
   padding: 15px;
+
   border: none;
   border-radius: 8px;
+
   font-size: 15px;
   font-weight: bold;
+
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
 
 .btn:active {
   transform: scale(0.98);
 }
 
+
 /* Salvar */
+
 .btn-primary {
   background-color: #43a047;
   color: #ffffff;
@@ -206,7 +283,9 @@ main {
   background-color: #388e3c;
 }
 
+
 /* Excluir */
+
 .btn-danger {
   background-color: var(--red);
   color: #ffffff;
@@ -216,10 +295,14 @@ main {
   background-color: #b71c1c;
 }
 
+
 /* Sair */
+
 .btn-outline {
   background-color: transparent;
+
   color: #43a047;
+
   border: 2px solid #43a047;
 }
 
@@ -227,117 +310,216 @@ main {
   background-color: #f1f8f1;
 }
 
+
 /* =========================
    MODO ESCURO
 ========================= */
 
-/* Fundo de toda a página */
-html[data-theme="dark"],
+
+/* Fundo */
+
+html[data-theme="dark"] {
+  background-color: #090d0b;
+}
+
 html[data-theme="dark"] body,
-html[data-theme="dark"] main,
-body[data-theme="dark"],
-body[data-theme="dark"] main {
+html[data-theme="dark"] main {
   background-color: #090d0b !important;
   color: #e7f5eb;
 }
 
-/* Cartão de dados */
-html[data-theme="dark"] .card,
-body[data-theme="dark"] .card {
+
+/* Cartões */
+
+html[data-theme="dark"] .card {
   background-color: #111813;
+
   color: #e7f5eb;
+
   border: 1px solid #26372c;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
+
 /* Títulos */
-html[data-theme="dark"] .card h2,
-body[data-theme="dark"] .card h2 {
+
+html[data-theme="dark"] .card h2 {
   color: #a3edb8;
 }
 
+
 /* Cartão de exclusão */
-html[data-theme="dark"] .card-danger,
-body[data-theme="dark"] .card-danger {
+
+html[data-theme="dark"] .card-danger {
   background-color: #191211;
+
   border: 1px solid #8f3030;
 }
 
-html[data-theme="dark"] .card-danger h2,
-body[data-theme="dark"] .card-danger h2 {
+html[data-theme="dark"] .card-danger h2 {
   color: #ff6b6b;
 }
 
-/* Textos e rótulos */
+
+/* Textos */
+
 html[data-theme="dark"] .section-sub,
-html[data-theme="dark"] .input-group label,
-body[data-theme="dark"] .section-sub,
-body[data-theme="dark"] .input-group label {
+html[data-theme="dark"] .input-group label {
   color: #a3cbb1;
 }
 
-/* Campos */
-html[data-theme="dark"] .input-group input,
-body[data-theme="dark"] .input-group input {
-  background-color: #090d0b;
-  color: #e7f5eb;
-  border: 1px solid #315840;
+
+/* =========================
+   CAMPOS NO MODO ESCURO
+========================= */
+
+/*
+   Todos os quatro campos recebem exatamente
+   a mesma aparência no modo escuro.
+*/
+
+html[data-theme="dark"] .input-group input {
+  background-color: #090d0b !important;
+
+  color: #e7f5eb !important;
+
+  border: 1px solid #315840 !important;
+
+  caret-color: #e7f5eb;
 }
 
-html[data-theme="dark"] .input-group input::placeholder,
-body[data-theme="dark"] .input-group input::placeholder {
-  color: #789783;
+
+/* Placeholder */
+
+html[data-theme="dark"] .input-group input::placeholder {
+  color: #789783 !important;
+  opacity: 1;
 }
 
-html[data-theme="dark"] .input-group input:focus,
-body[data-theme="dark"] .input-group input:focus {
-  border-color: #52b788;
+
+/* Foco */
+
+html[data-theme="dark"] .input-group input:focus {
+  background-color: #090d0b !important;
+
+  color: #e7f5eb !important;
+
+  border-color: #52b788 !important;
+
   outline: none;
-  box-shadow: 0 0 0 2px rgba(82, 183, 136, 0.15);
+
+  box-shadow:
+    0 0 0 2px rgba(82, 183, 136, 0.15);
 }
 
-/* Botão salvar */
-html[data-theme="dark"] .btn-primary,
-body[data-theme="dark"] .btn-primary {
+
+/*
+   CORREÇÃO DO AUTOPREENCHIMENTO DO CHROME
+
+   O Chrome coloca uma cor azul clara automaticamente
+   em campos de email e senha salvos.
+
+   Esta regra força a mesma cor dos outros campos.
+*/
+
+html[data-theme="dark"] .input-group input:-webkit-autofill,
+html[data-theme="dark"] .input-group input:-webkit-autofill:hover,
+html[data-theme="dark"] .input-group input:-webkit-autofill:focus,
+html[data-theme="dark"] .input-group input:-webkit-autofill:active {
+  background-color: #090d0b !important;
+
+  -webkit-box-shadow:
+    0 0 0 1000px #090d0b inset !important;
+
+  box-shadow:
+    0 0 0 1000px #090d0b inset !important;
+
+  -webkit-text-fill-color: #e7f5eb !important;
+
+  color: #e7f5eb !important;
+
+  caret-color: #e7f5eb !important;
+
+  border: 1px solid #315840 !important;
+
+  transition:
+    background-color 9999s ease-in-out 0s;
+}
+
+
+/* Autofill + foco */
+
+html[data-theme="dark"] .input-group input:-webkit-autofill:focus {
+  border-color: #52b788 !important;
+
+  -webkit-box-shadow:
+    0 0 0 1000px #090d0b inset,
+    0 0 0 2px rgba(82, 183, 136, 0.15) !important;
+
+  box-shadow:
+    0 0 0 1000px #090d0b inset,
+    0 0 0 2px rgba(82, 183, 136, 0.15) !important;
+}
+
+
+/* =========================
+   BOTÃO SALVAR
+========================= */
+
+html[data-theme="dark"] .btn-primary {
   background-color: #16834e;
   color: #ffffff;
 }
 
-html[data-theme="dark"] .btn-primary:hover,
-body[data-theme="dark"] .btn-primary:hover {
+html[data-theme="dark"] .btn-primary:hover {
   background-color: #20a464;
 }
 
-/* Botão excluir */
-html[data-theme="dark"] .btn-danger,
-body[data-theme="dark"] .btn-danger {
+
+/* =========================
+   BOTÃO EXCLUIR
+========================= */
+
+html[data-theme="dark"] .btn-danger {
   background-color: #c62828;
   color: #ffffff;
 }
 
-/* Botão sair */
-html[data-theme="dark"] .btn-outline,
-body[data-theme="dark"] .btn-outline {
+
+/* =========================
+   BOTÃO SAIR
+========================= */
+
+html[data-theme="dark"] .btn-outline {
   background-color: #111813;
+
   color: #7ed957;
+
   border: 2px solid #299b55;
 }
 
-html[data-theme="dark"] .btn-outline:hover,
-body[data-theme="dark"] .btn-outline:hover {
+html[data-theme="dark"] .btn-outline:hover {
   background-color: #17251c;
 }
 
-/* Botão voltar */
-html[data-theme="dark"] .btn-voltar,
-body[data-theme="dark"] .btn-voltar {
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+
+html[data-theme="dark"] .btn-voltar {
   background: rgba(0, 0, 0, 0.15);
 }
+
 
 /* =========================
    RESPONSIVIDADE
 ========================= */
+
 @media (max-width: 600px) {
+
   main {
     padding: 24px 16px;
   }
@@ -345,4 +527,5 @@ body[data-theme="dark"] .btn-voltar {
   .card {
     padding: 24px;
   }
+
 }
