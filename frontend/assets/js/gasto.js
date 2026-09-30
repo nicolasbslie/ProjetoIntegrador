@@ -33,9 +33,19 @@ async function apiFetch(path, options = {}) {
   return resposta;
 }
 
-/* ─── MODO ESCURO ────────────────────────────────────── */
+/* ─── MODO ESCURO (salvo por usuário) ────────────────── */
 
-const THEME_KEY = 'theme';
+// A chave muda conforme o usuário logado: theme:12, theme:ana@email.com...
+// Assim cada conta tem a sua própria preferência de tema.
+function getThemeKey() {
+  try {
+    const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+    const id = usuario && (usuario.id ?? usuario.email);
+    return id ? 'theme:' + id : 'theme';
+  } catch (e) {
+    return 'theme';
+  }
+}
 
 function getCurrentTheme() {
   return document.documentElement.getAttribute('data-theme') === 'dark'
@@ -61,7 +71,7 @@ function toggleTheme() {
   applyTheme(next);
 
   try {
-    localStorage.setItem(THEME_KEY, next);
+    localStorage.setItem(getThemeKey(), next);
   } catch (e) {
     /* localStorage indisponível: o tema só vale para esta sessão */
   }
@@ -71,14 +81,20 @@ function initTheme() {
   let saved = null;
 
   try {
-    saved = localStorage.getItem(THEME_KEY);
+    saved = localStorage.getItem(getThemeKey());
   } catch (e) { }
 
+  // Conta que nunca escolheu tema começa no claro.
+  // (Para seguir o tema do sistema, veja o comentário abaixo.)
+  applyTheme(saved || 'light');
+
+  /* Alternativa: seguir o tema do sistema quando a conta ainda não escolheu
   const prefersDark =
     window.matchMedia &&
     window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+  */
 }
 
 /* ─── DATA ───────────────────────────────────────────── */
@@ -1345,6 +1361,10 @@ async function logout() {
 
   localStorage.removeItem('token');
   localStorage.removeItem('usuario');
+
+  // Volta o visual para o claro, para a tela de login não herdar o tema
+  // da conta que acabou de sair (a preferência dela continua salva).
+  document.documentElement.setAttribute('data-theme', 'light');
 
   window.location.href = 'login.html';
 }
