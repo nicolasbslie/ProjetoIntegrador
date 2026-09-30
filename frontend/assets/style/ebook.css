@@ -782,3 +782,227 @@ footer i {
 .overview-emoji i { font-size: inherit; }
 .callout-icon i { font-size: inherit; }
 .complete-checkmark i { font-size: inherit; }
+
+/* =====================================
+   MODO ESCURO - ABA EBOOK
+===================================== */
+
+/* Variáveis: a maior parte do eBook já usa essas variáveis, então
+   trocá-las aqui muda quase tudo automaticamente */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #090d0b;
+  --surface: #111813;
+  --surface-alt: #090d0b;
+
+  --text-primary: #e7f5eb;
+  --text-secondary: #a3cbb1;
+  --text-muted: #7fa08c;
+
+  --border: #26372c;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+
+  --eco-green-pale: #17251c;
+  --eco-mint: #315840;
+  --eco-dark: #a3edb8;
+  --eco-blue-pale: rgba(33, 150, 163, 0.15);
+}
+
+:root[data-theme="dark"] body {
+  background: #090d0b;
+  color: var(--text-primary);
+}
+
+/* NAV */
+:root[data-theme="dark"] nav {
+  background: rgba(17, 24, 19, 0.96);
+  border-bottom-color: var(--border);
+}
+
+:root[data-theme="dark"] .nav-logo { color: var(--green-light); }
+
+:root[data-theme="dark"] .nav-links a:hover {
+  background: #17251c;
+  color: var(--green-light);
+}
+
+:root[data-theme="dark"] .nav-links a.active {
+  background: #16834e;
+  color: #fff;
+}
+
+/* SIDEBAR */
+:root[data-theme="dark"] .sidebar-link { color: var(--text-secondary); }
+
+:root[data-theme="dark"] .sidebar-link:hover {
+  background: #17251c;
+  color: var(--green-light);
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .sidebar-link.active {
+  background: #16834e;
+  color: #fff;
+}
+
+:root[data-theme="dark"] .sidebar-num {
+  background: #1d2b22;
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .sidebar-link.active .sidebar-num {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+:root[data-theme="dark"] .progress-bar { background: #1d2b22; }
+
+/* CAPÍTULOS */
+:root[data-theme="dark"] .chapter {
+  background: #111813;
+  border-color: var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="dark"] .chapter-header:hover { background: #17251c; }
+
+:root[data-theme="dark"] .chapter h2 { color: #a3edb8; }
+
+:root[data-theme="dark"] .chapter-toggle {
+  background: #17251c;
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] .chapter.expanded .chapter-toggle {
+  background: #16834e;
+  border-color: #16834e;
+  color: #fff;
+}
+
+/* BADGES DE NÍVEL */
+:root[data-theme="dark"] .badge-iniciante {
+  background: rgba(126, 217, 87, 0.15);
+  color: var(--green-light);
+}
+
+:root[data-theme="dark"] .badge-intermediario {
+  background: rgba(233, 196, 106, 0.15);
+  color: var(--eco-amber);
+}
+
+:root[data-theme="dark"] .badge-avancado {
+  background: rgba(179, 157, 219, 0.15);
+  color: #b39ddb;
+}
+
+/* TÓPICOS */
+:root[data-theme="dark"] .topic-card {
+  background: #17251c;
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .topic-card:hover {
+  background: #1d2f23;
+  border-color: var(--green-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .topic-card.done {
+  background: #1a3324;
+  border-color: var(--green-main);
+}
+
+:root[data-theme="dark"] .topic-card.done .topic-name { color: #a3edb8; }
+:root[data-theme="dark"] .topic-card.done .topic-status { color: var(--green-light); }
+
+/* PAINEL DE CONTEÚDO */
+:root[data-theme="dark"] .content-panel {
+  background: #17251c;
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .content-panel h4 { color: #a3edb8; }
+
+:root[data-theme="dark"] .concept-list li {
+  background: #111813;
+  border-color: var(--border);
+}
+
+/* CALLOUTS */
+:root[data-theme="dark"] .callout-info {
+  background: rgba(33, 150, 163, 0.15);
+  color: #8fd6df;
+}
+
+:root[data-theme="dark"] .callout-tip {
+  background: rgba(126, 217, 87, 0.12);
+  color: #a3edb8;
+}
+
+:root[data-theme="dark"] .callout-warn {
+  background: rgba(233, 196, 106, 0.12);
+  color: var(--eco-amber);
+}
+
+/* TABELA E TAGS */
+:root[data-theme="dark"] .eco-table th { background: #16834e; }
+:root[data-theme="dark"] .eco-table td { border-bottom-color: var(--border); }
+:root[data-theme="dark"] .eco-table tr:hover td { background: #17251c; }
+
+:root[data-theme="dark"] .tag-low { background: rgba(126, 217, 87, 0.15); color: var(--green-light); }
+:root[data-theme="dark"] .tag-med { background: rgba(233, 196, 106, 0.15); color: var(--eco-amber); }
+:root[data-theme="dark"] .tag-high { background: rgba(230, 57, 70, 0.15); color: #ff8a93; }
+:root[data-theme="dark"] .tag-fgc { background: rgba(33, 150, 163, 0.15); color: #8fd6df; }
+
+/* CAPÍTULO CONCLUÍDO */
+:root[data-theme="dark"] .chapter-complete {
+  background: #17251c;
+  border-color: var(--eco-mint);
+}
+
+:root[data-theme="dark"] .chapter-complete h4 { color: #a3edb8; }
+
+/* BOTÕES */
+:root[data-theme="dark"] .btn-primary { background: #16834e; color: #fff; }
+:root[data-theme="dark"] .btn-primary:hover { background: #1fa463; }
+
+:root[data-theme="dark"] .btn-outline {
+  background: #111813;
+  color: var(--green-light);
+  border-color: #16834e;
+}
+
+:root[data-theme="dark"] .btn-outline:hover { background: #17251c; }
+
+/* CAPA */
+:root[data-theme="dark"] .cover {
+  background: linear-gradient(160deg, #06120a 0%, #0f5a36 60%, #4a9a3a 100%);
+}
+
+:root[data-theme="dark"] .overview-card { border-color: var(--border); }
+
+:root[data-theme="dark"] .overview-card.iniciante {
+  background: linear-gradient(135deg, #1a3324, #111813);
+}
+
+:root[data-theme="dark"] .overview-card.intermediario {
+  background: linear-gradient(135deg, #332d17, #111813);
+}
+
+:root[data-theme="dark"] .overview-card.avancado {
+  background: linear-gradient(135deg, #261f36, #111813);
+}
+
+:root[data-theme="dark"] .overview-card h3 { color: var(--text-primary); }
+:root[data-theme="dark"] .overview-count { color: var(--green-light); }
+
+/* RODAPÉ */
+:root[data-theme="dark"] footer {
+  background: #111813;
+  border-top-color: var(--border);
+  color: var(--text-muted);
+}
+
+:root[data-theme="dark"] footer strong { color: var(--green-light); }

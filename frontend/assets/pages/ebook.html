@@ -6,6 +6,31 @@
 <title>ecoSpending — Guia Completo de Investimentos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- TEMA: usa a mesma chave ('theme') do gasto.js -->
+<script>
+  (function () {
+    function temaAtual() {
+      var salvo = null;
+      try { salvo = localStorage.getItem('theme'); } catch (e) {}
+
+      var prefereEscuro =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      return salvo || (prefereEscuro ? 'dark' : 'light');
+    }
+
+    document.documentElement.setAttribute('data-theme', temaAtual());
+
+    window.addEventListener('storage', function (e) {
+      if (e.key === 'theme') {
+        document.documentElement.setAttribute('data-theme', temaAtual());
+      }
+    });
+  })();
+</script>
+
 <link rel="stylesheet" href="../style/ebook.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -14,7 +39,6 @@
 <div>
 <button onclick="window.location.href='gasto.html'" class="btn-voltar">
     ← Voltar
-
 </button>
 </div>
 
