@@ -6,39 +6,7 @@
   <title>EcoSpending - Minha conta</title>
 
   <!-- Aplica o mesmo tema usado pela página de gastos -->
-  <script>
-    (function () {
-      let temaSalvo = 'light';
-
-      try {
-        const usuario = JSON.parse(
-          localStorage.getItem('usuario') || 'null'
-        );
-
-        const id = usuario && (usuario.id ?? usuario.email);
-
-        const themeKey = id
-          ? 'theme:' + id
-          : 'theme';
-
-        temaSalvo = localStorage.getItem(themeKey) || 'light';
-      } catch (erro) {
-        temaSalvo = 'light';
-      }
-
-      if (temaSalvo === 'dark') {
-        document.documentElement.setAttribute(
-          'data-theme',
-          'dark'
-        );
-      } else {
-        document.documentElement.setAttribute(
-          'data-theme',
-          'light'
-        );
-      }
-    })();
-  </script>
+  <script src="../js/config-tema.js"></script>
 
   <link rel="stylesheet" href="../style/config.css">
 </head>
